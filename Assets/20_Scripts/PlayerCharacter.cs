@@ -52,9 +52,6 @@ public class PlayerCharacter : MonoBehaviour
     private struct DashValues
     {
         public float DashImpulseForce;
-        public float DashDeceleration;
-        public float DashMaxDeceleration;
-        [Tooltip("Range [0, 1]")] public AnimationCurve DecelerationDashFromAirTime;
         public float DashHeight;
         public float DashBufferTime;
     }
@@ -273,6 +270,9 @@ public class PlayerCharacter : MonoBehaviour
 
     private void Movement()
     {
+        if (_isDashing)
+            return;
+
         //Vector2 maxSpeed = new Vector2(_horizontalPhysic.MaxSpeed * _movementInput, 0.0f);
         Vector2 maxSpeed = SnapToGround(_movementInput);
         float velocityDot = Mathf.Clamp(Vector2.Dot(_rigidbody.linearVelocity, maxSpeed), -1.0f, 1.0f);
@@ -375,7 +375,7 @@ public class PlayerCharacter : MonoBehaviour
             return;
         }
 
-        _currentJumpForce.y = _isGravityReversed ? -_jumpParameters.ImpulseForce : _jumpParameters.ImpulseForce;
+        _currentJumpForce.y = _jumpParameters.ImpulseForce;
         _rigidbody.linearVelocity = new Vector2(_rigidbody.linearVelocity.x, _currentJumpForce.y);
         _currentHorizontalVelocity.y = 0.0f; 
         _isJumping = true;
@@ -395,7 +395,7 @@ public class PlayerCharacter : MonoBehaviour
             return;
 
         ContactPoint2D[] contactPointArray = new ContactPoint2D[1];
-        ContactFilter2D filter = _isGravityReversed ? _groundContactFilter : _ceilingContactFilter;
+        ContactFilter2D filter = _ceilingContactFilter;
         _rigidbody.GetContacts(filter, contactPointArray);
         Vector2 normal = contactPointArray.Length > 0 ? contactPointArray[0].normal : Vector2.zero;
 
@@ -472,8 +472,7 @@ public class PlayerCharacter : MonoBehaviour
             Invoke(nameof(StopDashBuffer), _dashParameters.DashBufferTime);
             return;
         }
-        _currentDashForce = new Vector2(_dashParameters.DashImpulseForce * _dashMovementInput.normalized.x, _dashParameters.DashImpulseForce * _dashMovementInput.normalized.y);
-        Debug.Log(_currentDashForce);
+        _currentDashForce = _dashMovementInput.normalized * _dashParameters.DashImpulseForce;
         _rigidbody.linearVelocity = new Vector2(_currentDashForce.x, _currentDashForce.y);
         _isDashing = true;
         _isInCoyoteTime = false;
@@ -485,20 +484,10 @@ public class PlayerCharacter : MonoBehaviour
         if (!_isDashing)
             return;
 
-        ContactPoint2D[] contactPointArray = new ContactPoint2D[1];
-        ContactFilter2D filter = _ceilingContactFilter;
-        _rigidbody.GetContacts(filter, contactPointArray);
-        Vector2 normal = contactPointArray.Length > 0 ? contactPointArray[0].normal : Vector2.zero;
-
         float dashTimeRatio = Mathf.Clamp01((_airTime - _startDashTime) / _dashTime);
-        float deceleration = _dashParameters.DashDeceleration * _dashParameters.DecelerationDashFromAirTime.Evaluate(dashTimeRatio) * Time.fixedDeltaTime;
 
-        _currentDashForce = Vector2.MoveTowards(_currentDashForce, Vector2.zero, deceleration);
 
-        Vector2 velocityDeltaDash = _currentDashForce - _rigidbody.linearVelocity;
-        velocityDeltaDash = Vector2.ClampMagnitude(velocityDeltaDash, _dashParameters.DashMaxDeceleration);
-
-        _forceToAdd += velocityDeltaDash;
+        _forceToAdd += _currentDashForce;
 
         if (dashTimeRatio >= 0.2f)
         {
@@ -525,5 +514,11 @@ public class PlayerCharacter : MonoBehaviour
             _bufferDash = false;
             CancelInvoke(nameof(StopDashBuffer));
         }
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        _isDashing = false;
+        _rigidbody.linearVelocity = Vector2.zero;
     }
 }
