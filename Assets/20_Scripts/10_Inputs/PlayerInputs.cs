@@ -111,7 +111,7 @@ public partial class @PlayerInputs: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""ActionOne"",
+                    ""name"": ""Attack"",
                     ""type"": ""Button"",
                     ""id"": ""6d08e18c-1945-4ce3-b85d-4c85570322d2"",
                     ""expectedControlType"": """",
@@ -120,13 +120,22 @@ public partial class @PlayerInputs: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""ActionTwo"",
+                    ""name"": ""Dash"",
                     ""type"": ""Button"",
                     ""id"": ""ee2d7511-ef4f-4718-9d81-dc1896036fbe"",
                     ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Dash Direction"",
+                    ""type"": ""Value"",
+                    ""id"": ""57eb2e33-5ac8-403d-8a50-b9872e22f783"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
                 }
             ],
             ""bindings"": [
@@ -142,7 +151,7 @@ public partial class @PlayerInputs: IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": false
                 },
                 {
-                    ""name"": ""negative"",
+                    ""name"": ""Negative"",
                     ""id"": ""dcde318c-e3b2-4315-92d1-2375c90ae36c"",
                     ""path"": ""<Keyboard>/a"",
                     ""interactions"": """",
@@ -153,9 +162,42 @@ public partial class @PlayerInputs: IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": true
                 },
                 {
-                    ""name"": ""positive"",
+                    ""name"": ""Positive"",
                     ""id"": ""646b2f77-83d5-4c00-8df8-2a07411a6aa5"",
                     ""path"": ""<Keyboard>/d"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Move"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""1D Axis"",
+                    ""id"": ""73f83822-73f6-46b3-a632-a8693a45665c"",
+                    ""path"": ""1DAxis"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Move"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""Negative"",
+                    ""id"": ""6facdf5d-09e4-4db2-b365-55a66bddcf65"",
+                    ""path"": ""<Gamepad>/leftStick/left"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Move"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""Positive"",
+                    ""id"": ""3f8162ba-c5c7-4063-a80e-ed42e0704e94"",
+                    ""path"": ""<Gamepad>/leftStick/right"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -176,12 +218,34 @@ public partial class @PlayerInputs: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
+                    ""id"": ""2dfe3da8-8865-41f2-8a08-6820247ad826"",
+                    ""path"": ""<Gamepad>/buttonSouth"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Jump"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
                     ""id"": ""4aa2e08e-cddb-45ba-9ba8-8b9b65594338"",
                     ""path"": ""<Mouse>/leftButton"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""ActionOne"",
+                    ""action"": ""Attack"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""ec608b46-d881-4b67-9ca9-d666d653b939"",
+                    ""path"": ""<Gamepad>/buttonWest"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Attack"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -192,9 +256,75 @@ public partial class @PlayerInputs: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""ActionTwo"",
+                    ""action"": ""Dash"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""7a000625-67c2-4339-95b6-b6c0aa635fcb"",
+                    ""path"": ""<Gamepad>/rightShoulder"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Dash"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""2D Vector"",
+                    ""id"": ""de1e2a59-44bc-47bd-ab0c-19252ae4447e"",
+                    ""path"": ""2DVector"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Dash Direction"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""up"",
+                    ""id"": ""25dc36a3-53d3-4767-9f48-e15fa3a75a3c"",
+                    ""path"": ""<Gamepad>/leftStick/up"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Dash Direction"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""down"",
+                    ""id"": ""0211c871-7b8e-4fa7-9ab5-e104ec861108"",
+                    ""path"": ""<Gamepad>/leftStick/down"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Dash Direction"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""left"",
+                    ""id"": ""ca13f749-3cb0-4d46-bd68-32a41b3b2b1a"",
+                    ""path"": ""<Gamepad>/leftStick/left"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Dash Direction"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""right"",
+                    ""id"": ""97bad097-fe6f-4819-b286-ddab906e157a"",
+                    ""path"": ""<Gamepad>/leftStick/right"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Dash Direction"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
                 }
             ]
         }
@@ -205,8 +335,9 @@ public partial class @PlayerInputs: IInputActionCollection2, IDisposable
         m_Actions = asset.FindActionMap("Actions", throwIfNotFound: true);
         m_Actions_Move = m_Actions.FindAction("Move", throwIfNotFound: true);
         m_Actions_Jump = m_Actions.FindAction("Jump", throwIfNotFound: true);
-        m_Actions_ActionOne = m_Actions.FindAction("ActionOne", throwIfNotFound: true);
-        m_Actions_ActionTwo = m_Actions.FindAction("ActionTwo", throwIfNotFound: true);
+        m_Actions_Attack = m_Actions.FindAction("Attack", throwIfNotFound: true);
+        m_Actions_Dash = m_Actions.FindAction("Dash", throwIfNotFound: true);
+        m_Actions_DashDirection = m_Actions.FindAction("Dash Direction", throwIfNotFound: true);
     }
 
     ~@PlayerInputs()
@@ -289,8 +420,9 @@ public partial class @PlayerInputs: IInputActionCollection2, IDisposable
     private List<IActionsActions> m_ActionsActionsCallbackInterfaces = new List<IActionsActions>();
     private readonly InputAction m_Actions_Move;
     private readonly InputAction m_Actions_Jump;
-    private readonly InputAction m_Actions_ActionOne;
-    private readonly InputAction m_Actions_ActionTwo;
+    private readonly InputAction m_Actions_Attack;
+    private readonly InputAction m_Actions_Dash;
+    private readonly InputAction m_Actions_DashDirection;
     /// <summary>
     /// Provides access to input actions defined in input action map "Actions".
     /// </summary>
@@ -311,13 +443,17 @@ public partial class @PlayerInputs: IInputActionCollection2, IDisposable
         /// </summary>
         public InputAction @Jump => m_Wrapper.m_Actions_Jump;
         /// <summary>
-        /// Provides access to the underlying input action "Actions/ActionOne".
+        /// Provides access to the underlying input action "Actions/Attack".
         /// </summary>
-        public InputAction @ActionOne => m_Wrapper.m_Actions_ActionOne;
+        public InputAction @Attack => m_Wrapper.m_Actions_Attack;
         /// <summary>
-        /// Provides access to the underlying input action "Actions/ActionTwo".
+        /// Provides access to the underlying input action "Actions/Dash".
         /// </summary>
-        public InputAction @ActionTwo => m_Wrapper.m_Actions_ActionTwo;
+        public InputAction @Dash => m_Wrapper.m_Actions_Dash;
+        /// <summary>
+        /// Provides access to the underlying input action "Actions/DashDirection".
+        /// </summary>
+        public InputAction @DashDirection => m_Wrapper.m_Actions_DashDirection;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -350,12 +486,15 @@ public partial class @PlayerInputs: IInputActionCollection2, IDisposable
             @Jump.started += instance.OnJump;
             @Jump.performed += instance.OnJump;
             @Jump.canceled += instance.OnJump;
-            @ActionOne.started += instance.OnActionOne;
-            @ActionOne.performed += instance.OnActionOne;
-            @ActionOne.canceled += instance.OnActionOne;
-            @ActionTwo.started += instance.OnActionTwo;
-            @ActionTwo.performed += instance.OnActionTwo;
-            @ActionTwo.canceled += instance.OnActionTwo;
+            @Attack.started += instance.OnAttack;
+            @Attack.performed += instance.OnAttack;
+            @Attack.canceled += instance.OnAttack;
+            @Dash.started += instance.OnDash;
+            @Dash.performed += instance.OnDash;
+            @Dash.canceled += instance.OnDash;
+            @DashDirection.started += instance.OnDashDirection;
+            @DashDirection.performed += instance.OnDashDirection;
+            @DashDirection.canceled += instance.OnDashDirection;
         }
 
         /// <summary>
@@ -373,12 +512,15 @@ public partial class @PlayerInputs: IInputActionCollection2, IDisposable
             @Jump.started -= instance.OnJump;
             @Jump.performed -= instance.OnJump;
             @Jump.canceled -= instance.OnJump;
-            @ActionOne.started -= instance.OnActionOne;
-            @ActionOne.performed -= instance.OnActionOne;
-            @ActionOne.canceled -= instance.OnActionOne;
-            @ActionTwo.started -= instance.OnActionTwo;
-            @ActionTwo.performed -= instance.OnActionTwo;
-            @ActionTwo.canceled -= instance.OnActionTwo;
+            @Attack.started -= instance.OnAttack;
+            @Attack.performed -= instance.OnAttack;
+            @Attack.canceled -= instance.OnAttack;
+            @Dash.started -= instance.OnDash;
+            @Dash.performed -= instance.OnDash;
+            @Dash.canceled -= instance.OnDash;
+            @DashDirection.started -= instance.OnDashDirection;
+            @DashDirection.performed -= instance.OnDashDirection;
+            @DashDirection.canceled -= instance.OnDashDirection;
         }
 
         /// <summary>
@@ -434,18 +576,25 @@ public partial class @PlayerInputs: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnJump(InputAction.CallbackContext context);
         /// <summary>
-        /// Method invoked when associated input action "ActionOne" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// Method invoked when associated input action "Attack" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
         /// </summary>
         /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
-        void OnActionOne(InputAction.CallbackContext context);
+        void OnAttack(InputAction.CallbackContext context);
         /// <summary>
-        /// Method invoked when associated input action "ActionTwo" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// Method invoked when associated input action "Dash" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
         /// </summary>
         /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
-        void OnActionTwo(InputAction.CallbackContext context);
+        void OnDash(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "Dash Direction" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnDashDirection(InputAction.CallbackContext context);
     }
 }

@@ -14,13 +14,15 @@ public class PlayerInputsManager : MonoBehaviour
 
         _inputs = new PlayerInputs();
         _inputs.Actions.Jump.started += _ => _character.StartJump();
-        _inputs.Actions.ActionOne.started += _ => _character.ActionOne();
-        _inputs.Actions.ActionTwo.started += _ => _character.ActionTwo();
+        _inputs.Actions.Attack.started += _ => _character.Attack();
+        _inputs.Actions.Dash.started += _ => _character.StartDash();
         _inputs.Enable();
     }
 
     private void FixedUpdate()
     {
         _character.GetMovementInput(_inputs.Actions.Move.ReadValue<float>());
+
+        _character.GetDashInput(_inputs.Actions.DashDirection.ReadValue<Vector2>());
     }
 }
