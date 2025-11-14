@@ -52,9 +52,6 @@ public class PlayerCharacter : MonoBehaviour
     private struct DashValues
     {
         public float DashImpulseForce;
-        public float DashDeceleration;
-        public float DashMaxDeceleration;
-        [Tooltip("Range [0, 1]")] public AnimationCurve DecelerationDashFromAirTime;
         public float DashHeight;
         public float DashBufferTime;
     }
@@ -102,6 +99,7 @@ public class PlayerCharacter : MonoBehaviour
 
     //Air
     private float _airTime = 0.0f;
+    private float _dashAirTime = 0.0f;
     private bool _isInCoyoteTime = false;
 
     //Jump
@@ -112,8 +110,6 @@ public class PlayerCharacter : MonoBehaviour
     private bool _bufferJump = false;
     private bool _hasBounce = false;
 
-    //Mesh rotation
-    private Vector3 _currentMeshRotation = Vector3.zero;
 
     //Event appel� quand on touche ou quitte le sol
     public event Action<PhysicState> OnPhysicStateChanged;
@@ -121,7 +117,7 @@ public class PlayerCharacter : MonoBehaviour
     //Dash
     private Vector2 _currentDashForce = Vector2.zero;
     private Vector2 _dashMovementInput = Vector2.zero;
-
+    [SerializeField] private bool _canDash = true;
     [SerializeField] private bool _isDashing = false;
     private float _dashTime = 0.0f;
     private float _startDashTime = 0.0f;
@@ -135,7 +131,6 @@ public class PlayerCharacter : MonoBehaviour
     {
         _rigidbody = GetComponent<Rigidbody2D>();
         _horizontalPhysic = _groundPhysic;
-        _currentMeshRotation = _mesh.eulerAngles;
         CalculateJumpTime();
         CalculateDashTime();
 
@@ -174,9 +169,13 @@ public class PlayerCharacter : MonoBehaviour
 
     private void RotateMesh()
     {
-        if (_currentHorizontalVelocity != Vector2.zero && _movementInput == -_movementInput)
+        if (_movementInput == 1)
         {
-            hunterD.flipX = !hunterD.flipX;
+            hunterD.flipX = false;
+        }
+        else if (_movementInput == -1)
+        {
+            hunterD.flipX = true;
         }
     }
 
@@ -218,7 +217,7 @@ public class PlayerCharacter : MonoBehaviour
     private void GroundDetection()
     {
         //On utilise le filtre qui contient l'inclinaison du sol pour savoir si le rigidbody touche le sol ou non
-        ContactFilter2D filter = _isGravityReversed ? _ceilingContactFilter : _groundContactFilter;
+        ContactFilter2D filter = _groundContactFilter;
         bool isTouchingGround = _rigidbody.IsTouching(filter);
 
         //Si le rigidbody touche le sol mais on a en m�moire qu'il ne le touche pas, on est sur la frame o� il touche le sol
@@ -228,11 +227,16 @@ public class PlayerCharacter : MonoBehaviour
             //On invoque l'event en passant true pour signifier que le joueur arrive au sol
             OnPhysicStateChanged.Invoke(PhysicState.Ground);
         }
+        if (isTouchingGround)
+        {
+            StartCoroutine(CdDash());
+        }
+
         //Si le rigidbody ne touche pas le sol mais on a en m�moire qu'il le touche, on est sur la frame o� il quitte le sol
         else if (!isTouchingGround && IsGrounded)
         {
             IsGrounded = false;
-            if (!_isJumping)
+            if (!_isJumping || !_isDashing)
                 _isInCoyoteTime = true;
             //On invoque l'event en passant false pour signifier que le joueur quitte au sol
             OnPhysicStateChanged.Invoke(PhysicState.Air);
@@ -243,6 +247,8 @@ public class PlayerCharacter : MonoBehaviour
     {
         if (!IsGrounded)
             _airTime += Time.fixedDeltaTime;
+        if (_isDashing)
+            _dashAirTime += Time.fixedDeltaTime;
     }
 
     private void ManageCoyoteTime()
@@ -273,6 +279,9 @@ public class PlayerCharacter : MonoBehaviour
 
     private void Movement()
     {
+        if (_isDashing)
+            return;
+
         //Vector2 maxSpeed = new Vector2(_horizontalPhysic.MaxSpeed * _movementInput, 0.0f);
         Vector2 maxSpeed = SnapToGround(_movementInput);
         float velocityDot = Mathf.Clamp(Vector2.Dot(_rigidbody.linearVelocity, maxSpeed), -1.0f, 1.0f);
@@ -354,12 +363,8 @@ public class PlayerCharacter : MonoBehaviour
             _currentGravity = 0.0f;
             _rigidbody.linearVelocity = new Vector2(_rigidbody.linearVelocity.x, 0.0f);
             _airTime = 0.0f;
+            _dashAirTime = 0.0f;
         }
-    }
-
-    public void ReverseGravity()
-    {
-        _isGravityReversed = !_isGravityReversed;
     }
 
     #endregion Gravity
@@ -375,7 +380,7 @@ public class PlayerCharacter : MonoBehaviour
             return;
         }
 
-        _currentJumpForce.y = _isGravityReversed ? -_jumpParameters.ImpulseForce : _jumpParameters.ImpulseForce;
+        _currentJumpForce.y = _jumpParameters.ImpulseForce;
         _rigidbody.linearVelocity = new Vector2(_rigidbody.linearVelocity.x, _currentJumpForce.y);
         _currentHorizontalVelocity.y = 0.0f; 
         _isJumping = true;
@@ -395,7 +400,7 @@ public class PlayerCharacter : MonoBehaviour
             return;
 
         ContactPoint2D[] contactPointArray = new ContactPoint2D[1];
-        ContactFilter2D filter = _isGravityReversed ? _groundContactFilter : _ceilingContactFilter;
+        ContactFilter2D filter = _ceilingContactFilter;
         _rigidbody.GetContacts(filter, contactPointArray);
         Vector2 normal = contactPointArray.Length > 0 ? contactPointArray[0].normal : Vector2.zero;
 
@@ -422,7 +427,7 @@ public class PlayerCharacter : MonoBehaviour
 
     private Vector2 GetBounceForce(Vector2 initialForce, Vector2 normal, float bouciness, ref bool hasBounce)
     {
-        if (!hasBounce && normal != Vector2.zero && ((normal.y > 0 && _isGravityReversed) || (normal.y < 0 && !_isGravityReversed)))
+        if (!hasBounce && normal != Vector2.zero && normal.y < 0)
         {
             float dot = Vector2.Dot(initialForce, normal);
             Vector2 projectedVector = -2 * dot * normal;
@@ -466,41 +471,35 @@ public class PlayerCharacter : MonoBehaviour
 
     public void StartDash()
     {
-        if (!_isInCoyoteTime && _isDashing)
+        if (!_isInCoyoteTime && _isDashing || !_canDash)
         {
             _bufferDash = true;
             Invoke(nameof(StopDashBuffer), _dashParameters.DashBufferTime);
             return;
         }
-        _currentDashForce = new Vector2(_dashParameters.DashImpulseForce * _dashMovementInput.normalized.x, _dashParameters.DashImpulseForce * _dashMovementInput.normalized.y);
-        Debug.Log(_currentDashForce);
-        _rigidbody.linearVelocity = new Vector2(_currentDashForce.x, _currentDashForce.y);
-        _isDashing = true;
-        _isInCoyoteTime = false;
-        _startDashTime = _airTime;
+        else if(_canDash)
+        {
+            _currentJumpForce = Vector2.zero;
+            _currentDashForce = _dashMovementInput.normalized * _dashParameters.DashImpulseForce;
+            _rigidbody.linearVelocity = new Vector2(_currentDashForce.x, _currentDashForce.y);
+            _canDash = false;
+            _isDashing = true;
+            _isInCoyoteTime = false;
+            _startDashTime = _dashAirTime;
+        }
+        
     }
 
     public void Dash()
     {
-        if (!_isDashing)
+        if (!_isDashing && !_canDash)
             return;
 
-        ContactPoint2D[] contactPointArray = new ContactPoint2D[1];
-        ContactFilter2D filter = _ceilingContactFilter;
-        _rigidbody.GetContacts(filter, contactPointArray);
-        Vector2 normal = contactPointArray.Length > 0 ? contactPointArray[0].normal : Vector2.zero;
+        float dashTimeRatio = Mathf.Clamp01((_dashAirTime - _startDashTime) / _dashTime);
 
-        float dashTimeRatio = Mathf.Clamp01((_airTime - _startDashTime) / _dashTime);
-        float deceleration = _dashParameters.DashDeceleration * _dashParameters.DecelerationDashFromAirTime.Evaluate(dashTimeRatio) * Time.fixedDeltaTime;
+        _forceToAdd += _currentDashForce;
 
-        _currentDashForce = Vector2.MoveTowards(_currentDashForce, Vector2.zero, deceleration);
-
-        Vector2 velocityDeltaDash = _currentDashForce - _rigidbody.linearVelocity;
-        velocityDeltaDash = Vector2.ClampMagnitude(velocityDeltaDash, _dashParameters.DashMaxDeceleration);
-
-        _forceToAdd += velocityDeltaDash;
-
-        if (dashTimeRatio >= 0.2f)
+        if (dashTimeRatio >= 0.3f)
         {
             _isDashing = false;
             _currentDashForce = Vector2.zero;
@@ -525,5 +524,17 @@ public class PlayerCharacter : MonoBehaviour
             _bufferDash = false;
             CancelInvoke(nameof(StopDashBuffer));
         }
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        _isDashing = false;
+        _currentDashForce = Vector2.zero;
+    }
+
+    IEnumerator CdDash()
+    {
+        yield return new WaitForSeconds(1.0f);
+        _canDash = true;
     }
 }
