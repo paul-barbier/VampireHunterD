@@ -84,7 +84,6 @@ public class PlayerCharacter : MonoBehaviour
     private Vector2 _currentHorizontalVelocity = Vector2.zero;
     private float _movementInput = 0.0f;
     private MovementValues _horizontalPhysic = new MovementValues();
-    private bool _isSprinting = false;
 
     //Gravity
     private float _currentGravity = 0.0f;
@@ -122,9 +121,6 @@ public class PlayerCharacter : MonoBehaviour
     [SerializeField] private Vector3 _currentMeshRotation = Vector3.zero;
     [SerializeField] private float rotationSpeed = 360f;
 
-    //Attack
-
-
     #endregion Variables
 
     #region Initialization
@@ -135,7 +131,6 @@ public class PlayerCharacter : MonoBehaviour
         _horizontalPhysic = _groundPhysic;
         CalculateJumpTime();
         CalculateDashTime();
-
 
         //On enregistre le changement de physic � l'event qui detecte le changement d'�tat du sol
         OnPhysicStateChanged += ChangePhysic;
@@ -175,7 +170,6 @@ public class PlayerCharacter : MonoBehaviour
 
         _mesh.rotation = Quaternion.Euler(_currentMeshRotation);
     }
-
 
     #endregion Visual
 
@@ -222,11 +216,10 @@ public class PlayerCharacter : MonoBehaviour
         if (isTouchingGround && !IsGrounded)
         {
             IsGrounded = true;
+            StartCoroutine(CdDash());
             //On invoque l'event en passant true pour signifier que le joueur arrive au sol
             OnPhysicStateChanged.Invoke(PhysicState.Ground);
-            StartCoroutine(CdDash());
         }
-
         //Si le rigidbody ne touche pas le sol mais on a en m�moire qu'il le touche, on est sur la frame o� il quitte le sol
         else if (!isTouchingGround && IsGrounded)
         {
