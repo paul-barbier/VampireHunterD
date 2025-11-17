@@ -53,6 +53,14 @@ public class PlayerCharacter : MonoBehaviour
         public float DashBufferTime;
     }
 
+    [Serializable]
+    private struct DamagesValues
+    {
+        public float _damage;
+        public Vector3 _knockbackDirection;
+        public float _knockbackForce;
+    }
+
     #endregion DataStructure
 
     #region EditorVariables
@@ -63,6 +71,7 @@ public class PlayerCharacter : MonoBehaviour
     [SerializeField] private GravityValues _gravityParameters = new GravityValues();
     [SerializeField] private JumpValues _jumpParameters = new JumpValues();
     [SerializeField] private DashValues _dashParameters = new DashValues();
+    [SerializeField] private DamagesValues _knockBackValues = new DamagesValues();
     [SerializeField] private ContactFilter2D _groundContactFilter = new ContactFilter2D();
     [SerializeField] private ContactFilter2D _ceilingContactFilter = new ContactFilter2D();
 
@@ -116,6 +125,10 @@ public class PlayerCharacter : MonoBehaviour
     private float _dashTime = 0.0f;
     private float _startDashTime = 0.0f;
     private bool _bufferDash = false;
+
+    //KnockBack
+    [SerializeField] private Collider2D _enemyCollider;
+    private Vector3 targetKnockback = Vector3.zero;
 
     //Sprite
     [SerializeField] private Vector3 _currentMeshRotation = Vector3.zero;
@@ -526,4 +539,24 @@ public class PlayerCharacter : MonoBehaviour
     //        _canDash = true;
     //    }
     //}
+
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other == _enemyCollider)
+        {
+            CalculateKnockBackDirection();
+        }
+    }
+    private void CalculateKnockBackDirection()
+    {
+        _knockBackValues._knockbackDirection.x = (_enemyCollider.transform.position.x - transform.position.x);
+        targetKnockback = new Vector3((_knockBackValues._knockbackDirection.x), 0, 0).normalized;
+        Knockback();
+        Debug.Log(targetKnockback);
+    }
+
+    private void Knockback()
+    {
+        _rigidbody.AddForce(targetKnockback * _knockBackValues._knockbackForce, ForceMode2D.Impulse);
+    }
 }

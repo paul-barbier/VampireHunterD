@@ -180,6 +180,7 @@ GameObject:
   - component: {fileID: 3403784465517668524}
   - component: {fileID: 7089133477461453087}
   - component: {fileID: 1720546089308738315}
+  - component: {fileID: 1539380187053205686}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -295,43 +296,6 @@ MonoBehaviour:
         weightedMode: 0
         inWeight: 0
         outWeight: 0.044410408
-      - serializedVersion: 3
-        time: 0
-        value: 1
-        inSlope: 0
-        outSlope: 0
-        tangentMode: 0
-        weightedMode: 0
-        inWeight: 0.33333334
-        outWeight: 0.22205205
-      - serializedVersion: 3
-        time: 1
-        value: 1
-        inSlope: 0
-        outSlope: 0
-        tangentMode: 1
-        weightedMode: 0
-        inWeight: 0.33333334
-        outWeight: 0
-      m_PreInfinity: 2
-      m_PostInfinity: 2
-      m_RotationOrder: 4
-  _sprintPhysic:
-    MaxSpeed: 8
-    Acceleration: 100
-    MaxAcceleration: 100
-    AccelerationRemapFromVelocityDot:
-      serializedVersion: 2
-      m_Curve:
-      - serializedVersion: 3
-        time: -1
-        value: 2
-        inSlope: -1.2341592
-        outSlope: -1.2341592
-        tangentMode: 0
-        weightedMode: 0
-        inWeight: 0
-        outWeight: 0.06431854
       - serializedVersion: 3
         time: 0
         value: 1
@@ -525,6 +489,18 @@ MonoBehaviour:
   attackSpeed: 360
   lowAngle: -50
   highAngle: 50
+--- !u!114 &1539380187053205686
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5230953878154645213}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 67ba69b5229d81f43a2cf39729823180, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &9184626408861102161
 GameObject:
   m_ObjectHideFlags: 0
