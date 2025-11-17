@@ -42,42 +42,6 @@ public class PlayerTeleport : MonoBehaviour
         }
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.E))
-        {
-            if (currentTeleporter != null)
-            {
-                transform.position = currentTeleporter.GetComponent<Teleporter>().GetDestination().position;
-
-                if (layerPremier == -1 || layerSecond == -1)
-                {
-                    Debug.LogWarning("Layer 'PremierPlan' ou 'SecondPlan' introuvable dans les settings Unity.");
-                    return;
-                }
-
-                int currentLayer = gameObject.layer;
-                if (currentLayer == layerPremier)
-                {
-                    // Passe en SecondPlan : change le layer du joueur et ignore globalement la paire de layers
-                    gameObject.layer = layerSecond;
-                    SetIgnoreBetweenPlans(true);
-                }
-                else if (currentLayer == layerSecond)
-                {
-                    // Revenir en PremierPlan : change le layer du joueur et restaure les collisions entre les plans
-                    gameObject.layer = layerPremier;
-                    SetIgnoreBetweenPlans(false);
-                }
-                else
-                {
-                    Debug.Log("Le joueur n'est ni sur 'PremierPlan' ni sur 'SecondPlan' — aucun basculement effectué.");
-                }
-            }
-        }
-    }
-
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.CompareTag("Teleporter"))
@@ -104,5 +68,31 @@ public class PlayerTeleport : MonoBehaviour
             return;
 
         Physics2D.IgnoreLayerCollision(layerPremier, layerSecond, ignore);
+    }
+
+    public void UseTP()
+    {
+        if (currentTeleporter != null)
+        {
+            transform.position = currentTeleporter.GetComponent<Teleporter>().GetDestination().position;
+
+            int currentLayer = gameObject.layer;
+            if (currentLayer == layerPremier)
+            {
+                // Passe en SecondPlan : change le layer du joueur et ignore globalement la paire de layers
+                gameObject.layer = layerSecond;
+                SetIgnoreBetweenPlans(true);
+            }
+            else if (currentLayer == layerSecond)
+            {
+                // Revenir en PremierPlan : change le layer du joueur et restaure les collisions entre les plans
+                gameObject.layer = layerPremier;
+                SetIgnoreBetweenPlans(true);
+            }
+            else
+            {
+                Debug.Log("Le joueur n'est ni sur 'PremierPlan' ni sur 'SecondPlan' — aucun basculement effectué.");
+            }
+        }
     }
 }
