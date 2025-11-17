@@ -3,6 +3,9 @@ using UnityEngine;
 
 public class EnemyAttack : MonoBehaviour
 {
+    private PlayerCharacter characterScript;
+    [SerializeField] private Collider2D _characterCollider; 
+
     [Serializable]
     private struct AttackValues
     {
@@ -15,15 +18,21 @@ public class EnemyAttack : MonoBehaviour
 
     private void Update()
     {
-        Debug.Log(_playerValues._knockbackDirection);
     }
 
-    private void OnTriggerEnter(Collider other)
+    private void OnTriggerEnter2D(Collider2D other)
     {
-        // Pas fini
-        Debug.Log("PlayerEnter");
-        _playerValues._knockbackDirection.x = (transform.position.x - other.transform.position.x);
-        Vector3 targetKnockBack = other.transform.position += _playerValues._knockbackDirection;
-        other.transform.position = targetKnockBack;
+        if (other == _characterCollider)
+        {
+            CalculateKnockBackDirection();
+            Debug.Log(_playerValues._knockbackDirection);
+        }
+    }
+
+    private void CalculateKnockBackDirection()
+    {
+        _playerValues._knockbackDirection.x = (transform.position.x - _characterCollider.transform.position.x);
+        Vector3 targetKnockBack = _characterCollider.transform.position += _playerValues._knockbackDirection;
+        _characterCollider.transform.position = targetKnockBack;
     }
 }
