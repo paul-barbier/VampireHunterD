@@ -21,6 +21,8 @@ public class MouvementScript : MonoBehaviour
     private float _reachThreshold = 0.5f;
     private bool _isWaiting = false;
 
+    [SerializeField] private bool _isMoving = false;
+
     private void Start()
     {
         _pointsMovement._targetPoints = 0;
@@ -28,21 +30,24 @@ public class MouvementScript : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (_isWaiting) return; // ❗ Blocage du mouvement pendant l'attente
-
-        Transform target = _pointsMovement._patrolPoints[_pointsMovement._targetPoints];
-
-
-        // Si on est suffisamment proche du point
-        if (Vector3.Distance(transform.position, target.position) <= _reachThreshold)
+        if (_isMoving == true)
         {
-            StartCoroutine(WaitingTime());
+            if (_isWaiting) return; // ❗ Blocage du mouvement pendant l'attente
+
+            Transform target = _pointsMovement._patrolPoints[_pointsMovement._targetPoints];
+
+
+            // Si on est suffisamment proche du point
+            if (Vector3.Distance(transform.position, target.position) <= _reachThreshold)
+            {
+                StartCoroutine(WaitingTime());
+            }
+
+            // Avancer vers la cible
+            transform.position = Vector3.MoveTowards(transform.position, target.position, _pointsMovement._speed * Time.fixedDeltaTime);
+
+            RotateMesh();
         }
-
-        // Avancer vers la cible
-        transform.position = Vector3.MoveTowards(transform.position, target.position, _pointsMovement._speed * Time.fixedDeltaTime);
-
-        RotateMesh();
     }
 
     void IncreaseTargetInt()

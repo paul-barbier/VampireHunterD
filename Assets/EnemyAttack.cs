@@ -17,6 +17,8 @@ public class EnemyAttack : MonoBehaviour
 
     [SerializeField] private AttackValues _playerValues = new AttackValues();
 
+    private Vector3 targetKnockback = Vector3.zero;
+
     private void Update()
     {
         
@@ -32,9 +34,9 @@ public class EnemyAttack : MonoBehaviour
 
     private void CalculateKnockBackDirection()
     {
-        _playerValues._knockbackDirection.x = (transform.position.x + _characterCollider.transform.position.x);
-        Vector3 targetKnockBack = (_characterCollider.transform.position + _playerValues._knockbackDirection).normalized;
-        _characterRigidbody.AddForce(targetKnockBack * _playerValues._knockbackForce, ForceMode2D.Impulse);
-        Debug.Log(targetKnockBack.x);
+        _playerValues._knockbackDirection.x = (_characterCollider.transform.position.x - transform.position.x);
+        targetKnockback = new Vector3((_playerValues._knockbackDirection.x), 0, 0).normalized;
+        _characterRigidbody.AddForce(targetKnockback * _playerValues._knockbackForce, ForceMode2D.Impulse);
+        Debug.Log(targetKnockback);
     }
 }
