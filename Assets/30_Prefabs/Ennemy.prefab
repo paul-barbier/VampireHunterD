@@ -126,7 +126,6 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 717323127676457389}
-  - {fileID: 1001367200507576894}
   m_Father: {fileID: 8787763197830081006}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7876728317800266028
@@ -160,7 +159,8 @@ Transform:
   m_LocalPosition: {x: 0.31, y: 2.13, z: 0}
   m_LocalScale: {x: 0.06679811, y: 0.07229002, z: 0.026114449}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 1001367200507576894}
   m_Father: {fileID: 4793613499639945837}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &1556619748606121263
@@ -292,11 +292,11 @@ Transform:
   m_GameObject: {fileID: 8810607547684924949}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.45999998, y: 2.13, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: -11.527271, y: 0, z: 0}
+  m_LocalScale: {x: 14.970483, y: 13.833168, z: 38.292976}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 4793613499639945837}
+  m_Father: {fileID: 717323127676457389}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!61 &427589228858658445
 BoxCollider2D:
@@ -357,7 +357,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _characterCollider: {fileID: 0}
+  _characterRigidbody: {fileID: 0}
   _playerValues:
     _damage: 0
     _knockbackDirection: {x: 0, y: 0, z: 0}
-    _knockbackForce: 10
+    _knockbackForce: 0.2
