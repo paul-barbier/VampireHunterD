@@ -25,14 +25,14 @@ public class EnemyAttack : MonoBehaviour
         if (other == _characterCollider)
         {
             CalculateKnockBackDirection();
-            Debug.Log(_playerValues._knockbackDirection);
         }
     }
 
     private void CalculateKnockBackDirection()
     {
         _playerValues._knockbackDirection.x = (transform.position.x - _characterCollider.transform.position.x);
-        Vector3 targetKnockBack = _characterCollider.transform.position += _playerValues._knockbackDirection;
+        Vector3 targetKnockBack = (_characterCollider.transform.position += _playerValues._knockbackDirection).normalized;
         _characterCollider.transform.position = targetKnockBack;
+        Debug.Log(targetKnockBack.x);
     }
 }
