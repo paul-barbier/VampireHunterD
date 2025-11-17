@@ -441,14 +441,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 9093589545350442184, guid: d47cf2ba69215df4d94f3774b35d245c, type: 3}
-      propertyPath: _characterCollider
-      value: 
-      objectReference: {fileID: 2078487329}
-    - target: {fileID: 9093589545350442184, guid: d47cf2ba69215df4d94f3774b35d245c, type: 3}
-      propertyPath: _characterRigidbody
-      value: 
-      objectReference: {fileID: 2078487333}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -501,6 +493,14 @@ PrefabInstance:
     - target: {fileID: 280440432991570405, guid: a38c065f7f2b48d42b8647a546721097, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3403784465517668524, guid: a38c065f7f2b48d42b8647a546721097, type: 3}
+      propertyPath: _enemyCollider
+      value: 
+      objectReference: {fileID: 2010810284}
+    - target: {fileID: 3403784465517668524, guid: a38c065f7f2b48d42b8647a546721097, type: 3}
+      propertyPath: _knockBackValues._knockbackForce
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 5230953878154645213, guid: a38c065f7f2b48d42b8647a546721097, type: 3}
       propertyPath: m_Name
@@ -636,15 +636,10 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
---- !u!70 &2078487329 stripped
-CapsuleCollider2D:
-  m_CorrespondingSourceObject: {fileID: 1432363591201203488, guid: a38c065f7f2b48d42b8647a546721097, type: 3}
-  m_PrefabInstance: {fileID: 1612333589}
-  m_PrefabAsset: {fileID: 0}
---- !u!50 &2078487333 stripped
-Rigidbody2D:
-  m_CorrespondingSourceObject: {fileID: 948011244277554858, guid: a38c065f7f2b48d42b8647a546721097, type: 3}
-  m_PrefabInstance: {fileID: 1612333589}
+--- !u!61 &2010810284 stripped
+BoxCollider2D:
+  m_CorrespondingSourceObject: {fileID: 427589228858658445, guid: d47cf2ba69215df4d94f3774b35d245c, type: 3}
+  m_PrefabInstance: {fileID: 1574962547}
   m_PrefabAsset: {fileID: 0}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
