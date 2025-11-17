@@ -8,9 +8,6 @@ using UnityEngine.InputSystem;
 public class PlayerCharacter : MonoBehaviour
 {
     #region DataStructure
-
-    [SerializeField] private SpriteRenderer hunterD;
-
     public enum PhysicState
     {
         Ground,
@@ -123,6 +120,13 @@ public class PlayerCharacter : MonoBehaviour
     private float _startDashTime = 0.0f;
     private bool _bufferDash = false;
 
+    //Sprite
+    [SerializeField] private Vector3 _currentMeshRotation = Vector3.zero;
+    [SerializeField] private float rotationSpeed = 360f;
+
+    //Attack
+
+
     #endregion Variables
 
     #region Initialization
@@ -141,8 +145,6 @@ public class PlayerCharacter : MonoBehaviour
         OnPhysicStateChanged += CancelJump;
         OnPhysicStateChanged += TryJumpBuffer;
         OnPhysicStateChanged += TryDashBuffer;
-
-        hunterD.flipX = false;
     }
 
 #if UNITY_EDITOR
@@ -169,15 +171,13 @@ public class PlayerCharacter : MonoBehaviour
 
     private void RotateMesh()
     {
-        if (_movementInput == 1)
-        {
-            hunterD.flipX = false;
-        }
-        else if (_movementInput == -1)
-        {
-            hunterD.flipX = true;
-        }
+        float targetRotation = _movementInput == 1 ? 0f : _movementInput == -1 ? 180f : _currentMeshRotation.y;
+
+        _currentMeshRotation.y = Mathf.MoveTowards( _currentMeshRotation.y, targetRotation, rotationSpeed * Time.deltaTime);
+
+        _mesh.rotation = Quaternion.Euler(_currentMeshRotation);
     }
+
 
     #endregion Visual
 
@@ -382,7 +382,7 @@ public class PlayerCharacter : MonoBehaviour
 
         _currentJumpForce.y = _jumpParameters.ImpulseForce;
         _rigidbody.linearVelocity = new Vector2(_rigidbody.linearVelocity.x, _currentJumpForce.y);
-        _currentHorizontalVelocity.y = 0.0f; 
+        _currentHorizontalVelocity.y = 0.0f;
         _isJumping = true;
         _isInCoyoteTime = false;
         _startJumpTime = _airTime;
@@ -477,7 +477,7 @@ public class PlayerCharacter : MonoBehaviour
             Invoke(nameof(StopDashBuffer), _dashParameters.DashBufferTime);
             return;
         }
-        else if(_canDash)
+        else if (_canDash)
         {
             _currentJumpForce = Vector2.zero;
             _currentDashForce = _dashMovementInput.normalized * _dashParameters.DashImpulseForce;
@@ -487,7 +487,7 @@ public class PlayerCharacter : MonoBehaviour
             _isInCoyoteTime = false;
             _startDashTime = _dashAirTime;
         }
-        
+
     }
 
     public void Dash()

@@ -7,14 +7,16 @@ public class PlayerInputsManager : MonoBehaviour
 {
     private PlayerInputs _inputs = null;
     private PlayerCharacter _character = null;
+    private Attack _attack = null;
 
     private void Awake()
     {
         _character = GetComponent<PlayerCharacter>();
+        _attack = GetComponent<Attack>();
 
         _inputs = new PlayerInputs();
         _inputs.Actions.Jump.started += _ => _character.StartJump();
-        _inputs.Actions.Attack.started += _ => _character.Attack();
+        _inputs.Actions.Attack.started += _ => _attack.AttackZone();
         _inputs.Actions.Dash.started += _ => _character.StartDash();
         _inputs.Enable();
     }
