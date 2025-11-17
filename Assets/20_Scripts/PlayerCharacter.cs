@@ -59,7 +59,6 @@ public class PlayerCharacter : MonoBehaviour
 
     [Header("Gameplay")]
     [SerializeField] private MovementValues _groundPhysic = new MovementValues();
-    [SerializeField] private MovementValues _sprintPhysic = new MovementValues();
     [SerializeField] private MovementValues _airPhysic = new MovementValues();
     [SerializeField] private GravityValues _gravityParameters = new GravityValues();
     [SerializeField] private JumpValues _jumpParameters = new JumpValues();
@@ -89,7 +88,6 @@ public class PlayerCharacter : MonoBehaviour
 
     //Gravity
     private float _currentGravity = 0.0f;
-    private bool _isGravityReversed = false;
 
     //Ground
     public bool IsGrounded { get; private set; } = true;
@@ -173,7 +171,7 @@ public class PlayerCharacter : MonoBehaviour
     {
         float targetRotation = _movementInput == 1 ? 0f : _movementInput == -1 ? 180f : _currentMeshRotation.y;
 
-        _currentMeshRotation.y = Mathf.MoveTowards( _currentMeshRotation.y, targetRotation, rotationSpeed * Time.deltaTime);
+        _currentMeshRotation.y = Mathf.MoveTowards(_currentMeshRotation.y, targetRotation, rotationSpeed * Time.deltaTime);
 
         _mesh.rotation = Quaternion.Euler(_currentMeshRotation);
     }
@@ -226,9 +224,6 @@ public class PlayerCharacter : MonoBehaviour
             IsGrounded = true;
             //On invoque l'event en passant true pour signifier que le joueur arrive au sol
             OnPhysicStateChanged.Invoke(PhysicState.Ground);
-        }
-        if (isTouchingGround)
-        {
             StartCoroutine(CdDash());
         }
 
@@ -260,10 +255,8 @@ public class PlayerCharacter : MonoBehaviour
     private void ChangePhysic(PhysicState groundState)
     {
         //On change la physique en fonction de si le joueur est au sol ou non
-        if (groundState == PhysicState.Ground && !_isSprinting)
+        if (groundState == PhysicState.Ground)
             _horizontalPhysic = _groundPhysic;
-        else if (groundState == PhysicState.Ground && _isSprinting)
-            _horizontalPhysic = _sprintPhysic;
         else if (groundState == PhysicState.Air)
             _horizontalPhysic = _airPhysic;
     }
@@ -296,7 +289,7 @@ public class PlayerCharacter : MonoBehaviour
         if (_currentHorizontalVelocity.y == 0.0f)
             velocityDelta.y = 0.0f;
 
-        //On clamp le delta de v�locit� avec l'acceleration maximum en n�gatif et positif pour �viter des bugs dans la physic
+        //On clamp le delta de velocite avec l'acceleration maximum en negatif et positif pour eviter des bugs dans la physic
         velocityDelta = Vector2.ClampMagnitude(velocityDelta, _horizontalPhysic.MaxAcceleration);
 
         //On a ajoute le delta de v�locit� � la force � donn� ce tour de boucle au rigidbody
@@ -311,12 +304,12 @@ public class PlayerCharacter : MonoBehaviour
 
         //Fix : Filtrer les points de contacts avec le sol uniquement
         ContactPoint2D[] contactPointArray = new ContactPoint2D[1];
-        ContactFilter2D filter = _isGravityReversed ? _ceilingContactFilter : _groundContactFilter;
+        ContactFilter2D filter = _groundContactFilter;
         _rigidbody.GetContacts(filter, contactPointArray);
         Vector2 normal = contactPointArray.Length > 0 ? contactPointArray[0].normal : Vector2.zero;
 
         //Si on est en l'air ou sur un sol plat, on revoit la force normalement
-        if (normal == Vector2.zero || (normal == Vector2.up && !_isGravityReversed) || (normal == Vector2.down && _isGravityReversed) || input == 0.0f)
+        if (normal == Vector2.zero || (normal == Vector2.up) || (normal == Vector2.down) || input == 0.0f)
             return new Vector2(input * _horizontalPhysic.MaxSpeed, 0.0f);
 
         Vector3 force = Vector3.zero;
@@ -343,15 +336,12 @@ public class PlayerCharacter : MonoBehaviour
         float coyoteTimeFactor = _isInCoyoteTime ? _gravityParameters.GravityRemapFromCoyoteTime.Evaluate(coyoteTimeRatio) : 1.0f;
         float acceleration = _gravityParameters.Acceleration * coyoteTimeFactor * Time.fixedDeltaTime;
 
-        float maxGravityForce = _isGravityReversed ? -_gravityParameters.MaxForce : _gravityParameters.MaxForce;
+        float maxGravityForce = _gravityParameters.MaxForce;
         _currentGravity = Mathf.MoveTowards(_currentGravity, maxGravityForce, acceleration);
 
         float velocityDelta = _currentGravity - _rigidbody.linearVelocity.y;
 
-        if (_isGravityReversed)
-            velocityDelta = Mathf.Clamp(velocityDelta, 0.0f, _gravityParameters.MaxAcceleration);
-        else
-            velocityDelta = Mathf.Clamp(velocityDelta, -_gravityParameters.MaxAcceleration, 0.0f);
+        velocityDelta = Mathf.Clamp(velocityDelta, -_gravityParameters.MaxAcceleration, 0.0f);
 
         _forceToAdd.y += velocityDelta;
     }
@@ -463,12 +453,6 @@ public class PlayerCharacter : MonoBehaviour
     }
 
     #endregion Jump
-
-    public void Attack()
-    {
-
-    }
-
     public void GetDashInput(Vector2 Dashinput)
     {
         _dashMovementInput = Dashinput;
@@ -492,7 +476,6 @@ public class PlayerCharacter : MonoBehaviour
             _isInCoyoteTime = false;
             _startDashTime = _dashAirTime;
         }
-
     }
 
     public void Dash()
@@ -542,4 +525,12 @@ public class PlayerCharacter : MonoBehaviour
         yield return new WaitForSeconds(1.0f);
         _canDash = true;
     }
+
+    //private void OnTriggerEnter2D(Collider2D other)
+    //{
+    //    if (other.GetComponent<MouvementScript>())
+    //    {
+    //        _canDash = true;
+    //    }
+    //}
 }
