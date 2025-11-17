@@ -423,6 +423,11 @@ public class PlayerCharacter : MonoBehaviour
             _isJumping = false;
             _currentJumpForce = Vector2.zero;
         }
+        if (jumpTimeRatio <= 1.0f && _isDashing)
+        {
+            _isJumping = false;
+            _currentJumpForce = _currentDashForce;
+        }
     }
 
     private Vector2 GetBounceForce(Vector2 initialForce, Vector2 normal, float bouciness, ref bool hasBounce)
