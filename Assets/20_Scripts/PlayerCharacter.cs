@@ -84,6 +84,7 @@ public class PlayerCharacter : MonoBehaviour
 
     //Components
     private Rigidbody2D _rigidbody = null;
+    [SerializeField] private Animator _DAnimation;
 
     //Force
     private Vector2 _forceToAdd = Vector2.zero;
@@ -204,6 +205,7 @@ public class PlayerCharacter : MonoBehaviour
         JumpForce();
         Dash();
 
+
         //On ajoute la force au rigidbody
         _rigidbody.linearVelocity += _forceToAdd;
     }
@@ -300,6 +302,16 @@ public class PlayerCharacter : MonoBehaviour
 
         //On a ajoute le delta de v�locit� � la force � donn� ce tour de boucle au rigidbody
         _forceToAdd += velocityDelta;
+
+        if(_movementInput != 0)
+        {
+            _DAnimation.SetBool("IsRunning", true);
+        }
+        else
+        {
+            _DAnimation.SetBool("IsRunning", false);
+        }
+
     }
 
     private Vector2 SnapToGround(float input)
