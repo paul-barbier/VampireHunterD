@@ -7,6 +7,8 @@ using UnityEngine.InputSystem;
 [RequireComponent(typeof(Rigidbody2D))]
 public class PlayerCharacter : MonoBehaviour
 {
+    [SerializeField] private Health _health;
+
     #region DataStructure
     public enum PhysicState
     {
@@ -54,9 +56,8 @@ public class PlayerCharacter : MonoBehaviour
     }
 
     [Serializable]
-    private struct DamagesValues
+    private struct KnockBackValues
     {
-        public float _damage;
         public Vector3 _knockbackDirection;
         public float _knockbackForce;
     }
@@ -71,7 +72,7 @@ public class PlayerCharacter : MonoBehaviour
     [SerializeField] private GravityValues _gravityParameters = new GravityValues();
     [SerializeField] private JumpValues _jumpParameters = new JumpValues();
     [SerializeField] private DashValues _dashParameters = new DashValues();
-    [SerializeField] private DamagesValues _knockBackValues = new DamagesValues();
+    [SerializeField] private KnockBackValues _knockbackValues = new KnockBackValues();
     [SerializeField] private ContactFilter2D _groundContactFilter = new ContactFilter2D();
     [SerializeField] private ContactFilter2D _ceilingContactFilter = new ContactFilter2D();
 
@@ -130,6 +131,9 @@ public class PlayerCharacter : MonoBehaviour
     //KnockBack
     [SerializeField] private Collider2D _enemyCollider;
     private Vector3 targetKnockback = Vector3.zero;
+
+    //Checkpoint
+    public CheckPoints checkpoint;
 
     //Sprite
     [SerializeField] private Vector3 _currentMeshRotation = Vector3.zero;
@@ -557,18 +561,39 @@ public class PlayerCharacter : MonoBehaviour
         if (other == _enemyCollider)
         {
             CalculateKnockBackDirection();
+            CalculateHealth();
         }
     }
     private void CalculateKnockBackDirection()
     {
-        _knockBackValues._knockbackDirection.x = (_enemyCollider.transform.position.x - transform.position.x);
-        targetKnockback = new Vector3((_knockBackValues._knockbackDirection.x), 0, 0).normalized;
+        _knockbackValues._knockbackDirection.x = (_enemyCollider.transform.position.x - transform.position.x);
+        targetKnockback = new Vector3((_knockbackValues._knockbackDirection.x), 0, 0).normalized;
         Knockback();
         Debug.Log(targetKnockback);
     }
 
     private void Knockback()
     {
-        _rigidbody.AddForce(targetKnockback * _knockBackValues._knockbackForce, ForceMode2D.Impulse);
+        _rigidbody.AddForce(targetKnockback * _knockbackValues._knockbackForce, ForceMode2D.Impulse);
+    }
+
+    public void Die()
+    {
+        if (checkpoint)
+        {
+            transform.position = checkpoint.transform.position;
+            _rigidbody.linearVelocity = Vector3.zero;
+            _health._currentHealth = _health._maxHealth;
+        }
+    }
+
+    private void CalculateHealth()
+    {
+        Debug.Log("Vie retirée");
+        _health.TakeDamage();
+        if (_health._currentHealth <= 0)
+        {
+            Die();
+        }
     }
 }
