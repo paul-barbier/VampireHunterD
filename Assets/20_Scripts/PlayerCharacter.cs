@@ -548,29 +548,15 @@ public class PlayerCharacter : MonoBehaviour
         _canDash = true;
     }
 
-    //private void OnTriggerEnter2D(Collider2D other)
-    //{
-    //    if (other.GetComponent<MouvementScript>())
-    //    {
-    //        _canDash = true;
-    //    }
-    //}
-
-    private void OnTriggerEnter2D(Collider2D other)
+    private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (other == _enemyCollider)
+        if (collision.GetComponent<MouvementScript>())
         {
-            CalculateKnockBackDirection();
+            //CalculateKnockBackDirection();
             CalculateHealth();
         }
     }
-    private void CalculateKnockBackDirection()
-    {
-        _knockbackValues._knockbackDirection.x = (_enemyCollider.transform.position.x - transform.position.x);
-        targetKnockback = new Vector3((_knockbackValues._knockbackDirection.x), 0, 0).normalized;
-        Knockback();
-        Debug.Log(targetKnockback);
-    }
+    //
 
     private void Knockback()
     {
