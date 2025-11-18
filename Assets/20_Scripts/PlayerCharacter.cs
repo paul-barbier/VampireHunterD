@@ -7,6 +7,8 @@ using UnityEngine.InputSystem;
 [RequireComponent(typeof(Rigidbody2D))]
 public class PlayerCharacter : MonoBehaviour
 {
+    [SerializeField] private Health _health;
+
     #region DataStructure
     public enum PhysicState
     {
@@ -53,17 +55,24 @@ public class PlayerCharacter : MonoBehaviour
         public float DashBufferTime;
     }
 
+    [Serializable]
+    private struct KnockBackValues
+    {
+        public Vector3 _knockbackDirection;
+        public float _knockbackForce;
+    }
+
     #endregion DataStructure
 
     #region EditorVariables
 
     [Header("Gameplay")]
     [SerializeField] private MovementValues _groundPhysic = new MovementValues();
-    [SerializeField] private MovementValues _sprintPhysic = new MovementValues();
     [SerializeField] private MovementValues _airPhysic = new MovementValues();
     [SerializeField] private GravityValues _gravityParameters = new GravityValues();
     [SerializeField] private JumpValues _jumpParameters = new JumpValues();
     [SerializeField] private DashValues _dashParameters = new DashValues();
+    [SerializeField] private KnockBackValues _knockbackValues = new KnockBackValues();
     [SerializeField] private ContactFilter2D _groundContactFilter = new ContactFilter2D();
     [SerializeField] private ContactFilter2D _ceilingContactFilter = new ContactFilter2D();
 
@@ -76,6 +85,7 @@ public class PlayerCharacter : MonoBehaviour
 
     //Components
     private Rigidbody2D _rigidbody = null;
+    [SerializeField] private Animator _DAnimation;
 
     //Force
     private Vector2 _forceToAdd = Vector2.zero;
@@ -85,11 +95,9 @@ public class PlayerCharacter : MonoBehaviour
     private Vector2 _currentHorizontalVelocity = Vector2.zero;
     private float _movementInput = 0.0f;
     private MovementValues _horizontalPhysic = new MovementValues();
-    private bool _isSprinting = false;
 
     //Gravity
     private float _currentGravity = 0.0f;
-    private bool _isGravityReversed = false;
 
     //Ground
     public bool IsGrounded { get; private set; } = true;
@@ -120,12 +128,16 @@ public class PlayerCharacter : MonoBehaviour
     private float _startDashTime = 0.0f;
     private bool _bufferDash = false;
 
+    //KnockBack
+    [SerializeField] private Collider2D _enemyCollider;
+    private Vector3 targetKnockback = Vector3.zero;
+
+    //Checkpoint
+    public CheckPoints checkpoint;
+
     //Sprite
     [SerializeField] private Vector3 _currentMeshRotation = Vector3.zero;
     [SerializeField] private float rotationSpeed = 360f;
-
-    //Attack
-
 
     #endregion Variables
 
@@ -137,7 +149,6 @@ public class PlayerCharacter : MonoBehaviour
         _horizontalPhysic = _groundPhysic;
         CalculateJumpTime();
         CalculateDashTime();
-
 
         //On enregistre le changement de physic � l'event qui detecte le changement d'�tat du sol
         OnPhysicStateChanged += ChangePhysic;
@@ -173,11 +184,10 @@ public class PlayerCharacter : MonoBehaviour
     {
         float targetRotation = _movementInput == 1 ? 0f : _movementInput == -1 ? 180f : _currentMeshRotation.y;
 
-        _currentMeshRotation.y = Mathf.MoveTowards( _currentMeshRotation.y, targetRotation, rotationSpeed * Time.deltaTime);
+        _currentMeshRotation.y = Mathf.MoveTowards(_currentMeshRotation.y, targetRotation, rotationSpeed * Time.deltaTime);
 
         _mesh.rotation = Quaternion.Euler(_currentMeshRotation);
     }
-
 
     #endregion Visual
 
@@ -198,6 +208,7 @@ public class PlayerCharacter : MonoBehaviour
         Gravity();
         JumpForce();
         Dash();
+
 
         //On ajoute la force au rigidbody
         _rigidbody.linearVelocity += _forceToAdd;
@@ -224,14 +235,10 @@ public class PlayerCharacter : MonoBehaviour
         if (isTouchingGround && !IsGrounded)
         {
             IsGrounded = true;
+            StartCoroutine(CdDash());
             //On invoque l'event en passant true pour signifier que le joueur arrive au sol
             OnPhysicStateChanged.Invoke(PhysicState.Ground);
         }
-        if (isTouchingGround)
-        {
-            StartCoroutine(CdDash());
-        }
-
         //Si le rigidbody ne touche pas le sol mais on a en m�moire qu'il le touche, on est sur la frame o� il quitte le sol
         else if (!isTouchingGround && IsGrounded)
         {
@@ -260,10 +267,8 @@ public class PlayerCharacter : MonoBehaviour
     private void ChangePhysic(PhysicState groundState)
     {
         //On change la physique en fonction de si le joueur est au sol ou non
-        if (groundState == PhysicState.Ground && !_isSprinting)
+        if (groundState == PhysicState.Ground)
             _horizontalPhysic = _groundPhysic;
-        else if (groundState == PhysicState.Ground && _isSprinting)
-            _horizontalPhysic = _sprintPhysic;
         else if (groundState == PhysicState.Air)
             _horizontalPhysic = _airPhysic;
     }
@@ -296,11 +301,21 @@ public class PlayerCharacter : MonoBehaviour
         if (_currentHorizontalVelocity.y == 0.0f)
             velocityDelta.y = 0.0f;
 
-        //On clamp le delta de v�locit� avec l'acceleration maximum en n�gatif et positif pour �viter des bugs dans la physic
+        //On clamp le delta de velocite avec l'acceleration maximum en negatif et positif pour eviter des bugs dans la physic
         velocityDelta = Vector2.ClampMagnitude(velocityDelta, _horizontalPhysic.MaxAcceleration);
 
         //On a ajoute le delta de v�locit� � la force � donn� ce tour de boucle au rigidbody
         _forceToAdd += velocityDelta;
+
+        if(_movementInput != 0)
+        {
+            _DAnimation.SetBool("IsRunning", true);
+        }
+        else
+        {
+            _DAnimation.SetBool("IsRunning", false);
+        }
+
     }
 
     private Vector2 SnapToGround(float input)
@@ -311,12 +326,12 @@ public class PlayerCharacter : MonoBehaviour
 
         //Fix : Filtrer les points de contacts avec le sol uniquement
         ContactPoint2D[] contactPointArray = new ContactPoint2D[1];
-        ContactFilter2D filter = _isGravityReversed ? _ceilingContactFilter : _groundContactFilter;
+        ContactFilter2D filter = _groundContactFilter;
         _rigidbody.GetContacts(filter, contactPointArray);
         Vector2 normal = contactPointArray.Length > 0 ? contactPointArray[0].normal : Vector2.zero;
 
         //Si on est en l'air ou sur un sol plat, on revoit la force normalement
-        if (normal == Vector2.zero || (normal == Vector2.up && !_isGravityReversed) || (normal == Vector2.down && _isGravityReversed) || input == 0.0f)
+        if (normal == Vector2.zero || (normal == Vector2.up) || (normal == Vector2.down) || input == 0.0f)
             return new Vector2(input * _horizontalPhysic.MaxSpeed, 0.0f);
 
         Vector3 force = Vector3.zero;
@@ -343,15 +358,12 @@ public class PlayerCharacter : MonoBehaviour
         float coyoteTimeFactor = _isInCoyoteTime ? _gravityParameters.GravityRemapFromCoyoteTime.Evaluate(coyoteTimeRatio) : 1.0f;
         float acceleration = _gravityParameters.Acceleration * coyoteTimeFactor * Time.fixedDeltaTime;
 
-        float maxGravityForce = _isGravityReversed ? -_gravityParameters.MaxForce : _gravityParameters.MaxForce;
+        float maxGravityForce = _gravityParameters.MaxForce;
         _currentGravity = Mathf.MoveTowards(_currentGravity, maxGravityForce, acceleration);
 
         float velocityDelta = _currentGravity - _rigidbody.linearVelocity.y;
 
-        if (_isGravityReversed)
-            velocityDelta = Mathf.Clamp(velocityDelta, 0.0f, _gravityParameters.MaxAcceleration);
-        else
-            velocityDelta = Mathf.Clamp(velocityDelta, -_gravityParameters.MaxAcceleration, 0.0f);
+        velocityDelta = Mathf.Clamp(velocityDelta, -_gravityParameters.MaxAcceleration, 0.0f);
 
         _forceToAdd.y += velocityDelta;
     }
@@ -463,12 +475,6 @@ public class PlayerCharacter : MonoBehaviour
     }
 
     #endregion Jump
-
-    public void Attack()
-    {
-
-    }
-
     public void GetDashInput(Vector2 Dashinput)
     {
         _dashMovementInput = Dashinput;
@@ -492,7 +498,6 @@ public class PlayerCharacter : MonoBehaviour
             _isInCoyoteTime = false;
             _startDashTime = _dashAirTime;
         }
-
     }
 
     public void Dash()
@@ -541,5 +546,54 @@ public class PlayerCharacter : MonoBehaviour
     {
         yield return new WaitForSeconds(1.0f);
         _canDash = true;
+    }
+
+    //private void OnTriggerEnter2D(Collider2D other)
+    //{
+    //    if (other.GetComponent<MouvementScript>())
+    //    {
+    //        _canDash = true;
+    //    }
+    //}
+
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other == _enemyCollider)
+        {
+            CalculateKnockBackDirection();
+            CalculateHealth();
+        }
+    }
+    private void CalculateKnockBackDirection()
+    {
+        _knockbackValues._knockbackDirection.x = (_enemyCollider.transform.position.x - transform.position.x);
+        targetKnockback = new Vector3((_knockbackValues._knockbackDirection.x), 0, 0).normalized;
+        Knockback();
+        Debug.Log(targetKnockback);
+    }
+
+    private void Knockback()
+    {
+        _rigidbody.AddForce(targetKnockback * _knockbackValues._knockbackForce, ForceMode2D.Impulse);
+    }
+
+    public void Die()
+    {
+        if (checkpoint)
+        {
+            transform.position = checkpoint.transform.position;
+            _rigidbody.linearVelocity = Vector3.zero;
+            _health._currentHealth = _health._maxHealth;
+        }
+    }
+
+    private void CalculateHealth()
+    {
+        Debug.Log("Vie retirée");
+        _health.TakeDamage();
+        if (_health._currentHealth <= 0)
+        {
+            Die();
+        }
     }
 }

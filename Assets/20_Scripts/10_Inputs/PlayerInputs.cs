@@ -136,6 +136,15 @@ public partial class @PlayerInputs: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""Interact"",
+                    ""type"": ""Button"",
+                    ""id"": ""e7ef7d1a-0c1b-436a-b53d-991934642031"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -380,6 +389,28 @@ public partial class @PlayerInputs: IInputActionCollection2, IDisposable
                     ""action"": ""Dash Direction"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""88561b17-8c89-44cb-ba14-d00eb7dac98b"",
+                    ""path"": ""<Gamepad>/buttonNorth"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Interact"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""a92fbc24-6a4f-400a-952d-dc261cf24a32"",
+                    ""path"": ""<Keyboard>/f"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Interact"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -393,6 +424,7 @@ public partial class @PlayerInputs: IInputActionCollection2, IDisposable
         m_Actions_Attack = m_Actions.FindAction("Attack", throwIfNotFound: true);
         m_Actions_Dash = m_Actions.FindAction("Dash", throwIfNotFound: true);
         m_Actions_DashDirection = m_Actions.FindAction("Dash Direction", throwIfNotFound: true);
+        m_Actions_Interact = m_Actions.FindAction("Interact", throwIfNotFound: true);
     }
 
     ~@PlayerInputs()
@@ -478,6 +510,7 @@ public partial class @PlayerInputs: IInputActionCollection2, IDisposable
     private readonly InputAction m_Actions_Attack;
     private readonly InputAction m_Actions_Dash;
     private readonly InputAction m_Actions_DashDirection;
+    private readonly InputAction m_Actions_Interact;
     /// <summary>
     /// Provides access to input actions defined in input action map "Actions".
     /// </summary>
@@ -509,6 +542,10 @@ public partial class @PlayerInputs: IInputActionCollection2, IDisposable
         /// Provides access to the underlying input action "Actions/DashDirection".
         /// </summary>
         public InputAction @DashDirection => m_Wrapper.m_Actions_DashDirection;
+        /// <summary>
+        /// Provides access to the underlying input action "Actions/Interact".
+        /// </summary>
+        public InputAction @Interact => m_Wrapper.m_Actions_Interact;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -550,6 +587,9 @@ public partial class @PlayerInputs: IInputActionCollection2, IDisposable
             @DashDirection.started += instance.OnDashDirection;
             @DashDirection.performed += instance.OnDashDirection;
             @DashDirection.canceled += instance.OnDashDirection;
+            @Interact.started += instance.OnInteract;
+            @Interact.performed += instance.OnInteract;
+            @Interact.canceled += instance.OnInteract;
         }
 
         /// <summary>
@@ -576,6 +616,9 @@ public partial class @PlayerInputs: IInputActionCollection2, IDisposable
             @DashDirection.started -= instance.OnDashDirection;
             @DashDirection.performed -= instance.OnDashDirection;
             @DashDirection.canceled -= instance.OnDashDirection;
+            @Interact.started -= instance.OnInteract;
+            @Interact.performed -= instance.OnInteract;
+            @Interact.canceled -= instance.OnInteract;
         }
 
         /// <summary>
@@ -651,5 +694,12 @@ public partial class @PlayerInputs: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnDashDirection(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "Interact" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnInteract(InputAction.CallbackContext context);
     }
 }
