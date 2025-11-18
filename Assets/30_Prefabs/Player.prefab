@@ -1,36 +1,5 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &1050343393213281413
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 768640006799611482}
-  m_Layer: 6
-  m_Name: GameObject
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &768640006799611482
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1050343393213281413}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 43.415077, y: -6.0385475, z: 0}
-  m_LocalScale: {x: 10.411289, y: 10.411289, z: 10.411289}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 5167549000642208514}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &3634221963745358714
 GameObject:
   m_ObjectHideFlags: 0
@@ -141,7 +110,6 @@ Transform:
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 7888530792909689178}
-  - {fileID: 768640006799611482}
   m_Father: {fileID: 280440432991570405}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &5674561225617938969
@@ -373,9 +341,9 @@ MonoBehaviour:
       m_PostInfinity: 2
       m_RotationOrder: 4
   _airPhysic:
-    MaxSpeed: 10
-    Acceleration: 100
-    MaxAcceleration: 100
+    MaxSpeed: 8
+    Acceleration: 80
+    MaxAcceleration: 80
     AccelerationRemapFromVelocityDot:
       serializedVersion: 2
       m_Curve:
@@ -449,20 +417,20 @@ MonoBehaviour:
       m_RotationOrder: 4
   _jumpParameters:
     ImpulseForce: 18
-    Deceleration: 30
-    MaxDeceleration: 30
+    Deceleration: 22
+    MaxDeceleration: 22
     DecelerationFromAirTime:
       serializedVersion: 2
       m_Curve:
       - serializedVersion: 3
         time: 0
         value: 0
-        inSlope: 4.3383503
-        outSlope: 4.3383503
+        inSlope: 2.9312632
+        outSlope: 2.9312632
         tangentMode: 0
         weightedMode: 0
         inWeight: 0
-        outWeight: 0.06278714
+        outWeight: 0.040076334
       - serializedVersion: 3
         time: 1
         value: 2
