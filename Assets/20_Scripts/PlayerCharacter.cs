@@ -394,6 +394,7 @@ public class PlayerCharacter : MonoBehaviour
             Invoke(nameof(StopJumpBuffer), _jumpParameters.BufferTime);
             return;
         }
+        _DAnimation.SetBool("IsJumping", true);
 
         _currentJumpForce.y = _jumpParameters.ImpulseForce;
         _rigidbody.linearVelocity = new Vector2(_rigidbody.linearVelocity.x, _currentJumpForce.y);
@@ -436,11 +437,15 @@ public class PlayerCharacter : MonoBehaviour
         if (jumpTimeRatio >= 1.0f)
         {
             _isJumping = false;
+            _DAnimation.SetBool("IsJumping", false);
+
             _currentJumpForce = Vector2.zero;
         }
         if (jumpTimeRatio <= 1.0f && _isDashing)
         {
             _isJumping = false;
+            _DAnimation.SetBool("IsJumping", false);
+
             _currentJumpForce = _currentDashForce;
         }
     }
@@ -464,6 +469,8 @@ public class PlayerCharacter : MonoBehaviour
         {
             _isJumping = false;
             _currentJumpForce = Vector2.zero;
+            _DAnimation.SetBool("IsJumping", false);
+
         }
     }
 
@@ -555,13 +562,9 @@ public class PlayerCharacter : MonoBehaviour
     {
         if (collision.CompareTag("Ennemy"))
         {
-            // On ignore les collisions venant de l'épée
-            if (collision.gameObject.layer == LayerMask.NameToLayer("Sword"))
-                return;
             CalculateHealth();
         }
     }
-    //
 
     private void Knockback()
     {
