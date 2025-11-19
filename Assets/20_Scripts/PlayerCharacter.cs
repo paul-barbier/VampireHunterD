@@ -553,9 +553,11 @@ public class PlayerCharacter : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.GetComponent<MouvementScript>())
+        if (collision.CompareTag("Ennemy"))
         {
-            //CalculateKnockBackDirection();
+            // On ignore les collisions venant de l'épée
+            if (collision.gameObject.layer == LayerMask.NameToLayer("Sword"))
+                return;
             CalculateHealth();
         }
     }
