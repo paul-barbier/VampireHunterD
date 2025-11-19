@@ -93,7 +93,7 @@ public class PlayerCharacter : MonoBehaviour
 
     //Horizontal movement
     private Vector2 _currentHorizontalVelocity = Vector2.zero;
-    private float _movementInput = 0.0f;
+    public float _movementInput = 0.0f;
     private MovementValues _horizontalPhysic = new MovementValues();
 
     //Gravity
@@ -182,7 +182,7 @@ public class PlayerCharacter : MonoBehaviour
 
     private void RotateMesh()
     {
-        float targetRotation = _movementInput == 1 ? 0f : _movementInput == -1 ? 180f : _currentMeshRotation.y;
+        float targetRotation = _movementInput >= 0.01 ? 0f : _movementInput <= -0.01 ? 180f : _currentMeshRotation.y;
 
         _currentMeshRotation.y = Mathf.MoveTowards(_currentMeshRotation.y, targetRotation, rotationSpeed * Time.deltaTime);
 
@@ -307,15 +307,18 @@ public class PlayerCharacter : MonoBehaviour
         //On a ajoute le delta de v�locit� � la force � donn� ce tour de boucle au rigidbody
         _forceToAdd += velocityDelta;
 
-        if(_movementInput != 0)
+        if(_movementInput >= 0.01)
         {
             _DAnimation.SetBool("IsRunning", true);
         }
-        else
+        if (_movementInput <= -0.01)
+        {
+            _DAnimation.SetBool("IsRunning", true);
+        }
+        else if (_movementInput == 0)
         {
             _DAnimation.SetBool("IsRunning", false);
         }
-
     }
 
     private Vector2 SnapToGround(float input)
