@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6856741882092291799}
   - component: {fileID: 1030361369149033380}
+  - component: {fileID: 5015562107284513603}
   m_Layer: 6
   m_Name: AttackZone
   m_TagString: Untagged
@@ -78,6 +79,18 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 2.6326745, y: 0.76062274}
   m_EdgeRadius: 0
+--- !u!114 &5015562107284513603
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3634221963745358714}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 469ebf7b4ea393a418cdc7fa77101ba1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &4634869587052838177
 GameObject:
   m_ObjectHideFlags: 0
@@ -204,6 +217,8 @@ GameObject:
   - component: {fileID: 7089133477461453087}
   - component: {fileID: 1720546089308738315}
   - component: {fileID: 1539380187053205686}
+  - component: {fileID: 6871197366903174149}
+  - component: {fileID: 7822740381902637360}
   m_Layer: 6
   m_Name: Player
   m_TagString: Player
@@ -288,8 +303,8 @@ CapsuleCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0.017148733, y: 0.45498538}
-  m_Size: {x: 1.0483532, y: 3.6372123}
+  m_Offset: {x: -0.26071793, y: 0.30933607}
+  m_Size: {x: 1.212725, y: 3.3459136}
   m_Direction: 0
 --- !u!114 &3403784465517668524
 MonoBehaviour:
@@ -303,7 +318,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bcc241f5d0532cf4a8760c0ed4125cc0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _health: {fileID: 0}
+  _health: {fileID: 7822740381902637360}
   _groundPhysic:
     MaxSpeed: 10.5
     Acceleration: 100
@@ -445,15 +460,18 @@ MonoBehaviour:
       m_PostInfinity: 2
       m_RotationOrder: 4
     Height: 7
+    Length: 15
     BufferTime: 0.2
     Bounciness: 1
+    InitValue: 19.6
+    GravityValue: -27.44
   _dashParameters:
     DashImpulseForce: 10
-    DashHeight: 4
+    DashHeight: 3.5
     DashBufferTime: 0.2
   _knockbackValues:
-    _knockbackDirection: {x: 0, y: 0, z: 0}
-    _knockbackForce: 0
+    _knockbackDirection: {x: 0, y: 15, z: 0}
+    _knockbackForce: 20
   _groundContactFilter:
     useTriggers: 0
     useLayerMask: 0
@@ -463,7 +481,7 @@ MonoBehaviour:
     useOutsideNormalAngle: 0
     layerMask:
       serializedVersion: 2
-      m_Bits: 0
+      m_Bits: 1
     minDepth: 0
     maxDepth: 0
     minNormalAngle: 45
@@ -477,13 +495,14 @@ MonoBehaviour:
     useOutsideNormalAngle: 0
     layerMask:
       serializedVersion: 2
-      m_Bits: 0
+      m_Bits: 1
     minDepth: 0
     maxDepth: 0
     minNormalAngle: 45
     maxNormalAngle: 135
   _mesh: {fileID: 5167549000642208514}
   _DAnimation: {fileID: 317578980722878797}
+  _movementInput: 0
   _isJumping: 0
   _canDash: 1
   _isDashing: 0
@@ -531,6 +550,37 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 67ba69b5229d81f43a2cf39729823180, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &6871197366903174149
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5230953878154645213}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f3621ed0c4d29ff49aef6d5f3e63f541, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _camera: {fileID: 0}
+  _playerCam: {fileID: 3403784465517668524}
+  RunTimer: 0
+--- !u!114 &7822740381902637360
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5230953878154645213}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9d9df8fc88e1f1d4cbd253807d8fa1d8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _maxHealth: 100
+  _currentHealth: 0
+  _damages: 25
+  HpAnime: {fileID: 0}
 --- !u!1 &9184626408861102161
 GameObject:
   m_ObjectHideFlags: 0
@@ -556,7 +606,7 @@ Transform:
   m_GameObject: {fileID: 9184626408861102161}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0.42261827, w: 0.9063079}
-  m_LocalPosition: {x: 0.45, y: 0.54, z: 0}
+  m_LocalPosition: {x: 0.24, y: 0.29, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
