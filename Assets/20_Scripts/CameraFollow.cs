@@ -1,72 +1,44 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Cinemachine;
 using UnityEngine;
-using System;
+using UnityEngine.UIElements;
 
 public class CameraFollow : MonoBehaviour
 {
-    [Serializable]
-    private struct FollowParameters
-    {
-        public float FollowSpeed;
-        public AnimationCurve SpeedFactorFromOffset;
-    }
-
-    [SerializeField] private Rigidbody2D _objectToFollow = null;
-
-    [SerializeField] private Vector2 _targetOffset = Vector2.zero;
-    [SerializeField] private FollowParameters _horizontalFollow = new FollowParameters();
-    [SerializeField] private FollowParameters _verticalFollow = new FollowParameters();
-
-    private Vector3 _newPosition = Vector3.zero;
-    private float _yOffset = 0.0f;
-    private PlayerCharacter _player = null;
+    [SerializeField] private CinemachineCamera _camera;
+    [SerializeField] private PlayerCharacter _playerCam = null;
+    [SerializeField] private float RunTimer;
 
     private void Awake()
     {
-        _yOffset = transform.position.y - _objectToFollow.transform.position.y;
-        _player = _objectToFollow.GetComponent<PlayerCharacter>();
+        _playerCam = GetComponent<PlayerCharacter>();
     }
 
-    private void FixedUpdate()
+    private void Update()
     {
-        _newPosition = transform.position;
+        RunTimer += Time.deltaTime;
 
-        HorizontalMovement();
-        VerticalMovement();
-
-        transform.position = _newPosition;
-    }
-
-    private void HorizontalMovement()
-    {
-        if (_objectToFollow.linearVelocity.x == 0.0f)
-            return;
-
-        if (_objectToFollow.linearVelocity.x > 0.0f)
+        var composer = _camera.GetComponent<CinemachinePositionComposer>();
+        if (_playerCam._movementInput == 1)
         {
-            float rightTargetOffset = _objectToFollow.transform.position.x + _targetOffset.y;
-            float distance = Mathf.Abs(rightTargetOffset - transform.position.x);
-            float speed = _horizontalFollow.FollowSpeed * _horizontalFollow.SpeedFactorFromOffset.Evaluate(distance) * Time.fixedDeltaTime;
-            _newPosition.x = Mathf.MoveTowards(_newPosition.x, rightTargetOffset, speed);
+            if (composer != null)
+            {
+                composer.TargetOffset = new Vector3(8.0f, 0.0f, 0.0f);
+            }
         }
-        else
+        else if (_playerCam._movementInput == -1)
         {
-            float leftTargetOffset = _objectToFollow.transform.position.x - _targetOffset.x;
-            float distance = Mathf.Abs(leftTargetOffset - transform.position.x);
-            float speed = _horizontalFollow.FollowSpeed * _horizontalFollow.SpeedFactorFromOffset.Evaluate(distance) * Time.fixedDeltaTime;
-            _newPosition.x = Mathf.MoveTowards(_newPosition.x, leftTargetOffset, speed);
+            if (composer != null)
+            {
+                composer.TargetOffset = new Vector3(-8.0f, 0.0f, 0.0f);
+            }
         }
-    }
+        else if (_playerCam._movementInput == 0)
+        {
+            RunTimer = 0.0f;
+        }
 
-    private void VerticalMovement()
-    {
-        if (_player == null || _player.IsGrounded)
-        {
-            float targetYPosition = _objectToFollow.transform.position.y + _yOffset;
-            float distance = Mathf.Abs(targetYPosition - transform.position.y);
-            float speed = _verticalFollow.FollowSpeed * _verticalFollow.SpeedFactorFromOffset.Evaluate(distance) * Time.fixedDeltaTime;
-            _newPosition.y = Mathf.MoveTowards(_newPosition.y, targetYPosition, speed);
-        }
     }
 }

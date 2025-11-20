@@ -156,7 +156,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 10
-  m_Sprite: {fileID: 6102199251913120776, guid: dd25f2f541b9d7b4eb48ca9438f1114a, type: 3}
+  m_Sprite: {fileID: -6683150791537027490, guid: 2fb717777558e44408448d7f8b8b07fb, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -303,6 +303,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bcc241f5d0532cf4a8760c0ed4125cc0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _health: {fileID: 0}
   _groundPhysic:
     MaxSpeed: 10.5
     Acceleration: 100
@@ -450,8 +451,7 @@ MonoBehaviour:
     DashImpulseForce: 10
     DashHeight: 4
     DashBufferTime: 0.2
-  _knockBackValues:
-    _damage: 0
+  _knockbackValues:
     _knockbackDirection: {x: 0, y: 0, z: 0}
     _knockbackForce: 0
   _groundContactFilter:
@@ -488,8 +488,9 @@ MonoBehaviour:
   _canDash: 1
   _isDashing: 0
   _enemyCollider: {fileID: 0}
+  checkpoint: {fileID: 0}
   _currentMeshRotation: {x: 0, y: 0, z: 0}
-  rotationSpeed: 6000
+  rotationSpeed: 8000
 --- !u!114 &7089133477461453087
 MonoBehaviour:
   m_ObjectHideFlags: 0

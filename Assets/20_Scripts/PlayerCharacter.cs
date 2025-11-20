@@ -93,7 +93,7 @@ public class PlayerCharacter : MonoBehaviour
 
     //Horizontal movement
     private Vector2 _currentHorizontalVelocity = Vector2.zero;
-    private float _movementInput = 0.0f;
+    public float _movementInput = 0.0f;
     private MovementValues _horizontalPhysic = new MovementValues();
 
     //Gravity
@@ -182,7 +182,7 @@ public class PlayerCharacter : MonoBehaviour
 
     private void RotateMesh()
     {
-        float targetRotation = _movementInput == 1 ? 0f : _movementInput == -1 ? 180f : _currentMeshRotation.y;
+        float targetRotation = _movementInput >= 0.01 ? 0f : _movementInput <= -0.01 ? 180f : _currentMeshRotation.y;
 
         _currentMeshRotation.y = Mathf.MoveTowards(_currentMeshRotation.y, targetRotation, rotationSpeed * Time.deltaTime);
 
@@ -307,15 +307,18 @@ public class PlayerCharacter : MonoBehaviour
         //On a ajoute le delta de v�locit� � la force � donn� ce tour de boucle au rigidbody
         _forceToAdd += velocityDelta;
 
-        if(_movementInput != 0)
+        if(_movementInput >= 0.01)
         {
             _DAnimation.SetBool("IsRunning", true);
         }
-        else
+        if (_movementInput <= -0.01)
+        {
+            _DAnimation.SetBool("IsRunning", true);
+        }
+        else if (_movementInput == 0)
         {
             _DAnimation.SetBool("IsRunning", false);
         }
-
     }
 
     private Vector2 SnapToGround(float input)
@@ -391,6 +394,7 @@ public class PlayerCharacter : MonoBehaviour
             Invoke(nameof(StopJumpBuffer), _jumpParameters.BufferTime);
             return;
         }
+        _DAnimation.SetBool("IsJumping", true);
 
         _currentJumpForce.y = _jumpParameters.ImpulseForce;
         _rigidbody.linearVelocity = new Vector2(_rigidbody.linearVelocity.x, _currentJumpForce.y);
@@ -433,11 +437,15 @@ public class PlayerCharacter : MonoBehaviour
         if (jumpTimeRatio >= 1.0f)
         {
             _isJumping = false;
+            _DAnimation.SetBool("IsJumping", false);
+
             _currentJumpForce = Vector2.zero;
         }
         if (jumpTimeRatio <= 1.0f && _isDashing)
         {
             _isJumping = false;
+            _DAnimation.SetBool("IsJumping", false);
+
             _currentJumpForce = _currentDashForce;
         }
     }
@@ -461,6 +469,8 @@ public class PlayerCharacter : MonoBehaviour
         {
             _isJumping = false;
             _currentJumpForce = Vector2.zero;
+            _DAnimation.SetBool("IsJumping", false);
+
         }
     }
 
@@ -548,28 +558,12 @@ public class PlayerCharacter : MonoBehaviour
         _canDash = true;
     }
 
-    //private void OnTriggerEnter2D(Collider2D other)
-    //{
-    //    if (other.GetComponent<MouvementScript>())
-    //    {
-    //        _canDash = true;
-    //    }
-    //}
-
-    private void OnTriggerEnter2D(Collider2D other)
+    private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (other == _enemyCollider)
+        if (collision.CompareTag("Ennemy"))
         {
-            CalculateKnockBackDirection();
             CalculateHealth();
         }
-    }
-    private void CalculateKnockBackDirection()
-    {
-        _knockbackValues._knockbackDirection.x = (_enemyCollider.transform.position.x - transform.position.x);
-        targetKnockback = new Vector3((_knockbackValues._knockbackDirection.x), 0, 0).normalized;
-        Knockback();
-        Debug.Log(targetKnockback);
     }
 
     private void Knockback()

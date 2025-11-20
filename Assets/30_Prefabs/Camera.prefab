@@ -26,8 +26,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 321379243702358425}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.39, y: 7.792621, z: -14.5}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 4.9570146, y: 6.230371, z: -14.5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -91,22 +91,22 @@ MonoBehaviour:
   CameraDistance: 14.5
   DeadZoneDepth: 0
   Composition:
-    ScreenPosition: {x: 0, y: 0}
+    ScreenPosition: {x: 0.00000020861626, y: 0.00000071525574}
     DeadZone:
       Enabled: 1
-      Size: {x: 0.23, y: 0.61}
+      Size: {x: 0.7, y: 0.6346131}
     HardLimits:
       Enabled: 1
-      Size: {x: 0.89, y: 1.12}
+      Size: {x: 0.84, y: 1.3}
       Offset: {x: 0, y: -0.58}
   CenterOnActivate: 0
-  TargetOffset: {x: 0, y: 0, z: 0}
-  Damping: {x: 1, y: 1, z: 0}
+  TargetOffset: {x: 6, y: 0, z: 0}
+  Damping: {x: 0.5, y: 1, z: 0}
   Lookahead:
     Enabled: 1
     Time: 1
     Smoothing: 6
-    IgnoreY: 0
+    IgnoreY: 1
 --- !u!1 &5946286106577519382
 GameObject:
   m_ObjectHideFlags: 0
@@ -169,8 +169,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7614178230349327506}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.39, y: 7.792621, z: -14.5}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 4.9570146, y: 6.230371, z: -14.5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -295,7 +295,7 @@ MonoBehaviour:
     DefaultMode: 2
   DefaultBlend:
     Style: 1
-    Time: 2
+    Time: 1
     CustomCurve:
       serializedVersion: 2
       m_Curve: []
