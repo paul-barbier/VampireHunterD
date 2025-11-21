@@ -23,6 +23,9 @@ public class MouvementScript : MonoBehaviour
 
     [SerializeField] private bool _isMoving = false;
 
+    [SerializeField] private Animator _MobAnimation;
+
+
     private void Start()
     {
         _pointsMovement._targetPoints = 0;
@@ -32,8 +35,9 @@ public class MouvementScript : MonoBehaviour
     {
         if (_isMoving == true)
         {
-            if (_isWaiting) return; // ❗ Blocage du mouvement pendant l'attente
+            if (_isWaiting) return; // Blocage du mouvement pendant l'attente
 
+            _MobAnimation.SetBool("IsWalking", true);
             Transform target = _pointsMovement._patrolPoints[_pointsMovement._targetPoints];
 
 
@@ -62,10 +66,11 @@ public class MouvementScript : MonoBehaviour
 
     IEnumerator WaitingTime()
     {
-        _isWaiting = true; // ❗ empêche le mouvement + empêche de relancer la coroutine
+        _MobAnimation.SetBool("IsWalking", false);
+        _isWaiting = true;
         yield return new WaitForSeconds(_pointsMovement._waitingTime);
         IncreaseTargetInt();
-        _isWaiting = false; // ❗ on repart
+        _isWaiting = false;
     }
 
     private void RotateMesh()

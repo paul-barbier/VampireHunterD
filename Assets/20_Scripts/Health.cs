@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class Health : MonoBehaviour
@@ -13,15 +14,15 @@ public class Health : MonoBehaviour
     private void Start()
     {
         _currentHealth = _maxHealth;
-        UpdateBar();
     }
 
     public void TakeDamage()
     {
-        _currentHealth -= _damages;
+
+        StartCoroutine(CdDmg());
     }
 
-    void UpdateBar()
+    public void UpdateBar()
     {
         float ratio = (float)_currentHealth / _maxHealth;
 
@@ -32,5 +33,12 @@ public class Health : MonoBehaviour
         else state = 3;
 
         HpAnime.SetInteger("HealthState", state);
+    }
+
+    IEnumerator CdDmg()
+    {
+        yield return new WaitForSeconds(1.0f);
+        _currentHealth -= _damages;
+        UpdateBar();
     }
 }
