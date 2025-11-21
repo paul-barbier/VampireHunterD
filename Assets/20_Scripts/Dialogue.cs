@@ -38,14 +38,14 @@ public class Dialogue : MonoBehaviour
 
     private void Update()
     {
-        SkipDialogue();
+
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.CompareTag("Player"))
         {
-            _playerMovementScript.enabled = false;
+            _playerMovementScript.MovementDisabled = true;
             _dialogueActivated = true;
             _dialogueCanva.SetActive(true);
             ShowStep();
@@ -66,7 +66,7 @@ public class Dialogue : MonoBehaviour
             _step++;
             if (_step >= _speaker.Length)
             {
-                _playerMovementScript.enabled = false;
+                _playerMovementScript.MovementDisabled = false;
                 _dialogueCanva.SetActive(false);
                 _step = 0;
                 _dialogueActivated = false;

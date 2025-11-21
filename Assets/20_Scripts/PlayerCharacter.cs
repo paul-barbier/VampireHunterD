@@ -216,6 +216,24 @@ public class PlayerCharacter : MonoBehaviour
     private void FixedUpdate()
     {
         DisableMovement();
+    }
+
+    private void LateUpdate()
+    {
+        if (_prePhysicPosition == _rigidbody.position && _forceToAdd != Vector2.zero)
+        {
+            _rigidbody.linearVelocity = new Vector2(0.0f, _rigidbody.linearVelocity.y);
+            _currentHorizontalVelocity.x = 0.0f;
+        }
+    }
+
+    #region PhysicState
+
+    public void DisableMovement()
+    {
+        if (MovementDisabled == true)
+            return;
+        else
         //On reset la force � ajouter cette boucle de fixed update
         _forceToAdd = Vector2.zero;
         _prePhysicPosition = _rigidbody.position;
@@ -236,23 +254,6 @@ public class PlayerCharacter : MonoBehaviour
 
         //On ajoute la force au rigidbody
         _rigidbody.linearVelocity += _forceToAdd;
-    }
-
-    private void LateUpdate()
-    {
-        if (_prePhysicPosition == _rigidbody.position && _forceToAdd != Vector2.zero)
-        {
-            _rigidbody.linearVelocity = new Vector2(0.0f, _rigidbody.linearVelocity.y);
-            _currentHorizontalVelocity.x = 0.0f;
-        }
-    }
-
-    #region PhysicState
-
-    public void DisableMovement()
-    {
-        if (MovementDisabled)
-            return;
     }
 
     private void GroundDetection()
