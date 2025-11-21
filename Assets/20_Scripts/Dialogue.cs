@@ -45,7 +45,7 @@ public class Dialogue : MonoBehaviour
     {
         if (collision.CompareTag("Player"))
         {
-            _playerMovementScript.MovementDisabled = true;
+            //_playerMovementScript.MovementDisabled = true;
             _dialogueActivated = true;
             _dialogueCanva.SetActive(true);
             ShowStep();
@@ -66,7 +66,7 @@ public class Dialogue : MonoBehaviour
             _step++;
             if (_step >= _speaker.Length)
             {
-                _playerMovementScript.MovementDisabled = false;
+                //_playerMovementScript.MovementDisabled = false;
                 _dialogueCanva.SetActive(false);
                 _step = 0;
                 _dialogueActivated = false;
