@@ -133,6 +133,7 @@ public class PlayerCharacter : MonoBehaviour
     private float _dashTime = 0.0f;
     private float _startDashTime = 0.0f;
     private bool _bufferDash = false;
+    [SerializeField] private bool _lockedDash = false;
 
     [SerializeField] private float enemyBounceForce = 15.0f;
 
@@ -146,6 +147,11 @@ public class PlayerCharacter : MonoBehaviour
     //Sprite
     [SerializeField] private Vector3 _currentMeshRotation = Vector3.zero;
     [SerializeField] private float rotationSpeed = 360f;
+
+    //Disable movement
+    [SerializeField] public bool MovementDisabled = false;
+
+
 
     #endregion Variables
 
@@ -209,6 +215,7 @@ public class PlayerCharacter : MonoBehaviour
 
     private void FixedUpdate()
     {
+        DisableMovement();
         //On reset la force � ajouter cette boucle de fixed update
         _forceToAdd = Vector2.zero;
         _prePhysicPosition = _rigidbody.position;
@@ -221,6 +228,7 @@ public class PlayerCharacter : MonoBehaviour
 
         //On effectue tous les calculs physiques
         Movement();
+
         Gravity();
         JumpForce();
         Dash();
@@ -240,6 +248,12 @@ public class PlayerCharacter : MonoBehaviour
     }
 
     #region PhysicState
+
+    public void DisableMovement()
+    {
+        if (MovementDisabled)
+            return;
+    }
 
     private void GroundDetection()
     {
@@ -366,7 +380,7 @@ public class PlayerCharacter : MonoBehaviour
 
     private void Gravity()
     {
-        if (IsGrounded || _isJumping || _isDashing)
+        if (IsGrounded || _isJumping || _isDashing || _lockedDash)
             return;
 
         float coyoteTimeRatio = Mathf.Clamp01(_airTime / _gravityParameters.CoyoteTime);
@@ -379,7 +393,7 @@ public class PlayerCharacter : MonoBehaviour
         float velocityDelta = _currentGravity - _rigidbody.linearVelocity.y;
 
         velocityDelta = Mathf.Clamp(velocityDelta, -_gravityParameters.MaxAcceleration, 0.0f);
-
+        _DAnimation.SetBool("IsFalling", true);
         _forceToAdd.y += velocityDelta;
     }
 
@@ -453,6 +467,7 @@ public class PlayerCharacter : MonoBehaviour
         {
             _isJumping = false;
             _DAnimation.SetBool("IsJumping", false);
+            _DAnimation.SetBool("IsFalling", true);
 
             _currentJumpForce = Vector2.zero;
         }
@@ -460,6 +475,7 @@ public class PlayerCharacter : MonoBehaviour
         {
             _isJumping = false;
             _DAnimation.SetBool("IsJumping", false);
+            _DAnimation.SetBool("IsFalling", true);
 
             _currentJumpForce = _currentDashForce;
         }
@@ -485,6 +501,7 @@ public class PlayerCharacter : MonoBehaviour
             _isJumping = false;
             _currentJumpForce = Vector2.zero;
             _DAnimation.SetBool("IsJumping", false);
+            _DAnimation.SetBool("IsFalling", false);
         }
     }
 
@@ -605,16 +622,17 @@ public class PlayerCharacter : MonoBehaviour
 
         // On place le joueur juste à côté de l’ennemi selon la direction du dash
         transform.position = enemy.ClosestPoint(transform.position);
+        _lockedDash = true;
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.CompareTag("Ennemy"))
+        if (collision.CompareTag("Ennemy") && _isDashing)
         {
             StopDashOnEnemy(collision);
             ResetGravity(PhysicState.Ground);
             CalculateHealth();
-            //Knockback();
+            Knockback();
         }
     }
 

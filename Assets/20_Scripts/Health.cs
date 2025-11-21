@@ -18,8 +18,8 @@ public class Health : MonoBehaviour
 
     public void TakeDamage()
     {
-
-        StartCoroutine(CdDmg());
+        _currentHealth -= _damages;
+        UpdateBar();
     }
 
     public void UpdateBar()
@@ -35,10 +35,9 @@ public class Health : MonoBehaviour
         HpAnime.SetInteger("HealthState", state);
     }
 
-    IEnumerator CdDmg()
+    public IEnumerator CdDmg()
     {
-        yield return new WaitForSeconds(1.0f);
-        _currentHealth -= _damages;
-        UpdateBar();
+
+        yield return new WaitForSeconds(5.0f);
     }
 }
