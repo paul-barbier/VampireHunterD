@@ -6,22 +6,12 @@ public class PlatformeOneWay : MonoBehaviour
 {
     private GameObject currentOnewayPlatform;
 
-    [SerializeField] private BoxCollider2D playerCollider;
+    [SerializeField] private CapsuleCollider2D playerCollider;
 
     // Update is called once per frame
-    void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.DownArrow))
-        {
-            if (currentOnewayPlatform != null)
-            {
-                StartCoroutine(DisableCollision());
-            }
-        }
+   
 
-    }
-
-    private void OnTriggerEnter2D(Collider2D collision)
+    private void OnCollisionEnter2D(UnityEngine.Collision2D collision)
     {
         if (collision.gameObject.CompareTag("OneWayPlatform"))
         {
@@ -29,7 +19,7 @@ public class PlatformeOneWay : MonoBehaviour
         }
     }
 
-    private void OnTriggerExit2D(Collider2D collision)
+    private void OnCollisionExit2D(UnityEngine.Collision2D collision)
     {
         if (collision.gameObject.CompareTag("OneWayPlatform"))
         {
@@ -45,8 +35,16 @@ public class PlatformeOneWay : MonoBehaviour
         BoxCollider2D platformCollider = currentOnewayPlatform.GetComponent<BoxCollider2D>();
 
         Physics2D.IgnoreCollision(playerCollider, platformCollider);
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(1.5f);
         Physics2D.IgnoreCollision(playerCollider, platformCollider, false);
+    }
+
+    public void DownOneWay()
+    {
+        if (currentOnewayPlatform != null)
+        {
+            StartCoroutine(DisableCollision());
+        }
     }
 }
 
