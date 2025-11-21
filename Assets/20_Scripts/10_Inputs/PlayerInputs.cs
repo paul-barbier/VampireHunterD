@@ -154,6 +154,15 @@ public partial class @PlayerInputs: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""SkipDialogue"",
+                    ""type"": ""Button"",
+                    ""id"": ""74c8037e-b0f4-4bc8-9225-cecc6ff90ff1"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -442,6 +451,28 @@ public partial class @PlayerInputs: IInputActionCollection2, IDisposable
                     ""action"": ""OneWayDown"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""1f6f7a47-56f8-4911-83c6-1c079a2748c7"",
+                    ""path"": ""<Keyboard>/space"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""SkipDialogue"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""c62627cf-4692-4467-9afb-722053bdcd6c"",
+                    ""path"": ""<Gamepad>/buttonSouth"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""SkipDialogue"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -457,6 +488,7 @@ public partial class @PlayerInputs: IInputActionCollection2, IDisposable
         m_Actions_DashDirection = m_Actions.FindAction("Dash Direction", throwIfNotFound: true);
         m_Actions_Interact = m_Actions.FindAction("Interact", throwIfNotFound: true);
         m_Actions_OneWayDown = m_Actions.FindAction("OneWayDown", throwIfNotFound: true);
+        m_Actions_SkipDialogue = m_Actions.FindAction("SkipDialogue", throwIfNotFound: true);
     }
 
     ~@PlayerInputs()
@@ -544,6 +576,7 @@ public partial class @PlayerInputs: IInputActionCollection2, IDisposable
     private readonly InputAction m_Actions_DashDirection;
     private readonly InputAction m_Actions_Interact;
     private readonly InputAction m_Actions_OneWayDown;
+    private readonly InputAction m_Actions_SkipDialogue;
     /// <summary>
     /// Provides access to input actions defined in input action map "Actions".
     /// </summary>
@@ -583,6 +616,10 @@ public partial class @PlayerInputs: IInputActionCollection2, IDisposable
         /// Provides access to the underlying input action "Actions/OneWayDown".
         /// </summary>
         public InputAction @OneWayDown => m_Wrapper.m_Actions_OneWayDown;
+        /// <summary>
+        /// Provides access to the underlying input action "Actions/SkipDialogue".
+        /// </summary>
+        public InputAction @SkipDialogue => m_Wrapper.m_Actions_SkipDialogue;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -630,6 +667,9 @@ public partial class @PlayerInputs: IInputActionCollection2, IDisposable
             @OneWayDown.started += instance.OnOneWayDown;
             @OneWayDown.performed += instance.OnOneWayDown;
             @OneWayDown.canceled += instance.OnOneWayDown;
+            @SkipDialogue.started += instance.OnSkipDialogue;
+            @SkipDialogue.performed += instance.OnSkipDialogue;
+            @SkipDialogue.canceled += instance.OnSkipDialogue;
         }
 
         /// <summary>
@@ -662,6 +702,9 @@ public partial class @PlayerInputs: IInputActionCollection2, IDisposable
             @OneWayDown.started -= instance.OnOneWayDown;
             @OneWayDown.performed -= instance.OnOneWayDown;
             @OneWayDown.canceled -= instance.OnOneWayDown;
+            @SkipDialogue.started -= instance.OnSkipDialogue;
+            @SkipDialogue.performed -= instance.OnSkipDialogue;
+            @SkipDialogue.canceled -= instance.OnSkipDialogue;
         }
 
         /// <summary>
@@ -751,5 +794,12 @@ public partial class @PlayerInputs: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnOneWayDown(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "SkipDialogue" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnSkipDialogue(InputAction.CallbackContext context);
     }
 }
