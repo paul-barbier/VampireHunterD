@@ -303,8 +303,8 @@ CapsuleCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: -0.26071793, y: 0.30933607}
-  m_Size: {x: 1.212725, y: 3.3459136}
+  m_Offset: {x: -0.009513676, y: 0.30933607}
+  m_Size: {x: 1.0232931, y: 3.3459136}
   m_Direction: 0
 --- !u!114 &3403784465517668524
 MonoBehaviour:
@@ -397,7 +397,7 @@ MonoBehaviour:
     MaxForce: -30
     Acceleration: 30
     MaxAcceleration: 30
-    CoyoteTime: 0.2
+    CoyoteTime: 0.1
     GravityRemapFromCoyoteTime:
       serializedVersion: 2
       m_Curve:
@@ -506,10 +506,13 @@ MonoBehaviour:
   _isJumping: 0
   _canDash: 1
   _isDashing: 0
-  _enemyCollider: {fileID: 0}
+  _lockedDash: 0
+  enemyBounceForce: 10000
+  _enemyCollider: {fileID: 1432363591201203488}
   checkpoint: {fileID: 0}
   _currentMeshRotation: {x: 0, y: 0, z: 0}
   rotationSpeed: 8000
+  MovementDisabled: 0
 --- !u!114 &7089133477461453087
 MonoBehaviour:
   m_ObjectHideFlags: 0
