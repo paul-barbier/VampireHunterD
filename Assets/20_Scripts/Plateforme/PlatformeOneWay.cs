@@ -9,17 +9,7 @@ public class PlatformeOneWay : MonoBehaviour
     [SerializeField] private CapsuleCollider2D playerCollider;
 
     // Update is called once per frame
-    void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.DownArrow))
-        {
-            if (currentOnewayPlatform != null)
-            {
-                StartCoroutine(DisableCollision());
-            }
-        }
-
-    }
+   
 
     private void OnCollisionEnter2D(UnityEngine.Collision2D collision)
     {
@@ -47,6 +37,14 @@ public class PlatformeOneWay : MonoBehaviour
         Physics2D.IgnoreCollision(playerCollider, platformCollider);
         yield return new WaitForSeconds(1.5f);
         Physics2D.IgnoreCollision(playerCollider, platformCollider, false);
+    }
+
+    public void DownOneWay()
+    {
+        if (currentOnewayPlatform != null)
+        {
+            StartCoroutine(DisableCollision());
+        }
     }
 }
 
