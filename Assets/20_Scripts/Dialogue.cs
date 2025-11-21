@@ -28,30 +28,38 @@ public class Dialogue : MonoBehaviour
         _dialogueCanva.SetActive(false);
     }
 
-    private void OnTriggerStay2D(Collider2D collision)
+    private void Update()
     {
-        if (collision.gameObject.tag == "Player")
+        if (_dialogueActivated && Input.GetKeyDown(KeyCode.E))
         {
+            _step++;
             if (_step >= _speaker.Length)
             {
                 _dialogueCanva.SetActive(false);
                 _step = 0;
+                _dialogueActivated = false;
             }
             else
             {
-            _dialogueActivated = true;
-            _dialogueCanva.SetActive(true);
-            _speakerText.text = _speaker[_step];
-            _dialogueText.text = _dialogueWords[_step];
-            _portraitImage.sprite = _portrait[_step];
-            StartCoroutine(WaitingTextFinish());
-            _step += 1;
+                ShowStep();
             }
         }
     }
 
-    IEnumerator WaitingTextFinish()
+    private void OnTriggerEnter2D(Collider2D collision)
     {
-        yield return new WaitForSeconds(_dialogueTime);   
+        if (collision.CompareTag("Player"))
+        {
+            _dialogueActivated = true;
+            _dialogueCanva.SetActive(true);
+            ShowStep();
+        }
+    }
+
+    private void ShowStep()
+    {
+        _speakerText.text = _speaker[_step];
+        _dialogueText.text = _dialogueWords[_step];
+        _portraitImage.sprite = _portrait[_step];
     }
 }
