@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using static PlayerCharacter;
 
 [RequireComponent(typeof(Rigidbody2D))]
 public class PlayerCharacter : MonoBehaviour
@@ -610,15 +611,10 @@ public class PlayerCharacter : MonoBehaviour
     {
         if (collision.CompareTag("Ennemy"))
         {
-            if (_isDashing)
-            {
-                StopDashOnEnemy(collision);
-                //BounceOnEnemy();
-                _isDashing = false;
-
-            }
+            StopDashOnEnemy(collision);
+            ResetGravity(PhysicState.Ground);
             CalculateHealth();
-            Knockback();
+            //Knockback();
         }
     }
 
