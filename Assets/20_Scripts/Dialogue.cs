@@ -8,8 +8,6 @@ using Unity.VisualScripting;
 
 public class Dialogue : MonoBehaviour
 {
-    [SerializeField] private GameObject[] dialogueBound;
-
     private PlayerCharacter _playerMovementScript;
     [SerializeField] private GameObject _playerCharacterMovement;
 
@@ -52,6 +50,7 @@ public class Dialogue : MonoBehaviour
             //_playerMovementScript.MovementDisabled = true;
             _dialogueActivated = true;
             _dialogueCanva.SetActive(true);
+            SettingVelocity();
             ShowStep();
         }
     }
@@ -74,6 +73,8 @@ public class Dialogue : MonoBehaviour
                 _dialogueCanva.SetActive(false);
                 _step = 0;
                 _dialogueActivated = false;
+                Destroy(this);
+                _playerCharacterMovement.SetActive(true);
             }
             else
             {
