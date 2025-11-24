@@ -5,11 +5,11 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using static PlayerCharacter;
+using static UnityEngine.EventSystems.EventTrigger;
 
 [RequireComponent(typeof(Rigidbody2D))]
 public class PlayerCharacter : MonoBehaviour
 {
-    [SerializeField] private Health _health;
 
     #region DataStructure
     public enum PhysicState
@@ -56,7 +56,7 @@ public class PlayerCharacter : MonoBehaviour
     private struct DashValues
     {
         public float DashImpulseForce;
-        public float DashHeight;
+        public float DashDuration;
         public float DashBufferTime;
     }
 
@@ -83,7 +83,8 @@ public class PlayerCharacter : MonoBehaviour
 
     [Header("Setup")]
     [SerializeField] private Transform _mesh = null;
-
+    [SerializeField] private Health _health;
+    [SerializeField] private GameObject ChauveSouris;
     #endregion EditorVariables
 
     #region Variables
@@ -138,7 +139,7 @@ public class PlayerCharacter : MonoBehaviour
     [SerializeField] private Vector2 enemyBounceForce;
 
     //KnockBack
-    [SerializeField] private Collider2D _enemyCollider;
+    private Collider2D _enemyCollider;
     private Vector3 targetKnockback = Vector3.zero;
 
     [SerializeField] private float BouncingTime;
@@ -147,8 +148,8 @@ public class PlayerCharacter : MonoBehaviour
     public CheckPoints checkpoint;
 
     //Sprite
-    [SerializeField] private Vector3 _currentMeshRotation = Vector3.zero;
-    [SerializeField] private float rotationSpeed = 360f;
+    private Vector3 _currentMeshRotation = Vector3.zero;
+    private float rotationSpeed = 8000f;
 
     //Disable movement
     [SerializeField] public bool MovementDisabled = false;
@@ -164,7 +165,6 @@ public class PlayerCharacter : MonoBehaviour
         _rigidbody = GetComponent<Rigidbody2D>();
         _horizontalPhysic = _groundPhysic;
         CalculateJumpTime();
-        CalculateDashTime();
 
         //On enregistre le changement de physic � l'event qui detecte le changement d'�tat du sol
         OnPhysicStateChanged += ChangePhysic;
@@ -180,7 +180,6 @@ public class PlayerCharacter : MonoBehaviour
     private void OnValidate()
     {
         CalculateJumpTime();
-        CalculateDashTime();
     }
 #endif
 
@@ -236,8 +235,8 @@ public class PlayerCharacter : MonoBehaviour
         if (MovementDisabled == true)
             return;
         else
-        //On reset la force � ajouter cette boucle de fixed update
-        _forceToAdd = Vector2.zero;
+            //On reset la force � ajouter cette boucle de fixed update
+            _forceToAdd = Vector2.zero;
         _prePhysicPosition = _rigidbody.position;
 
         //Fonction qui d�tecte si on touche le sol ou non
@@ -548,43 +547,43 @@ public class PlayerCharacter : MonoBehaviour
             Invoke(nameof(StopDashBuffer), _dashParameters.DashBufferTime);
             return;
         }
-        else if (_canDash)
+
+        if (_canDash)
         {
             _DAnimation.SetBool("IsDashing", true);
-            _currentJumpForce = Vector2.zero;
-            _currentDashForce = _dashMovementInput.normalized * _dashParameters.DashImpulseForce;
-            _rigidbody.linearVelocity = new Vector2(_currentDashForce.x, _currentDashForce.y);
-            _canDash = false;
+
             _isDashing = true;
-            _isInCoyoteTime = false;
-            _startDashTime = _dashAirTime;
+            _canDash = false;
+
+            _currentDashForce = _dashMovementInput.normalized * _dashParameters.DashImpulseForce;
+
+            _rigidbody.linearVelocity = Vector2.zero;
+            _forceToAdd = Vector2.zero;
+
+            _startDashTime = Time.time;
         }
     }
+
 
     public void Dash()
     {
         if (!_isDashing && !_canDash)
             return;
 
-        float dashTimeRatio = Mathf.Clamp01((_dashAirTime - _startDashTime) / _dashTime);
-        _forceToAdd += _currentDashForce;
+        float elapsed = Time.time - _startDashTime;
 
-        if (dashTimeRatio >= 0.3f)
+        if (elapsed < _dashParameters.DashDuration)
+        {
+            _forceToAdd += _currentDashForce;
+        }
+        else
         {
             _isDashing = false;
             _currentDashForce = Vector2.zero;
-
-        }
-        if (dashTimeRatio >= 1f)
-        {
             _DAnimation.SetBool("IsDashing", false);
         }
     }
 
-    private void CalculateDashTime()
-    {
-        _dashTime = _dashParameters.DashHeight / _dashParameters.DashImpulseForce;
-    }
 
     private void StopDashBuffer()
     {
@@ -611,6 +610,7 @@ public class PlayerCharacter : MonoBehaviour
     {
         yield return new WaitForSeconds(1.0f);
         _canDash = true;
+        ChauveSouris.gameObject.SetActive(true);
     }
 
     private void BounceOnEnemy()
@@ -620,16 +620,19 @@ public class PlayerCharacter : MonoBehaviour
 
     private void StopDashOnEnemy(Collider2D enemy)
     {
-        _isDashing = false;
         _currentDashForce = Vector2.zero;
+        _currentHorizontalVelocity = Vector2.zero;
+        _rigidbody.linearVelocity = Vector2.zero;
+        _forceToAdd = Vector2.zero;
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.CompareTag("Ennemy") && !_lockedDash)
         {
+            _enemyCollider = collision;
             CalculateHealth();
-            //Knockback();
+            Knockback(collision);
         }
         else if (collision.CompareTag("Dash") && _isDashing)
         {
@@ -639,8 +642,15 @@ public class PlayerCharacter : MonoBehaviour
         }
     }
 
-    private void Knockback()
+    private void Knockback(Collider2D enemy)
     {
+        StopDashOnEnemy(enemy);
+        _knockbackValues._knockbackDirection.x = (transform.position.x - _enemyCollider.transform.position.x);
+        _knockbackValues._knockbackDirection.y = (transform.position.y - _enemyCollider.transform.position.y);
+        targetKnockback = new Vector3(Mathf.Ceil(_knockbackValues._knockbackDirection.x), Mathf.Ceil(_knockbackValues._knockbackDirection.y), 0).normalized;
+
+        Debug.Log(_knockbackValues._knockbackDirection.x);
+
         _rigidbody.AddForce(targetKnockback * _knockbackValues._knockbackForce, ForceMode2D.Impulse);
     }
 
@@ -669,13 +679,10 @@ public class PlayerCharacter : MonoBehaviour
     IEnumerator BounceTime()
     {
         _lockedDash = true;
-
         _rigidbody.AddForce(enemyBounceForce, ForceMode2D.Impulse);
-
         _isJumping = false;
         _currentGravity = 0f;
         yield return new WaitForSeconds(BouncingTime);
         _lockedDash = false;
-
     }
 }
