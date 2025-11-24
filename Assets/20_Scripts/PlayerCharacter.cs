@@ -534,6 +534,8 @@ public class PlayerCharacter : MonoBehaviour
     //}
 
     #endregion Jump
+
+    #region Dash
     public void GetDashInput(Vector2 Dashinput)
     {
         _dashMovementInput = Dashinput;
@@ -631,7 +633,7 @@ public class PlayerCharacter : MonoBehaviour
         if (collision.CompareTag("Ennemy") && !_lockedDash)
         {
             _enemyCollider = collision;
-            CalculateHealth();
+            gameObject.GetComponent<Health>()?.TakeDamage(25);
             Knockback(collision);
         }
         else if (collision.CompareTag("Dash") && _isDashing)
@@ -641,7 +643,16 @@ public class PlayerCharacter : MonoBehaviour
             _canDash = true;
         }
     }
-
+    IEnumerator BounceTime()
+    {
+        _lockedDash = true;
+        _rigidbody.AddForce(enemyBounceForce, ForceMode2D.Impulse);
+        _isJumping = false;
+        _currentGravity = 0f;
+        yield return new WaitForSeconds(BouncingTime);
+        _lockedDash = false;
+    }
+    #endregion Dash
     private void Knockback(Collider2D enemy)
     {
         StopDashOnEnemy(enemy);
@@ -660,29 +671,10 @@ public class PlayerCharacter : MonoBehaviour
         {
             transform.position = checkpoint.transform.position;
             _rigidbody.linearVelocity = Vector3.zero;
-            _health._currentHealth = _health._maxHealth;
+            _health.GetHeal(_health.GetMaxHealth());
             _health.UpdateBar();
             _isDashing = false;
             _isJumping = false;
         }
-    }
-
-    private void CalculateHealth()
-    {
-        _health.TakeDamage();
-        if (_health._currentHealth <= 0)
-        {
-            Die();
-        }
-    }
-
-    IEnumerator BounceTime()
-    {
-        _lockedDash = true;
-        _rigidbody.AddForce(enemyBounceForce, ForceMode2D.Impulse);
-        _isJumping = false;
-        _currentGravity = 0f;
-        yield return new WaitForSeconds(BouncingTime);
-        _lockedDash = false;
     }
 }
