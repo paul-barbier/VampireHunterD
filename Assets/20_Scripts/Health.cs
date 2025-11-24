@@ -3,9 +3,9 @@ using UnityEngine;
 
 public class Health : MonoBehaviour
 {
-    public int _maxHealth;
-    public int _currentHealth;
-    [SerializeField] private int _damages;
+    [SerializeField] private int _maxHealth;
+    [SerializeField] private int _currentHealth;
+    PlayerCharacter _character;
 
     //Visuel
     [SerializeField] private Animator HpAnime;
@@ -14,11 +14,14 @@ public class Health : MonoBehaviour
     private void Start()
     {
         _currentHealth = _maxHealth;
+        _character = GetComponent<PlayerCharacter>();
     }
 
-    public void TakeDamage()
+    public void TakeDamage(int damages)
     {
-        _currentHealth -= _damages;
+        _currentHealth -= damages;
+        if (_currentHealth <= 0)
+            _character.Die();
         UpdateBar();
     }
 
@@ -37,7 +40,26 @@ public class Health : MonoBehaviour
 
     public IEnumerator CdDmg()
     {
-
         yield return new WaitForSeconds(5.0f);
+    }
+
+    public void GetHeal(int heal)
+    {
+        _currentHealth += heal;
+        if (_currentHealth > _maxHealth)
+        {
+            _currentHealth = _maxHealth;
+        }
+        UpdateBar();
+    }
+
+    public int GetHealth()
+    {
+        return _currentHealth;
+    }
+
+    public int GetMaxHealth()
+    {
+        return _maxHealth;
     }
 }
