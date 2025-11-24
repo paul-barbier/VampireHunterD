@@ -396,6 +396,7 @@ public class PlayerCharacter : MonoBehaviour
         float velocityDelta = _currentGravity - _rigidbody.linearVelocity.y;
 
         velocityDelta = Mathf.Clamp(velocityDelta, -_gravityParameters.MaxAcceleration, 0.0f);
+        _DAnimation.SetBool("IsDashing", false);
         _DAnimation.SetBool("IsFalling", true);
         _forceToAdd.y += velocityDelta;
     }
@@ -424,6 +425,7 @@ public class PlayerCharacter : MonoBehaviour
             return;
         }
         _DAnimation.SetBool("IsJumping", true);
+        _DAnimation.SetBool("IsDashing", false);
 
         //_currentJumpForce.y = _jumpParameters.InitValue;
         _currentJumpForce.y = _jumpParameters.ImpulseForce;
@@ -673,7 +675,6 @@ public class PlayerCharacter : MonoBehaviour
         _isJumping = false;
         _currentGravity = 0f;
         yield return new WaitForSeconds(BouncingTime);
-        Debug.Log("OH TOMBE FRR");
         _lockedDash = false;
 
     }
