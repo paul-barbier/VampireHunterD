@@ -280,12 +280,12 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 10
-  m_Sprite: {fileID: -6683150791537027490, guid: 2fb717777558e44408448d7f8b8b07fb, type: 3}
+  m_Sprite: {fileID: 8164408767924170613, guid: 19dba204746b2f247a181069e8f9fa7a, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 80, y: 50}
+  m_Size: {x: 5.0012207, y: 5}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -429,7 +429,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bcc241f5d0532cf4a8760c0ed4125cc0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _health: {fileID: 7822740381902637360}
   _groundPhysic:
     MaxSpeed: 10.5
     Acceleration: 100
@@ -577,12 +576,12 @@ MonoBehaviour:
     InitValue: 19.6
     GravityValue: -27.44
   _dashParameters:
-    DashImpulseForce: 10
-    DashHeight: 4
+    DashImpulseForce: 3
+    DashDuration: 0.3
     DashBufferTime: 0.2
   _knockbackValues:
-    _knockbackDirection: {x: 0, y: 15, z: 0}
-    _knockbackForce: 20
+    _knockbackDirection: {x: 15, y: 15, z: 0}
+    _knockbackForce: 8
   _groundContactFilter:
     useTriggers: 0
     useLayerMask: 0
@@ -612,18 +611,20 @@ MonoBehaviour:
     minNormalAngle: 45
     maxNormalAngle: 135
   _mesh: {fileID: 5167549000642208514}
+  _health: {fileID: 7822740381902637360}
+  ChauveSouris: {fileID: 1893569437254920610}
+  _rigidbody: {fileID: 0}
   _DAnimation: {fileID: 317578980722878797}
+  _forceToAdd: {x: 0, y: 0}
   _movementInput: 0
   _isJumping: 0
+  _currentDashForce: {x: 0, y: 0}
   _canDash: 1
   _isDashing: 0
   _lockedDash: 0
-  enemyBounceForce: {x: 0, y: 40}
-  _enemyCollider: {fileID: 1432363591201203488}
-  BouncingTime: 0.2
+  enemyBounceForce: {x: 0, y: 8}
+  BouncingTime: 0.3
   checkpoint: {fileID: 0}
-  _currentMeshRotation: {x: 0, y: 0, z: 0}
-  rotationSpeed: 8000
   MovementDisabled: 0
 --- !u!114 &7089133477461453087
 MonoBehaviour:
@@ -653,6 +654,7 @@ MonoBehaviour:
   attackSpeed: 360
   lowAngle: -50
   highAngle: 50
+  _DAnimation: {fileID: 317578980722878797}
 --- !u!114 &1539380187053205686
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -692,7 +694,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9d9df8fc88e1f1d4cbd253807d8fa1d8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _maxHealth: 100
+  _maxHealth: 10000
   _currentHealth: 0
   _damages: 25
   HpAnime: {fileID: 0}
