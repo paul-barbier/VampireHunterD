@@ -25,8 +25,8 @@ public class PlayerInputsManager : MonoBehaviour
         _inputs.Actions.Attack.started += _ => _attack.AttackZone();
         _inputs.Actions.Interact.started += _ => _playerTP.UseTP();
         _inputs.Actions.Dash.started += _ => _character.StartDash();
-        _inputs.Actions.Jump.started += _ => _dialogue.SkipDialogue();
         _inputs.Actions.OneWayDown.started += _ => _oneWay.DownOneWay();
+        _inputs.Actions.SkipDialogue.started += _ => _dialogue.SkipDialogue();  
         _inputs.Enable();
     }
 

@@ -9,6 +9,7 @@ using Unity.VisualScripting;
 public class Dialogue : MonoBehaviour
 {
     private PlayerCharacter _playerMovementScript;
+    [SerializeField] private GameObject _playerCharacterMovement;
 
     [SerializeField] private GameObject _dialogueCanva;
     [SerializeField] private int _dialogueTime;
@@ -21,11 +22,12 @@ public class Dialogue : MonoBehaviour
     [SerializeField][TextArea] private string[] _dialogueWords;
     [SerializeField] private Sprite[] _portrait;
 
-    private bool _dialogueActivated;
+    public bool _dialogueActivated;
     private int _step;
 
     private void Start()
     {
+
         _playerMovementScript = FindAnyObjectByType<PlayerCharacter>();
         if (_playerMovementScript == null )
         {
@@ -45,9 +47,10 @@ public class Dialogue : MonoBehaviour
     {
         if (collision.CompareTag("Player"))
         {
-            _playerMovementScript.MovementDisabled = true;
+            //_playerMovementScript.MovementDisabled = true;
             _dialogueActivated = true;
             _dialogueCanva.SetActive(true);
+            SettingVelocity();
             ShowStep();
         }
     }
@@ -66,15 +69,23 @@ public class Dialogue : MonoBehaviour
             _step++;
             if (_step >= _speaker.Length)
             {
-                _playerMovementScript.MovementDisabled = false;
+                //_playerMovementScript.MovementDisabled = false;
                 _dialogueCanva.SetActive(false);
                 _step = 0;
                 _dialogueActivated = false;
+                Destroy(this);
+                _playerCharacterMovement.SetActive(true);
             }
             else
             {
                 ShowStep();
             }
         }
+    }
+
+    private void SettingVelocity()
+    {
+        _playerMovementScript._forceToAdd = Vector2.zero;
+        _playerCharacterMovement.SetActive(false);
     }
 }

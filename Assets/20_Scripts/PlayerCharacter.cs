@@ -76,7 +76,6 @@ public class PlayerCharacter : MonoBehaviour
     [SerializeField] private MovementValues _airPhysic = new MovementValues();
     [SerializeField] private GravityValues _gravityParameters = new GravityValues();
     [SerializeField] private JumpValues _jumpParameters = new JumpValues();
-    //[SerializeField] private JumpValues _maxJumpParameters = new JumpValues();
     [SerializeField] private DashValues _dashParameters = new DashValues();
     [SerializeField] private KnockBackValues _knockbackValues = new KnockBackValues();
     [SerializeField] private ContactFilter2D _groundContactFilter = new ContactFilter2D();
@@ -90,11 +89,11 @@ public class PlayerCharacter : MonoBehaviour
     #region Variables
 
     //Components
-    private Rigidbody2D _rigidbody = null;
+    public Rigidbody2D _rigidbody = null;
     [SerializeField] private Animator _DAnimation;
 
     //Force
-    private Vector2 _forceToAdd = Vector2.zero;
+    public Vector2 _forceToAdd = Vector2.zero;
     private Vector2 _prePhysicPosition = Vector2.zero;
 
     //Horizontal movement
@@ -126,7 +125,7 @@ public class PlayerCharacter : MonoBehaviour
     public event Action<PhysicState> OnPhysicStateChanged;
 
     //Dash
-    private Vector2 _currentDashForce = Vector2.zero;
+    public Vector2 _currentDashForce = Vector2.zero;
     private Vector2 _dashMovementInput = Vector2.zero;
     [SerializeField] private bool _canDash = true;
     [SerializeField] private bool _isDashing = false;
@@ -134,12 +133,15 @@ public class PlayerCharacter : MonoBehaviour
     private float _startDashTime = 0.0f;
     private bool _bufferDash = false;
     [SerializeField] private bool _lockedDash = false;
+    private float _dashAnimTime;
 
-    [SerializeField] private float enemyBounceForce = 15.0f;
+    [SerializeField] private Vector2 enemyBounceForce;
 
     //KnockBack
     [SerializeField] private Collider2D _enemyCollider;
     private Vector3 targetKnockback = Vector3.zero;
+
+    [SerializeField] private float BouncingTime;
 
     //Checkpoint
     public CheckPoints checkpoint;
@@ -394,6 +396,7 @@ public class PlayerCharacter : MonoBehaviour
         float velocityDelta = _currentGravity - _rigidbody.linearVelocity.y;
 
         velocityDelta = Mathf.Clamp(velocityDelta, -_gravityParameters.MaxAcceleration, 0.0f);
+        _DAnimation.SetBool("IsDashing", false);
         _DAnimation.SetBool("IsFalling", true);
         _forceToAdd.y += velocityDelta;
     }
@@ -422,6 +425,7 @@ public class PlayerCharacter : MonoBehaviour
             return;
         }
         _DAnimation.SetBool("IsJumping", true);
+        _DAnimation.SetBool("IsDashing", false);
 
         //_currentJumpForce.y = _jumpParameters.InitValue;
         _currentJumpForce.y = _jumpParameters.ImpulseForce;
@@ -469,6 +473,7 @@ public class PlayerCharacter : MonoBehaviour
             _isJumping = false;
             _DAnimation.SetBool("IsJumping", false);
             _DAnimation.SetBool("IsFalling", true);
+            _DAnimation.SetBool("IsDashing", false);
 
             _currentJumpForce = Vector2.zero;
         }
@@ -477,6 +482,7 @@ public class PlayerCharacter : MonoBehaviour
             _isJumping = false;
             _DAnimation.SetBool("IsJumping", false);
             _DAnimation.SetBool("IsFalling", true);
+            _DAnimation.SetBool("IsDashing", false);
 
             _currentJumpForce = _currentDashForce;
         }
@@ -503,6 +509,7 @@ public class PlayerCharacter : MonoBehaviour
             _currentJumpForce = Vector2.zero;
             _DAnimation.SetBool("IsJumping", false);
             _DAnimation.SetBool("IsFalling", false);
+            _DAnimation.SetBool("IsDashing", false);
         }
     }
 
@@ -543,6 +550,7 @@ public class PlayerCharacter : MonoBehaviour
         }
         else if (_canDash)
         {
+            _DAnimation.SetBool("IsDashing", true);
             _currentJumpForce = Vector2.zero;
             _currentDashForce = _dashMovementInput.normalized * _dashParameters.DashImpulseForce;
             _rigidbody.linearVelocity = new Vector2(_currentDashForce.x, _currentDashForce.y);
@@ -559,13 +567,17 @@ public class PlayerCharacter : MonoBehaviour
             return;
 
         float dashTimeRatio = Mathf.Clamp01((_dashAirTime - _startDashTime) / _dashTime);
-
         _forceToAdd += _currentDashForce;
 
         if (dashTimeRatio >= 0.3f)
         {
             _isDashing = false;
             _currentDashForce = Vector2.zero;
+
+        }
+        if (dashTimeRatio >= 1f)
+        {
+            _DAnimation.SetBool("IsDashing", false);
         }
     }
 
@@ -603,37 +615,27 @@ public class PlayerCharacter : MonoBehaviour
 
     private void BounceOnEnemy()
     {
-        _isDashing = false;
-        _currentDashForce = Vector2.zero;
-        _currentGravity = 0.0f;
-
-        _isJumping = true;
-        _hasBounce = true;
-
-        _forceToAdd += new Vector2(_rigidbody.linearVelocity.x, enemyBounceForce);
+        StartCoroutine(BounceTime());
     }
 
     private void StopDashOnEnemy(Collider2D enemy)
     {
+        _isDashing = false;
         _currentDashForce = Vector2.zero;
-
-        _rigidbody.linearVelocity = Vector2.zero;
-
-        Vector2 directionToEnemy = enemy.transform.position - transform.position;
-
-        // On place le joueur juste à côté de l’ennemi selon la direction du dash
-        transform.position = enemy.ClosestPoint(transform.position);
-        _lockedDash = true;
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.CompareTag("Ennemy") && _isDashing)
+        if (collision.CompareTag("Ennemy") && !_lockedDash)
+        {
+            CalculateHealth();
+            //Knockback();
+        }
+        else if (collision.CompareTag("Dash") && _isDashing)
         {
             StopDashOnEnemy(collision);
-            ResetGravity(PhysicState.Ground);
-            CalculateHealth();
-            Knockback();
+            BounceOnEnemy();
+            _canDash = true;
         }
     }
 
@@ -650,6 +652,8 @@ public class PlayerCharacter : MonoBehaviour
             _rigidbody.linearVelocity = Vector3.zero;
             _health._currentHealth = _health._maxHealth;
             _health.UpdateBar();
+            _isDashing = false;
+            _isJumping = false;
         }
     }
 
@@ -660,5 +664,18 @@ public class PlayerCharacter : MonoBehaviour
         {
             Die();
         }
+    }
+
+    IEnumerator BounceTime()
+    {
+        _lockedDash = true;
+
+        _rigidbody.AddForce(enemyBounceForce, ForceMode2D.Impulse);
+
+        _isJumping = false;
+        _currentGravity = 0f;
+        yield return new WaitForSeconds(BouncingTime);
+        _lockedDash = false;
+
     }
 }
