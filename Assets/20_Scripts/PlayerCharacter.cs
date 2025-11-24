@@ -76,7 +76,6 @@ public class PlayerCharacter : MonoBehaviour
     [SerializeField] private MovementValues _airPhysic = new MovementValues();
     [SerializeField] private GravityValues _gravityParameters = new GravityValues();
     [SerializeField] private JumpValues _jumpParameters = new JumpValues();
-    //[SerializeField] private JumpValues _maxJumpParameters = new JumpValues();
     [SerializeField] private DashValues _dashParameters = new DashValues();
     [SerializeField] private KnockBackValues _knockbackValues = new KnockBackValues();
     [SerializeField] private ContactFilter2D _groundContactFilter = new ContactFilter2D();
@@ -90,11 +89,11 @@ public class PlayerCharacter : MonoBehaviour
     #region Variables
 
     //Components
-    private Rigidbody2D _rigidbody = null;
+    public Rigidbody2D _rigidbody = null;
     [SerializeField] private Animator _DAnimation;
 
     //Force
-    private Vector2 _forceToAdd = Vector2.zero;
+    public Vector2 _forceToAdd = Vector2.zero;
     private Vector2 _prePhysicPosition = Vector2.zero;
 
     //Horizontal movement
@@ -126,7 +125,7 @@ public class PlayerCharacter : MonoBehaviour
     public event Action<PhysicState> OnPhysicStateChanged;
 
     //Dash
-    private Vector2 _currentDashForce = Vector2.zero;
+    public Vector2 _currentDashForce = Vector2.zero;
     private Vector2 _dashMovementInput = Vector2.zero;
     [SerializeField] private bool _canDash = true;
     [SerializeField] private bool _isDashing = false;

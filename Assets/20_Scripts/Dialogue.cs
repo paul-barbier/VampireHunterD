@@ -8,7 +8,10 @@ using Unity.VisualScripting;
 
 public class Dialogue : MonoBehaviour
 {
+    [SerializeField] private GameObject[] dialogueBound;
+
     private PlayerCharacter _playerMovementScript;
+    [SerializeField] private GameObject _playerCharacterMovement;
 
     [SerializeField] private GameObject _dialogueCanva;
     [SerializeField] private int _dialogueTime;
@@ -21,11 +24,12 @@ public class Dialogue : MonoBehaviour
     [SerializeField][TextArea] private string[] _dialogueWords;
     [SerializeField] private Sprite[] _portrait;
 
-    private bool _dialogueActivated;
+    public bool _dialogueActivated;
     private int _step;
 
     private void Start()
     {
+
         _playerMovementScript = FindAnyObjectByType<PlayerCharacter>();
         if (_playerMovementScript == null )
         {
@@ -76,5 +80,11 @@ public class Dialogue : MonoBehaviour
                 ShowStep();
             }
         }
+    }
+
+    private void SettingVelocity()
+    {
+        _playerMovementScript._forceToAdd = Vector2.zero;
+        _playerCharacterMovement.SetActive(false);
     }
 }
