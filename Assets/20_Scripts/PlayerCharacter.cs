@@ -557,12 +557,15 @@ public class PlayerCharacter : MonoBehaviour
             _isDashing = true;
             _canDash = false;
 
-            _currentDashForce = _dashMovementInput.normalized * _dashParameters.DashImpulseForce;
-
             _rigidbody.linearVelocity = Vector2.zero;
+            _currentJumpForce = Vector2.zero;
             _forceToAdd = Vector2.zero;
 
+            _currentDashForce = _dashMovementInput.normalized * _dashParameters.DashImpulseForce;
+
+
             _startDashTime = Time.time;
+            ChauveSouris.SetActive(false);
         }
     }
 
