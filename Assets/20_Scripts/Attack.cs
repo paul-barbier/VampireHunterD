@@ -36,6 +36,7 @@ public class Attack : MonoBehaviour
     {
         attackPivot.gameObject.SetActive(true);
         isAttacking = true;
+        SoundManager.PlaySound(SoundType.Attack);
     }
 }
 
