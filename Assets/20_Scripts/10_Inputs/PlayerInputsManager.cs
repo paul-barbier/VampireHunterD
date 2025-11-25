@@ -11,6 +11,7 @@ public class PlayerInputsManager : MonoBehaviour
     private PlayerTeleport _playerTP = null;
     private Dialogue _dialogue = null;
     private PlatformeOneWay _oneWay = null;
+    private UIDialogue _dialogueMenu = null;
 
     private void Awake()
     {
@@ -19,6 +20,7 @@ public class PlayerInputsManager : MonoBehaviour
         _playerTP = GetComponent<PlayerTeleport>();
         _dialogue = GetComponent<Dialogue>();
         _oneWay = GetComponent<PlatformeOneWay>();
+        _dialogueMenu = GetComponent<UIDialogue>();
 
         _inputs = new PlayerInputs();
         _inputs.Actions.Jump.started += _ => _character.StartJump();
@@ -26,7 +28,8 @@ public class PlayerInputsManager : MonoBehaviour
         _inputs.Actions.Interact.started += _ => _playerTP.UseTP();
         _inputs.Actions.Dash.started += _ => _character.StartDash();
         _inputs.Actions.OneWayDown.started += _ => _oneWay.DownOneWay();
-        _inputs.Actions.SkipDialogue.started += _ => _dialogue.SkipDialogue();  
+        _inputs.Actions.SkipDialogue.started += _ => _dialogue.SkipDialogue();
+        _inputs.Actions.PauseMenu.started += _ => _dialogueMenu.Pause();
         _inputs.Enable();
     }
 
