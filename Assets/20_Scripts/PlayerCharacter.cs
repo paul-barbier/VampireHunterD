@@ -130,7 +130,6 @@ public class PlayerCharacter : MonoBehaviour
     private Vector2 _dashMovementInput = Vector2.zero;
     [SerializeField] private bool _canDash = true;
     public bool _isDashing = false;
-    private float _dashTime = 0.0f;
     private float _startDashTime = 0.0f;
     private bool _bufferDash = false;
     [SerializeField] private bool _lockedDash = false;
@@ -656,7 +655,7 @@ public class PlayerCharacter : MonoBehaviour
             StopDashOnEnemy(collision);
             BounceOnEnemy();
             _canDash = true;
-            //Destroy(collision.gameObject);
+            Destroy(collision.gameObject);
         }
     }
     IEnumerator BounceTime()
