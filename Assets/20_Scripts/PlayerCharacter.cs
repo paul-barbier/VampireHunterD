@@ -214,6 +214,7 @@ public class PlayerCharacter : MonoBehaviour
 
     #endregion Visual
 
+    #region Update
     private void FixedUpdate()
     {
         DisableMovement();
@@ -227,6 +228,7 @@ public class PlayerCharacter : MonoBehaviour
             _currentHorizontalVelocity.x = 0.0f;
         }
     }
+    #endregion Update
 
     #region PhysicState
 
@@ -395,8 +397,8 @@ public class PlayerCharacter : MonoBehaviour
         float velocityDelta = _currentGravity - _rigidbody.linearVelocity.y;
 
         velocityDelta = Mathf.Clamp(velocityDelta, -_gravityParameters.MaxAcceleration, 0.0f);
-        _DAnimation.SetBool("IsDashing", false);
         _DAnimation.SetBool("IsFalling", true);
+
         _forceToAdd.y += velocityDelta;
     }
 
@@ -472,7 +474,6 @@ public class PlayerCharacter : MonoBehaviour
             _isJumping = false;
             _DAnimation.SetBool("IsJumping", false);
             _DAnimation.SetBool("IsFalling", true);
-            _DAnimation.SetBool("IsDashing", false);
 
             _currentJumpForce = Vector2.zero;
         }
@@ -481,7 +482,6 @@ public class PlayerCharacter : MonoBehaviour
             _isJumping = false;
             _DAnimation.SetBool("IsJumping", false);
             _DAnimation.SetBool("IsFalling", true);
-            _DAnimation.SetBool("IsDashing", false);
 
             _currentJumpForce = _currentDashForce;
         }
@@ -508,7 +508,6 @@ public class PlayerCharacter : MonoBehaviour
             _currentJumpForce = Vector2.zero;
             _DAnimation.SetBool("IsJumping", false);
             _DAnimation.SetBool("IsFalling", false);
-            _DAnimation.SetBool("IsDashing", false);
         }
     }
 
