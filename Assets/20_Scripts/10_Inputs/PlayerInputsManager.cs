@@ -11,6 +11,7 @@ public class PlayerInputsManager : MonoBehaviour
     private PlayerTeleport _playerTP = null;
     private Dialogue _dialogue = null;
     private PlatformeOneWay _oneWay = null;
+    private UIDialogue _dialogueMenu = null;
 
     private void Awake()
     {
@@ -19,21 +20,23 @@ public class PlayerInputsManager : MonoBehaviour
         _playerTP = GetComponent<PlayerTeleport>();
         _dialogue = GetComponent<Dialogue>();
         _oneWay = GetComponent<PlatformeOneWay>();
+        _dialogueMenu = GetComponent<UIDialogue>();
 
         _inputs = new PlayerInputs();
-        _inputs.Actions.Jump.started += _ => _character.StartJump();
-        _inputs.Actions.Attack.started += _ => _attack.AttackZone();
-        _inputs.Actions.Interact.started += _ => _playerTP.UseTP();
-        _inputs.Actions.Dash.started += _ => _character.StartDash();
-        _inputs.Actions.OneWayDown.started += _ => _oneWay.DownOneWay();
-        _inputs.Actions.SkipDialogue.started += _ => _dialogue.SkipDialogue();  
+        _inputs.Player.Jump.started += _ => _character.StartJump();
+        _inputs.Player.Attack.started += _ => _attack.AttackZone();
+        _inputs.Player.Interact.started += _ => _playerTP.UseTP();
+        _inputs.Player.Dash.started += _ => _character.StartDash();
+        _inputs.Player.OneWayDown.started += _ => _oneWay.DownOneWay();
+        _inputs.Player.SkipDialogue.started += _ => _dialogue.SkipDialogue();
+        _inputs.Menu.PauseMenu.started += _ => _dialogueMenu.Pause();
         _inputs.Enable();
     }
 
     private void FixedUpdate()
     {
-        _character.GetMovementInput(_inputs.Actions.Move.ReadValue<float>());
+        _character.GetMovementInput(_inputs.Player.Move.ReadValue<float>());
 
-        _character.GetDashInput(_inputs.Actions.DashDirection.ReadValue<Vector2>());
+        _character.GetDashInput(_inputs.Player.DashDirection.ReadValue<Vector2>());
     }
 }

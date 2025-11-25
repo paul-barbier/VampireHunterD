@@ -129,8 +129,7 @@ public class PlayerCharacter : MonoBehaviour
     public Vector2 _currentDashForce = Vector2.zero;
     private Vector2 _dashMovementInput = Vector2.zero;
     [SerializeField] private bool _canDash = true;
-    [SerializeField] private bool _isDashing = false;
-    private float _dashTime = 0.0f;
+    public bool _isDashing = false;
     private float _startDashTime = 0.0f;
     private bool _bufferDash = false;
     [SerializeField] private bool _lockedDash = false;
@@ -154,6 +153,7 @@ public class PlayerCharacter : MonoBehaviour
     //Disable movement
     [SerializeField] public bool MovementDisabled = false;
 
+    [SerializeField] private Attack _attack;
 
 
     #endregion Variables
@@ -162,6 +162,8 @@ public class PlayerCharacter : MonoBehaviour
 
     private void Awake()
     {
+        _attack = GetComponent<Attack>();
+
         _rigidbody = GetComponent<Rigidbody2D>();
         _horizontalPhysic = _groundPhysic;
         CalculateJumpTime();
@@ -236,6 +238,7 @@ public class PlayerCharacter : MonoBehaviour
     {
         if (MovementDisabled == true)
             return;
+
         else
             //On reset la force � ajouter cette boucle de fixed update
             _forceToAdd = Vector2.zero;
@@ -426,7 +429,6 @@ public class PlayerCharacter : MonoBehaviour
             return;
         }
         _DAnimation.SetBool("IsJumping", true);
-        _DAnimation.SetBool("IsDashing", false);
 
         //_currentJumpForce.y = _jumpParameters.InitValue;
         _currentJumpForce.y = _jumpParameters.ImpulseForce;
@@ -473,7 +475,6 @@ public class PlayerCharacter : MonoBehaviour
         {
             _isJumping = false;
             _DAnimation.SetBool("IsJumping", false);
-            _DAnimation.SetBool("IsFalling", true);
 
             _currentJumpForce = Vector2.zero;
         }
@@ -481,7 +482,6 @@ public class PlayerCharacter : MonoBehaviour
         {
             _isJumping = false;
             _DAnimation.SetBool("IsJumping", false);
-            _DAnimation.SetBool("IsFalling", true);
 
             _currentJumpForce = _currentDashForce;
         }
@@ -551,23 +551,32 @@ public class PlayerCharacter : MonoBehaviour
 
         if (_canDash)
         {
-            _DAnimation.SetBool("IsDashing", true);
+            if (_dashMovementInput.y == 1)
+            {
+                _DAnimation.SetBool("IsDashingUp", true);
+                _DAnimation.SetBool("IsDashing", false);
+
+            }
+            else
+            {
+                _DAnimation.SetBool("IsDashingUp", false);
+                _DAnimation.SetBool("IsDashing", true);
+
+            }
 
             _isDashing = true;
             _canDash = false;
+
+            _currentDashForce = _dashMovementInput.normalized * _dashParameters.DashImpulseForce;
 
             _rigidbody.linearVelocity = Vector2.zero;
             _currentJumpForce = Vector2.zero;
             _forceToAdd = Vector2.zero;
 
-            _currentDashForce = _dashMovementInput.normalized * _dashParameters.DashImpulseForce;
-
-
             _startDashTime = Time.time;
             ChauveSouris.SetActive(false);
         }
     }
-
 
     public void Dash()
     {
@@ -585,9 +594,9 @@ public class PlayerCharacter : MonoBehaviour
             _isDashing = false;
             _currentDashForce = Vector2.zero;
             _DAnimation.SetBool("IsDashing", false);
+            _DAnimation.SetBool("IsDashingUp", false);
         }
     }
-
 
     private void StopDashBuffer()
     {
@@ -628,11 +637,14 @@ public class PlayerCharacter : MonoBehaviour
         _currentHorizontalVelocity = Vector2.zero;
         _rigidbody.linearVelocity = Vector2.zero;
         _forceToAdd = Vector2.zero;
+        _DAnimation.SetBool("IsDashing", false);
+        _DAnimation.SetBool("IsDashingUp", false);
+
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.CompareTag("Ennemy") && !_lockedDash)
+        if (collision.CompareTag("AttackZone") && !_lockedDash)
         {
             _enemyCollider = collision;
             gameObject.GetComponent<Health>()?.TakeDamage(25);
@@ -643,6 +655,7 @@ public class PlayerCharacter : MonoBehaviour
             StopDashOnEnemy(collision);
             BounceOnEnemy();
             _canDash = true;
+            Destroy(collision.gameObject);
         }
     }
     IEnumerator BounceTime()
