@@ -47,7 +47,6 @@ public class Dialogue : MonoBehaviour
     {
         if (collision.CompareTag("Player"))
         {
-            //_playerMovementScript.MovementDisabled = true;
             _dialogueActivated = true;
             _dialogueCanva.SetActive(true);
             SettingVelocity();
