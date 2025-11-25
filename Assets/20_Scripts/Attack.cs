@@ -6,12 +6,14 @@ public class Attack : MonoBehaviour
     [SerializeField] private float attackSpeed;
     [SerializeField] private float lowAngle;
     [SerializeField] private float highAngle;
-    private bool isAttacking = false;
+    public bool isAttacking = false;
     [SerializeField] private Animator _DAnimation;
+    private PlayerCharacter _playerCharacter;
 
 
     void Awake()
     {
+        _playerCharacter = GetComponent<PlayerCharacter>();
         attackPivot.gameObject.SetActive(false);
     }
 
