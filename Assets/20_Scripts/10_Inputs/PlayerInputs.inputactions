@@ -3,7 +3,7 @@
     "name": "PlayerInputs",
     "maps": [
         {
-            "name": "Actions",
+            "name": "Player",
             "id": "ccb7b4e7-bfe5-414b-aa58-e663ad9a8583",
             "actions": [
                 {
@@ -73,15 +73,6 @@
                     "name": "SkipDialogue",
                     "type": "Button",
                     "id": "74c8037e-b0f4-4bc8-9225-cecc6ff90ff1",
-                    "expectedControlType": "",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
-                    "name": "PauseMenu",
-                    "type": "Button",
-                    "id": "4cc922b6-bb3e-4091-b724-773706760cb4",
                     "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
@@ -396,26 +387,32 @@
                     "action": "SkipDialogue",
                     "isComposite": false,
                     "isPartOfComposite": false
-                },
+                }
+            ]
+        },
+        {
+            "name": "Menu",
+            "id": "f5040017-0b9b-4cec-a5da-0bff94370089",
+            "actions": [
+                {
+                    "name": "New action",
+                    "type": "Button",
+                    "id": "2d1e5f48-c828-4dbc-9978-8b03b9bc1346",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
                 {
                     "name": "",
-                    "id": "474d2bc0-2b81-43d1-8c7e-ee678e2341ca",
-                    "path": "<Keyboard>/escape",
+                    "id": "e664f19d-46e5-4557-b979-50592eda9513",
+                    "path": "",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "PauseMenu",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "90092da0-aa31-4ac0-adc8-05fbd3a2e5ad",
-                    "path": "<Gamepad>/start",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "PauseMenu",
+                    "action": "New action",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
