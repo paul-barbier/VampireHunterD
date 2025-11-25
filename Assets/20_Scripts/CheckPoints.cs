@@ -2,12 +2,20 @@ using UnityEngine;
 
 public class CheckPoints : MonoBehaviour
 {
+    [SerializeField] private Health Health;
+
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        PlayerCharacter controller = collision.GetComponent<PlayerCharacter>();
-        if (controller != null)
+
+        if (collision.CompareTag("Player"))
         {
-            controller.checkpoint = this;
+            Health playerHealth = collision.GetComponent<Health>();
+
+            playerHealth.GetHeal(playerHealth.GetMaxHealth());
+
+            PlayerCharacter character = collision.GetComponent<PlayerCharacter>();
+
+            character.checkpoint = this;
         }
     }
 }

@@ -7,7 +7,7 @@ public class Attack : MonoBehaviour
     [SerializeField] private float lowAngle;
     [SerializeField] private float highAngle;
     private bool isAttacking = false;
-
+    [SerializeField] private Animator _DAnimation;
 
 
     void Awake()
@@ -21,6 +21,7 @@ public class Attack : MonoBehaviour
         {
             highAngle = Mathf.MoveTowards(highAngle, lowAngle, attackSpeed * Time.deltaTime);
             attackPivot.localRotation = Quaternion.Euler(0, 0, highAngle);
+            _DAnimation.SetBool("IsAttacking", true);
 
             if (Mathf.Approximately(highAngle, lowAngle))
             {
@@ -28,6 +29,8 @@ public class Attack : MonoBehaviour
                 attackPivot.gameObject.SetActive(false);
                 highAngle = 50f;
                 attackPivot.localRotation = Quaternion.identity;
+                _DAnimation.SetBool("IsAttacking", false);
+
             }
         }
     }
