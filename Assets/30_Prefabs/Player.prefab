@@ -576,8 +576,8 @@ MonoBehaviour:
     InitValue: 19.6
     GravityValue: -27.44
   _dashParameters:
-    DashImpulseForce: 3
-    DashDuration: 0.3
+    DashImpulseForce: 0.8
+    DashDuration: 0.6
     DashBufferTime: 0.2
   _knockbackValues:
     _knockbackDirection: {x: 15, y: 15, z: 0}
@@ -694,9 +694,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9d9df8fc88e1f1d4cbd253807d8fa1d8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _maxHealth: 10000
+  _maxHealth: 100
   _currentHealth: 0
-  _damages: 25
   HpAnime: {fileID: 0}
 --- !u!1 &9184626408861102161
 GameObject:

@@ -1502,11 +1502,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!1 &468584733 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1893569437254920610, guid: a38c065f7f2b48d42b8647a546721097, type: 3}
-  m_PrefabInstance: {fileID: 6480858544240983737}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &474660204 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8787763197830081006, guid: d47cf2ba69215df4d94f3774b35d245c, type: 3}
@@ -4193,11 +4188,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!95 &1536999569 stripped
-Animator:
-  m_CorrespondingSourceObject: {fileID: 317578980722878797, guid: a38c065f7f2b48d42b8647a546721097, type: 3}
-  m_PrefabInstance: {fileID: 6480858544240983737}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1578816343
 GameObject:
   m_ObjectHideFlags: 0
@@ -5477,61 +5467,17 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 1720546089308738315, guid: a38c065f7f2b48d42b8647a546721097, type: 3}
-      propertyPath: _DAnimation
-      value: 
-      objectReference: {fileID: 1536999569}
-    - target: {fileID: 3403784465517668524, guid: a38c065f7f2b48d42b8647a546721097, type: 3}
-      propertyPath: checkpoint
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 3403784465517668524, guid: a38c065f7f2b48d42b8647a546721097, type: 3}
-      propertyPath: BouncingTime
-      value: 0.3
-      objectReference: {fileID: 0}
-    - target: {fileID: 3403784465517668524, guid: a38c065f7f2b48d42b8647a546721097, type: 3}
-      propertyPath: ChauveSouris
-      value: 
-      objectReference: {fileID: 468584733}
-    - target: {fileID: 3403784465517668524, guid: a38c065f7f2b48d42b8647a546721097, type: 3}
-      propertyPath: enemyBounceForce.y
-      value: 8
-      objectReference: {fileID: 0}
     - target: {fileID: 3403784465517668524, guid: a38c065f7f2b48d42b8647a546721097, type: 3}
       propertyPath: _dashParameters.DashDuration
-      value: 0.3
+      value: 0.6
       objectReference: {fileID: 0}
     - target: {fileID: 3403784465517668524, guid: a38c065f7f2b48d42b8647a546721097, type: 3}
       propertyPath: _dashParameters.DashImpulseForce
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 3403784465517668524, guid: a38c065f7f2b48d42b8647a546721097, type: 3}
-      propertyPath: _knockbackValues._knockbackForce
-      value: 8
-      objectReference: {fileID: 0}
-    - target: {fileID: 3403784465517668524, guid: a38c065f7f2b48d42b8647a546721097, type: 3}
-      propertyPath: _knockbackValues._knockbackDirection.x
-      value: 15
+      value: 0.8
       objectReference: {fileID: 0}
     - target: {fileID: 5230953878154645213, guid: a38c065f7f2b48d42b8647a546721097, type: 3}
       propertyPath: m_Name
       value: Player
-      objectReference: {fileID: 0}
-    - target: {fileID: 5674561225617938969, guid: a38c065f7f2b48d42b8647a546721097, type: 3}
-      propertyPath: m_Size.x
-      value: 5.0012207
-      objectReference: {fileID: 0}
-    - target: {fileID: 5674561225617938969, guid: a38c065f7f2b48d42b8647a546721097, type: 3}
-      propertyPath: m_Size.y
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 5674561225617938969, guid: a38c065f7f2b48d42b8647a546721097, type: 3}
-      propertyPath: m_Sprite
-      value: 
-      objectReference: {fileID: 8164408767924170613, guid: 19dba204746b2f247a181069e8f9fa7a, type: 3}
-    - target: {fileID: 5674561225617938969, guid: a38c065f7f2b48d42b8647a546721097, type: 3}
-      propertyPath: m_WasSpriteAssigned
-      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6871197366903174149, guid: a38c065f7f2b48d42b8647a546721097, type: 3}
       propertyPath: _camera
