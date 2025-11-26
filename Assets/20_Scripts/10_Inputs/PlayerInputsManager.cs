@@ -18,9 +18,9 @@ public class PlayerInputsManager : MonoBehaviour
         _character = GetComponent<PlayerCharacter>();
         _attack = GetComponent<Attack>();
         _playerTP = GetComponent<PlayerTeleport>();
-        _dialogue = GetComponent<Dialogue>();
+        _dialogue = FindFirstObjectByType<Dialogue>();
         _oneWay = GetComponent<PlatformeOneWay>();
-        _dialogueMenu = GetComponent<UIDialogue>();
+        _dialogueMenu = FindFirstObjectByType<UIDialogue>();
 
         _inputs = new PlayerInputs();
         _inputs.Player.Jump.started += _ => _character.StartJump();
