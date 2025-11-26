@@ -10,6 +10,7 @@ public enum SoundType
     WoodFootsteps,
     TilesFootsteps,
     CataFootsteps,
+    MobFootsteps,
     Attack,
     Land,
     Vampire,

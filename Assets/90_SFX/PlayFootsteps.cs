@@ -30,6 +30,8 @@ public class PlayFootsteps : MonoBehaviour
         }
     }
 
+   
+
     private void Update()
     {
         Debug.DrawRay(transform.position, new Vector2(0, -1) * 2.5f, Color.red);

@@ -5,6 +5,7 @@ using System;
 
 public class MouvementScript : MonoBehaviour
 {
+    public SoundType MobFootsteps;
     [Serializable]
     private struct MovementValues
     {
@@ -29,6 +30,10 @@ public class MouvementScript : MonoBehaviour
     private void Start()
     {
         _pointsMovement._targetPoints = 0;
+    }
+    public void PlayMobFoot()
+    {
+        SoundManager.PlaySound(SoundType.MobFootsteps, 1f);
     }
 
     private void FixedUpdate()
@@ -86,4 +91,5 @@ public class MouvementScript : MonoBehaviour
             _ennemySprite.flipX = true;
         }
     }
+
 }
