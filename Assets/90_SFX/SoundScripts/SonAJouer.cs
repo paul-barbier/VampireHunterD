@@ -3,8 +3,9 @@ using UnityEngine.Rendering;
 
 public class SonAJouer : MonoBehaviour
 {
-    public void PlaySound(SoundType sound, float volume = 1)
+
+    public void PlayMobFoot()
     {
-        AudioSource.PlayClipAtPoint(SoundManager.instance.soundList[(int)sound].Sounds[0], Camera.main.transform.position, volume);
+        AudioSource.PlayClipAtPoint(SoundManager.instance.soundList[(int)SoundType.MobFootsteps].Sounds[0], transform.position, 1f);
     }
 }

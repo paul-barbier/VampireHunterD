@@ -5,7 +5,7 @@ using System;
 
 public class MouvementScript : MonoBehaviour
 {
-    public SoundType MobFootsteps;
+    
     [Serializable]
     private struct MovementValues
     {
@@ -55,6 +55,7 @@ public class MouvementScript : MonoBehaviour
             RotateMesh();
         }
     }
+
 
     void IncreaseTargetInt()
     {
