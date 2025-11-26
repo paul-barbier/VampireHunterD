@@ -155,6 +155,10 @@ public class PlayerCharacter : MonoBehaviour
 
     [SerializeField] private Attack _attack;
 
+    [SerializeField] private Collider2D dashHitbox;
+    [SerializeField] private CapsuleCollider2D _capsuleBox;
+    private Vector2 _sizeCapsule;
+    private Vector2 _offsetCapsule;
 
     #endregion Variables
 
@@ -165,6 +169,10 @@ public class PlayerCharacter : MonoBehaviour
         _attack = GetComponent<Attack>();
 
         _rigidbody = GetComponent<Rigidbody2D>();
+        _capsuleBox = GetComponent<CapsuleCollider2D>();
+        _sizeCapsule = _capsuleBox.size;
+        _offsetCapsule = _capsuleBox.offset;
+
         _horizontalPhysic = _groundPhysic;
         CalculateJumpTime();
 
@@ -344,14 +352,27 @@ public class PlayerCharacter : MonoBehaviour
         //On a ajoute le delta de v�locit� � la force � donn� ce tour de boucle au rigidbody
         _forceToAdd += velocityDelta;
 
-        if (_movementInput >= 0.01 || _movementInput <= -0.01)
+        if (_movementInput >= 0.01)
         {
             _DAnimation.SetBool("IsRunning", true);
+            _capsuleBox.size = _sizeCapsule * new Vector2(2, 1);
+            _capsuleBox.offset = new Vector2(1, 0.3f);
+        }
+        else if (_movementInput <= -0.01)
+        {
+            _DAnimation.SetBool("IsRunning", true);
+            _capsuleBox.size = _sizeCapsule * new Vector2(2, 1);
+            _capsuleBox.offset = new Vector2(-1, 0.3f);
+
         }
         else if (_movementInput == 0)
         {
             _DAnimation.SetBool("IsRunning", false);
+            _capsuleBox.size = _sizeCapsule;
+            _capsuleBox.offset = _offsetCapsule;
+
         }
+
     }
 
     private Vector2 SnapToGround(float input)
@@ -554,14 +575,14 @@ public class PlayerCharacter : MonoBehaviour
             if (_dashMovementInput.y == 1)
             {
                 _DAnimation.SetBool("IsDashingUp", true);
-                _DAnimation.SetBool("IsDashing", false);
-
             }
-            else
+            else if (_dashMovementInput.x != 0)
             {
-                _DAnimation.SetBool("IsDashingUp", false);
                 _DAnimation.SetBool("IsDashing", true);
-
+            }
+            else if (_dashMovementInput.y == -1)
+            {
+                _DAnimation.SetBool("IsDashingDown", true);
             }
 
             _isDashing = true;
@@ -595,6 +616,7 @@ public class PlayerCharacter : MonoBehaviour
             _currentDashForce = Vector2.zero;
             _DAnimation.SetBool("IsDashing", false);
             _DAnimation.SetBool("IsDashingUp", false);
+            _DAnimation.SetBool("IsDashingDown", false);
         }
     }
 
@@ -615,7 +637,7 @@ public class PlayerCharacter : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        //_isDashing = false;
+        _isDashing = false;
         _currentDashForce = Vector2.zero;
     }
 
@@ -650,7 +672,7 @@ public class PlayerCharacter : MonoBehaviour
             gameObject.GetComponent<Health>()?.TakeDamage(25);
             Knockback(collision);
         }
-        else if (collision.CompareTag("Dash") && _isDashing)
+        else if (collision.transform != dashHitbox.transform && collision.CompareTag("Dash") && _isDashing)
         {
             StopDashOnEnemy(collision);
             BounceOnEnemy();
