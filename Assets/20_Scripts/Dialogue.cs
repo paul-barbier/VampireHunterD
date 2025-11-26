@@ -5,10 +5,12 @@ using System.Collections;
 using System;
 using Unity.Multiplayer.Center.Common;
 using Unity.VisualScripting;
+using UnityEngine.InputSystem;
 
 public class Dialogue : MonoBehaviour
 {
     private PlayerCharacter _playerMovementScript;
+
     [SerializeField] private GameObject _playerCharacterMovement;
 
     [SerializeField] private GameObject _dialogueCanva;

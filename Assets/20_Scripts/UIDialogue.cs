@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 public class UIDialogue : MonoBehaviour
 {
@@ -6,6 +7,7 @@ public class UIDialogue : MonoBehaviour
     [SerializeField] private GameObject _optionsMenu;
     [SerializeField] private GameObject _controlesMenu;
     [SerializeField] private GameObject _dialogueUI;
+
 
     public void Start()
     {
