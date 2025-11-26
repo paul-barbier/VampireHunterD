@@ -12,6 +12,7 @@ public class PlayerInputsManager : MonoBehaviour
     private Dialogue _dialogue = null;
     private PlatformeOneWay _oneWay = null;
     private UIDialogue _dialogueMenu = null;
+    private MainMenu _mainMenu = null;
 
     private void Awake()
     {
@@ -21,6 +22,7 @@ public class PlayerInputsManager : MonoBehaviour
         _dialogue = FindFirstObjectByType<Dialogue>();
         _oneWay = GetComponent<PlatformeOneWay>();
         _dialogueMenu = FindFirstObjectByType<UIDialogue>();
+        _mainMenu = GetComponent<MainMenu>();
 
         _inputs = new PlayerInputs();
         _inputs.Player.Jump.started += _ => _character.StartJump();
@@ -30,6 +32,8 @@ public class PlayerInputsManager : MonoBehaviour
         _inputs.Player.OneWayDown.started += _ => _oneWay.DownOneWay();
         _inputs.Player.SkipDialogue.started += _ => _dialogue.SkipDialogue();
         _inputs.Menu.PauseMenu.started += _ => _dialogueMenu.Pause();
+        _inputs.Menu.Back.started += _ => _dialogueMenu.Back();
+        _inputs.Menu.BackMenu.started += _ => _mainMenu.BackMenu();
         _inputs.Enable();
     }
 

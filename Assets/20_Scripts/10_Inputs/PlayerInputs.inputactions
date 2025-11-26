@@ -404,9 +404,18 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Accept",
+                    "name": "Back",
                     "type": "Button",
                     "id": "a69e8cfc-b26b-498e-98d3-1bbb96f2d9d0",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "BackMenu",
+                    "type": "Button",
+                    "id": "c8660a12-7895-4036-891b-5537ea04ed92",
                     "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
@@ -439,22 +448,44 @@
                 {
                     "name": "",
                     "id": "4ec6f933-be13-4b0e-a735-ac78ed5cc3e0",
-                    "path": "<Gamepad>/buttonSouth",
+                    "path": "<Gamepad>/buttonEast",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Accept",
+                    "action": "Back",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
                 {
                     "name": "",
                     "id": "435240e5-b043-463a-8c8e-838f963fa08d",
-                    "path": "<Keyboard>/enter",
+                    "path": "<Keyboard>/backspace",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Accept",
+                    "action": "Back",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "1a50e2ff-831d-4246-b2f1-d6ec1bdfe595",
+                    "path": "<Gamepad>/buttonEast",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "BackMenu",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "313a91ba-1b69-4f26-aaa6-a2391be12e7d",
+                    "path": "<Keyboard>/backspace",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "BackMenu",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
