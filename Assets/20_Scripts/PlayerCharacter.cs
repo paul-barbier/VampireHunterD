@@ -155,10 +155,14 @@ public class PlayerCharacter : MonoBehaviour
 
     [SerializeField] private Attack _attack;
 
-    [SerializeField] private Collider2D dashHitbox;
     [SerializeField] private CapsuleCollider2D _capsuleBox;
     private Vector2 _sizeCapsule;
     private Vector2 _offsetCapsule;
+
+    [SerializeField] private BoxCollider2D dashHitbox;
+    private Vector2 _sizeDashHitbox;
+    private Vector2 _offsetDashHitbox;
+
 
     #endregion Variables
 
@@ -210,6 +214,9 @@ public class PlayerCharacter : MonoBehaviour
 
     private void Update()
     {
+        if (_attack.isAttacking)
+            return;
+
         RotateMesh();
     }
 
@@ -352,27 +359,25 @@ public class PlayerCharacter : MonoBehaviour
         //On a ajoute le delta de v�locit� � la force � donn� ce tour de boucle au rigidbody
         _forceToAdd += velocityDelta;
 
-        if (_movementInput >= 0.01)
+        if (_movementInput >= 0.01 && IsGrounded)
         {
             _DAnimation.SetBool("IsRunning", true);
             _capsuleBox.size = _sizeCapsule * new Vector2(2, 1);
             _capsuleBox.offset = new Vector2(1, 0.3f);
         }
-        else if (_movementInput <= -0.01)
+        else if (_movementInput <= -0.01 && IsGrounded)
         {
             _DAnimation.SetBool("IsRunning", true);
             _capsuleBox.size = _sizeCapsule * new Vector2(2, 1);
             _capsuleBox.offset = new Vector2(-1, 0.3f);
 
         }
-        else if (_movementInput == 0)
+        else if (_movementInput == 0 && IsGrounded || _movementInput != 0 && !IsGrounded)
         {
             _DAnimation.SetBool("IsRunning", false);
             _capsuleBox.size = _sizeCapsule;
             _capsuleBox.offset = _offsetCapsule;
-
         }
-
     }
 
     private Vector2 SnapToGround(float input)
@@ -421,7 +426,10 @@ public class PlayerCharacter : MonoBehaviour
         float velocityDelta = _currentGravity - _rigidbody.linearVelocity.y;
 
         velocityDelta = Mathf.Clamp(velocityDelta, -_gravityParameters.MaxAcceleration, 0.0f);
-        _DAnimation.SetBool("IsFalling", true);
+        if (!_isDashing)
+        {
+            _DAnimation.SetBool("IsFalling", true);
+        }
 
         _forceToAdd.y += velocityDelta;
     }
@@ -470,6 +478,7 @@ public class PlayerCharacter : MonoBehaviour
     {
         if (!_isJumping)
             return;
+        _capsuleBox.offset = new Vector2(0, 1.5f);
 
         ContactPoint2D[] contactPointArray = new ContactPoint2D[1];
         ContactFilter2D filter = _ceilingContactFilter;
@@ -497,12 +506,16 @@ public class PlayerCharacter : MonoBehaviour
             _isJumping = false;
             _DAnimation.SetBool("IsJumping", false);
 
+            _capsuleBox.offset = _offsetCapsule;
+
             _currentJumpForce = Vector2.zero;
         }
         if (jumpTimeRatio <= 1.0f && _isDashing)
         {
             _isJumping = false;
             _DAnimation.SetBool("IsJumping", false);
+
+            _capsuleBox.offset = _offsetCapsule;
 
             _currentJumpForce = _currentDashForce;
         }
@@ -572,6 +585,7 @@ public class PlayerCharacter : MonoBehaviour
 
         if (_canDash)
         {
+
             if (_dashMovementInput.y == 1)
             {
                 _DAnimation.SetBool("IsDashingUp", true);
@@ -639,6 +653,10 @@ public class PlayerCharacter : MonoBehaviour
     {
         _isDashing = false;
         _currentDashForce = Vector2.zero;
+        _currentJumpForce = Vector2.zero;
+        _DAnimation.SetBool("IsDashing", false);
+        _DAnimation.SetBool("IsDashingUp", false);
+        _DAnimation.SetBool("IsDashingDown", false);
     }
 
     IEnumerator CdDash()
@@ -659,8 +677,10 @@ public class PlayerCharacter : MonoBehaviour
         _currentHorizontalVelocity = Vector2.zero;
         _rigidbody.linearVelocity = Vector2.zero;
         _forceToAdd = Vector2.zero;
+        _currentGravity = 0.0f;
         _DAnimation.SetBool("IsDashing", false);
         _DAnimation.SetBool("IsDashingUp", false);
+        _DAnimation.SetBool("IsDashingDown", false);
 
     }
 
@@ -672,7 +692,7 @@ public class PlayerCharacter : MonoBehaviour
             gameObject.GetComponent<Health>()?.TakeDamage(25);
             Knockback(collision);
         }
-        else if (collision.transform != dashHitbox.transform && collision.CompareTag("Dash") && _isDashing)
+        else if (collision.CompareTag("Dash") && _isDashing)
         {
             StopDashOnEnemy(collision);
             BounceOnEnemy();
