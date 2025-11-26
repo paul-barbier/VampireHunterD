@@ -478,12 +478,21 @@ public partial class @PlayerInputs: IInputActionCollection2, IDisposable
         },
         {
             ""name"": ""Menu"",
-            ""id"": ""f5040017-0b9b-4cec-a5da-0bff94370089"",
+            ""id"": ""fdac6119-2fcc-435f-8973-b07acd1b2fe1"",
             ""actions"": [
                 {
                     ""name"": ""PauseMenu"",
                     ""type"": ""Button"",
-                    ""id"": ""2d1e5f48-c828-4dbc-9978-8b03b9bc1346"",
+                    ""id"": ""405bd2f8-9c3e-4062-9a5a-c61561d58c1d"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Accept"",
+                    ""type"": ""Button"",
+                    ""id"": ""a69e8cfc-b26b-498e-98d3-1bbb96f2d9d0"",
                     ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """",
@@ -493,7 +502,7 @@ public partial class @PlayerInputs: IInputActionCollection2, IDisposable
             ""bindings"": [
                 {
                     ""name"": """",
-                    ""id"": ""e664f19d-46e5-4557-b979-50592eda9513"",
+                    ""id"": ""cfd4eecc-94ca-4dd1-b732-6c2a2b8b848e"",
                     ""path"": ""<Keyboard>/escape"",
                     ""interactions"": """",
                     ""processors"": """",
@@ -504,12 +513,34 @@ public partial class @PlayerInputs: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""977c467c-da5c-4889-8308-346741cda382"",
+                    ""id"": ""8d4b5a9e-9c2e-49cf-b2ee-add7bbc8780b"",
                     ""path"": ""<Gamepad>/start"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""PauseMenu"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""4ec6f933-be13-4b0e-a735-ac78ed5cc3e0"",
+                    ""path"": ""<Gamepad>/buttonSouth"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Accept"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""435240e5-b043-463a-8c8e-838f963fa08d"",
+                    ""path"": ""<Keyboard>/enter"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Accept"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -531,6 +562,7 @@ public partial class @PlayerInputs: IInputActionCollection2, IDisposable
         // Menu
         m_Menu = asset.FindActionMap("Menu", throwIfNotFound: true);
         m_Menu_PauseMenu = m_Menu.FindAction("PauseMenu", throwIfNotFound: true);
+        m_Menu_Accept = m_Menu.FindAction("Accept", throwIfNotFound: true);
     }
 
     ~@PlayerInputs()
@@ -786,6 +818,7 @@ public partial class @PlayerInputs: IInputActionCollection2, IDisposable
     private readonly InputActionMap m_Menu;
     private List<IMenuActions> m_MenuActionsCallbackInterfaces = new List<IMenuActions>();
     private readonly InputAction m_Menu_PauseMenu;
+    private readonly InputAction m_Menu_Accept;
     /// <summary>
     /// Provides access to input actions defined in input action map "Menu".
     /// </summary>
@@ -801,6 +834,10 @@ public partial class @PlayerInputs: IInputActionCollection2, IDisposable
         /// Provides access to the underlying input action "Menu/PauseMenu".
         /// </summary>
         public InputAction @PauseMenu => m_Wrapper.m_Menu_PauseMenu;
+        /// <summary>
+        /// Provides access to the underlying input action "Menu/Accept".
+        /// </summary>
+        public InputAction @Accept => m_Wrapper.m_Menu_Accept;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -830,6 +867,9 @@ public partial class @PlayerInputs: IInputActionCollection2, IDisposable
             @PauseMenu.started += instance.OnPauseMenu;
             @PauseMenu.performed += instance.OnPauseMenu;
             @PauseMenu.canceled += instance.OnPauseMenu;
+            @Accept.started += instance.OnAccept;
+            @Accept.performed += instance.OnAccept;
+            @Accept.canceled += instance.OnAccept;
         }
 
         /// <summary>
@@ -844,6 +884,9 @@ public partial class @PlayerInputs: IInputActionCollection2, IDisposable
             @PauseMenu.started -= instance.OnPauseMenu;
             @PauseMenu.performed -= instance.OnPauseMenu;
             @PauseMenu.canceled -= instance.OnPauseMenu;
+            @Accept.started -= instance.OnAccept;
+            @Accept.performed -= instance.OnAccept;
+            @Accept.canceled -= instance.OnAccept;
         }
 
         /// <summary>
@@ -955,5 +998,12 @@ public partial class @PlayerInputs: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnPauseMenu(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "Accept" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnAccept(InputAction.CallbackContext context);
     }
 }

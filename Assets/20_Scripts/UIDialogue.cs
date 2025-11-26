@@ -1,11 +1,10 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 public class UIDialogue : MonoBehaviour
 {
-    [SerializeField] private GameObject _pauseMenu;
-    [SerializeField] private GameObject _optionsMenu;
-    [SerializeField] private GameObject _controlesMenu;
+    [SerializeField] private GameObject _pauseMenu, _optionsMenu;
     [SerializeField] private GameObject _dialogueUI;
 
 
@@ -13,45 +12,34 @@ public class UIDialogue : MonoBehaviour
     {
         _pauseMenu.SetActive(false);
         _optionsMenu.SetActive(false);
-        _controlesMenu.SetActive(false);
     }
 
     public void Pause()
     {
-        _pauseMenu.SetActive(true);
-        _optionsMenu.SetActive(false);
-        _controlesMenu.SetActive(false);
+        if (!_pauseMenu.activeInHierarchy && !_optionsMenu.activeInHierarchy)
+        {
+            _pauseMenu.SetActive(true);
+            Time.timeScale = 0.0f;
+        }
+        else if (_pauseMenu.activeInHierarchy || _optionsMenu.activeInHierarchy)
+        {
+            Time.timeScale = 1.0f;
+            _pauseMenu.SetActive(false);
+            _optionsMenu.SetActive(false);
+        }
     }
 
     public void Reprendre()
     {
+        Time.timeScale = 1.0f;
         _pauseMenu.SetActive(false);
         _optionsMenu.SetActive(false);
-        _controlesMenu.SetActive(false);
     }
 
     public void OptionsPauseMenu()
     {
         _pauseMenu.SetActive(false);
         _optionsMenu.SetActive(true);
-        _controlesMenu.SetActive(false);
-    }
-
-    public void ControlesPauseMenu()
-    {
-        _pauseMenu.SetActive(false);
-        _optionsMenu.SetActive(false);
-        _controlesMenu.SetActive(true);
-    }
-
-    public void BackToOptions()
-    {
-        if (_controlesMenu != null)
-        {
-            _pauseMenu.SetActive(false);
-            _optionsMenu.SetActive(true);
-            _controlesMenu.SetActive(false);
-        }
     }
 
     public void BackToPauseMenu()
@@ -60,7 +48,6 @@ public class UIDialogue : MonoBehaviour
         {
             _pauseMenu.SetActive(true);
             _optionsMenu.SetActive(false);
-            _controlesMenu.SetActive(false);
         }
     }
 
