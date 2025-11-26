@@ -109,6 +109,7 @@ GameObject:
   - component: {fileID: 5873381006060933418}
   - component: {fileID: 3277552423776059909}
   - component: {fileID: 7327761873260487373}
+  - component: {fileID: 4650955764493522164}
   m_Layer: 0
   m_Name: Visual
   m_TagString: Dash
@@ -199,6 +200,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3cd112853051e384f9a40d5fe778e271, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  MobFootsteps: 4
   _ennemySprite: {fileID: 1556619748606121263}
   _pointsMovement:
     _patrolPoints:
@@ -277,6 +279,18 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 5.82232, y: 10.386124}
   m_EdgeRadius: 0
+--- !u!114 &4650955764493522164
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7876728317800266028}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2e3ad0a76e0ec2149b781c458747ef3d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &8810607547684924949
 GameObject:
   m_ObjectHideFlags: 0

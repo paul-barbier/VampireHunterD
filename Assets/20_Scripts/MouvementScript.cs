@@ -31,10 +31,7 @@ public class MouvementScript : MonoBehaviour
     {
         _pointsMovement._targetPoints = 0;
     }
-    public void PlayMobFoot()
-    {
-        SoundManager.PlaySound(SoundType.MobFootsteps, 1f);
-    }
+
 
     private void FixedUpdate()
     {
