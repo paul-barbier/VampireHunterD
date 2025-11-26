@@ -161,6 +161,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _pauseMenu: {fileID: 6028509072107340473}
   _optionsMenu: {fileID: 4774758469825178519}
+  _pauseFirstButton: {fileID: 8514180914089169046}
+  _optionsFirstButton: {fileID: 6562431344890974721}
+  _optionsClosedButton: {fileID: 8313780372344433601}
   _dialogueUI: {fileID: 7393131894367650213}
 --- !u!1 &3214750565010192964
 GameObject:
@@ -1098,19 +1101,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Navigation:
-    m_Mode: 3
+    m_Mode: 4
     m_WrapAround: 0
-    m_SelectOnUp: {fileID: 0}
-    m_SelectOnDown: {fileID: 0}
+    m_SelectOnUp: {fileID: 6758723164611078561}
+    m_SelectOnDown: {fileID: 6758723164611078561}
     m_SelectOnLeft: {fileID: 0}
     m_SelectOnRight: {fileID: 0}
   m_Transition: 1
   m_Colors:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
-    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
-    m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
+    m_HighlightedColor: {r: 1, g: 0, b: 0, a: 1}
+    m_PressedColor: {r: 0, g: 0.010029316, b: 1, a: 1}
+    m_SelectedColor: {r: 1, g: 0, b: 0, a: 1}
+    m_DisabledColor: {r: 1, g: 1, b: 1, a: 0.5019608}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
   m_SpriteState:
@@ -1128,7 +1131,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 8687338215039039765}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1883894258760443842}
+        m_TargetAssemblyTypeName: UIDialogue, Assembly-CSharp
+        m_MethodName: CloseOptions
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &6348481354311163544
 GameObject:
   m_ObjectHideFlags: 0
@@ -1357,10 +1372,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Navigation:
-    m_Mode: 3
+    m_Mode: 4
     m_WrapAround: 0
-    m_SelectOnUp: {fileID: 0}
-    m_SelectOnDown: {fileID: 0}
+    m_SelectOnUp: {fileID: 5948435145900573234}
+    m_SelectOnDown: {fileID: 1727272232493618278}
     m_SelectOnLeft: {fileID: 0}
     m_SelectOnRight: {fileID: 0}
   m_Transition: 1
@@ -1847,10 +1862,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Navigation:
-    m_Mode: 3
+    m_Mode: 4
     m_WrapAround: 0
-    m_SelectOnUp: {fileID: 0}
-    m_SelectOnDown: {fileID: 0}
+    m_SelectOnUp: {fileID: 1727272232493618278}
+    m_SelectOnDown: {fileID: 893753122033982361}
     m_SelectOnLeft: {fileID: 0}
     m_SelectOnRight: {fileID: 0}
   m_Transition: 1
@@ -1880,7 +1895,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1883894258760443842}
         m_TargetAssemblyTypeName: UIDialogue, Assembly-CSharp
-        m_MethodName: OptionsPauseMenu
+        m_MethodName: OpenOptions
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -2116,10 +2131,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Navigation:
-    m_Mode: 3
+    m_Mode: 4
     m_WrapAround: 0
-    m_SelectOnUp: {fileID: 0}
-    m_SelectOnDown: {fileID: 0}
+    m_SelectOnUp: {fileID: 893753122033982361}
+    m_SelectOnDown: {fileID: 5948435145900573234}
     m_SelectOnLeft: {fileID: 0}
     m_SelectOnRight: {fileID: 0}
   m_Transition: 1
@@ -2253,6 +2268,58 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 739351183912706089, guid: 476418ba1728be24b94861621618a1c5, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1795991396612486747, guid: 476418ba1728be24b94861621618a1c5, type: 3}
+      propertyPath: m_Navigation.m_Mode
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 1795991396612486747, guid: 476418ba1728be24b94861621618a1c5, type: 3}
+      propertyPath: m_Colors.m_PressedColor.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1795991396612486747, guid: 476418ba1728be24b94861621618a1c5, type: 3}
+      propertyPath: m_Colors.m_PressedColor.g
+      value: 0.115142345
+      objectReference: {fileID: 0}
+    - target: {fileID: 1795991396612486747, guid: 476418ba1728be24b94861621618a1c5, type: 3}
+      propertyPath: m_Colors.m_PressedColor.r
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1795991396612486747, guid: 476418ba1728be24b94861621618a1c5, type: 3}
+      propertyPath: m_Navigation.m_SelectOnUp
+      value: 
+      objectReference: {fileID: 4035567382992817057}
+    - target: {fileID: 1795991396612486747, guid: 476418ba1728be24b94861621618a1c5, type: 3}
+      propertyPath: m_Colors.m_SelectedColor.b
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1795991396612486747, guid: 476418ba1728be24b94861621618a1c5, type: 3}
+      propertyPath: m_Colors.m_SelectedColor.g
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1795991396612486747, guid: 476418ba1728be24b94861621618a1c5, type: 3}
+      propertyPath: m_Colors.m_SelectedColor.r
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1795991396612486747, guid: 476418ba1728be24b94861621618a1c5, type: 3}
+      propertyPath: m_Navigation.m_SelectOnDown
+      value: 
+      objectReference: {fileID: 4035567382992817057}
+    - target: {fileID: 1795991396612486747, guid: 476418ba1728be24b94861621618a1c5, type: 3}
+      propertyPath: m_Colors.m_HighlightedColor.b
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1795991396612486747, guid: 476418ba1728be24b94861621618a1c5, type: 3}
+      propertyPath: m_Colors.m_HighlightedColor.g
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1795991396612486747, guid: 476418ba1728be24b94861621618a1c5, type: 3}
+      propertyPath: m_Colors.m_HighlightedColor.r
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2009864081930838554, guid: 476418ba1728be24b94861621618a1c5, type: 3}
       propertyPath: m_Colors.m_PressedColor.b
       value: 1
@@ -2300,6 +2367,10 @@ PrefabInstance:
     - target: {fileID: 2009864081930838554, guid: 476418ba1728be24b94861621618a1c5, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
       value: UIDialogue, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 2176675448052502011, guid: 476418ba1728be24b94861621618a1c5, type: 3}
+      propertyPath: m_Name
+      value: Slider
       objectReference: {fileID: 0}
     - target: {fileID: 2639367464089509501, guid: 476418ba1728be24b94861621618a1c5, type: 3}
       propertyPath: m_AnchorMax.y
@@ -2452,6 +2523,7 @@ PrefabInstance:
     - {fileID: 3033821794114337184, guid: 476418ba1728be24b94861621618a1c5, type: 3}
     - {fileID: 5280868654841669437, guid: 476418ba1728be24b94861621618a1c5, type: 3}
     - {fileID: 1743007245080188850, guid: 476418ba1728be24b94861621618a1c5, type: 3}
+    - {fileID: 6662306109333908338, guid: 476418ba1728be24b94861621618a1c5, type: 3}
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 3571491158517950677, guid: 476418ba1728be24b94861621618a1c5, type: 3}
       insertIndex: 2
@@ -2471,6 +2543,22 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 532607588904334445, guid: 476418ba1728be24b94861621618a1c5, type: 3}
   m_PrefabInstance: {fileID: 4983068337688174586}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &6562431344890974721 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2176675448052502011, guid: 476418ba1728be24b94861621618a1c5, type: 3}
+  m_PrefabInstance: {fileID: 4983068337688174586}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &6758723164611078561 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1795991396612486747, guid: 476418ba1728be24b94861621618a1c5, type: 3}
+  m_PrefabInstance: {fileID: 4983068337688174586}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6562431344890974721}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 67db9e8f0e2ae9c40bc1e2b64352a6b4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!224 &8410215058433341231 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 3571491158517950677, guid: 476418ba1728be24b94861621618a1c5, type: 3}

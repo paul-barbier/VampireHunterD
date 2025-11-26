@@ -5,6 +5,8 @@ using UnityEngine.SceneManagement;
 public class UIDialogue : MonoBehaviour
 {
     [SerializeField] private GameObject _pauseMenu, _optionsMenu;
+    [SerializeField] private GameObject _pauseFirstButton, _optionsFirstButton, _optionsClosedButton;
+
     [SerializeField] private GameObject _dialogueUI;
 
 
@@ -20,6 +22,8 @@ public class UIDialogue : MonoBehaviour
         {
             _pauseMenu.SetActive(true);
             Time.timeScale = 0.0f;
+            EventSystem.current.SetSelectedGameObject(null);
+            EventSystem.current.SetSelectedGameObject(_pauseFirstButton);
         }
         else if (_pauseMenu.activeInHierarchy || _optionsMenu.activeInHierarchy)
         {
@@ -36,23 +40,36 @@ public class UIDialogue : MonoBehaviour
         _optionsMenu.SetActive(false);
     }
 
-    public void OptionsPauseMenu()
+    public void OpenOptions()
     {
-        _pauseMenu.SetActive(false);
         _optionsMenu.SetActive(true);
+        EventSystem.current.SetSelectedGameObject(null);
+        EventSystem.current.SetSelectedGameObject(_optionsFirstButton);
     }
 
-    public void BackToPauseMenu()
+    public void CloseOptions()
     {
-        if (_optionsMenu != null)
-        {
-            _pauseMenu.SetActive(true);
-            _optionsMenu.SetActive(false);
-        }
+        _optionsMenu?.SetActive(false);
+        _pauseMenu.SetActive(true);
+        EventSystem.current.SetSelectedGameObject(null);
+        EventSystem.current.SetSelectedGameObject(_optionsClosedButton);
     }
 
     public void MenuPrincipal()
     {
         SceneManager.LoadScene(0);
+    }
+
+    public void Back()
+    {
+        Debug.Log("RondAppuyé");
+        if (_pauseMenu.activeInHierarchy && !_optionsMenu.activeInHierarchy)
+        {
+            Reprendre();
+        }
+        else if(_optionsMenu.activeInHierarchy && _pauseMenu.activeInHierarchy)
+        {
+            CloseOptions();
+        }
     }
 }
