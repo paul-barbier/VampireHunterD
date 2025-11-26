@@ -47,7 +47,6 @@ public class MainMenu : MonoBehaviour
         Debug.Log("Rond APPUY1");
         if (_optionsMenu.activeInHierarchy && _mainMenu.activeInHierarchy)
         {
-            Debug.Log("Rond Détecté");
             CloseOptions();
         }
     }
