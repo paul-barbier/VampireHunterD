@@ -5,13 +5,14 @@ using UnityEngine.SceneManagement;
 
 public class MainMenu : MonoBehaviour
 {
-    [SerializeField] private GameObject _mainMenu, _optionsMenu;
-    [SerializeField] private GameObject _menuFirstButton, _optionsFirstButton, _optionsClosedButton;
+    [SerializeField] private GameObject _mainMenu, _optionsMenu, _commandesMenu;
+    [SerializeField] private GameObject _menuFirstButton, _optionsFirstButton, _optionsClosedButton, _commandesFirstButton, _commandesClosedButton;
 
     public void Start()
     {
         _mainMenu.SetActive(true);
         _optionsMenu.SetActive(false);
+        _commandesMenu.SetActive(false);
         EventSystem.current.SetSelectedGameObject(null);
         EventSystem.current.SetSelectedGameObject(_menuFirstButton);
     }
@@ -30,6 +31,19 @@ public class MainMenu : MonoBehaviour
         EventSystem.current.SetSelectedGameObject(_optionsClosedButton);
     }
 
+    public void OpenCommandes()
+    {
+        _commandesMenu.SetActive(true);
+        EventSystem.current.SetSelectedGameObject(null);
+        EventSystem.current.SetSelectedGameObject(_commandesFirstButton);
+    }
+
+    public void CloseCommandes()
+    {
+        _commandesMenu?.SetActive(false);
+        EventSystem.current.SetSelectedGameObject(null);
+        EventSystem.current.SetSelectedGameObject(_commandesClosedButton);
+    }
 
     public void Jouer()
     {
@@ -48,6 +62,10 @@ public class MainMenu : MonoBehaviour
         if (_optionsMenu.activeInHierarchy && _mainMenu.activeInHierarchy)
         {
             CloseOptions();
+        }
+        else if (_commandesMenu.activeInHierarchy && _mainMenu.activeInHierarchy)
+        {
+            CloseCommandes();
         }
     }
 }
