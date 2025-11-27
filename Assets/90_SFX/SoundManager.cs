@@ -21,8 +21,8 @@ public enum SoundType
 public class SoundManager : MonoBehaviour
 {
 
-    [SerializeField] private SoundList[] soundList;
-    private static SoundManager instance;
+    [SerializeField] public SoundList[] soundList;
+    public static SoundManager instance;
     private AudioSource audiosource;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created

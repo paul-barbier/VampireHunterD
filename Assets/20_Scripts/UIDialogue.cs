@@ -4,14 +4,15 @@ using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 public class UIDialogue : MonoBehaviour
 {
-    [SerializeField] private GameObject _pauseMenu, _optionsMenu;
-    [SerializeField] private GameObject _pauseFirstButton, _optionsFirstButton, _optionsClosedButton;
+    [SerializeField] private GameObject _pauseMenu, _optionsMenu, _commandesMenu;
+    [SerializeField] private GameObject _pauseFirstButton, _optionsFirstButton, _optionsClosedButton, _commandesFirstButton, _commandesClosedButton;
 
     [SerializeField] private GameObject _dialogueUI;
 
 
     public void Start()
     {
+        Time.timeScale = 1.0f;
         _pauseMenu.SetActive(false);
         _optionsMenu.SetActive(false);
     }
@@ -55,6 +56,20 @@ public class UIDialogue : MonoBehaviour
         EventSystem.current.SetSelectedGameObject(_optionsClosedButton);
     }
 
+    public void OpenCommandes()
+    {
+        _commandesMenu.SetActive(true);
+        EventSystem.current.SetSelectedGameObject(null);
+        EventSystem.current.SetSelectedGameObject(_commandesFirstButton);
+    }
+
+    public void CloseCommandes()
+    {
+        _commandesMenu?.SetActive(false);
+        EventSystem.current.SetSelectedGameObject(null);
+        EventSystem.current.SetSelectedGameObject(_commandesClosedButton);
+    }
+
     public void MenuPrincipal()
     {
         SceneManager.LoadScene(0);
@@ -63,13 +78,17 @@ public class UIDialogue : MonoBehaviour
     public void Back()
     {
         Debug.Log("RondAppuyé");
-        if (_pauseMenu.activeInHierarchy && !_optionsMenu.activeInHierarchy)
+        if (_pauseMenu.activeInHierarchy && !_optionsMenu.activeInHierarchy && !_commandesMenu.activeInHierarchy)
         {
             Reprendre();
         }
-        else if(_optionsMenu.activeInHierarchy && _pauseMenu.activeInHierarchy)
+        else if (_optionsMenu.activeInHierarchy && _pauseMenu.activeInHierarchy)
         {
             CloseOptions();
+        }
+        else if (_commandesMenu.activeInHierarchy && _pauseMenu.activeInHierarchy)
+        {
+            CloseCommandes();
         }
     }
 }

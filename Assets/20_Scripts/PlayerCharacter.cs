@@ -426,6 +426,7 @@ public class PlayerCharacter : MonoBehaviour
         float velocityDelta = _currentGravity - _rigidbody.linearVelocity.y;
 
         velocityDelta = Mathf.Clamp(velocityDelta, -_gravityParameters.MaxAcceleration, 0.0f);
+
         if (!_isDashing)
         {
             _DAnimation.SetBool("IsFalling", true);
@@ -555,23 +556,33 @@ public class PlayerCharacter : MonoBehaviour
         }
     }
 
-    //public float GravityValue(float baseWalkSpeed, float maxHeight, float maxLength) // v0 = -2 * h / t_h^2 || -2 * h * v^2 / L_h^2
-    //{
+    public float GravityValue(float baseWalkSpeed, float maxHeight, float maxLength) // v0 = -2 * h / t_h^2 || -2 * h * v^2 / L_h^2
+    {
 
-    //    return -2 * maxHeight * baseWalkSpeed * baseWalkSpeed / ((maxLength * 0.5f) * (maxLength * 0.5f));
-    //}
+        return -2 * maxHeight * baseWalkSpeed * baseWalkSpeed / ((maxLength * 0.5f) * (maxLength * 0.5f));
+    }
 
-    //public float InitSpeed(float baseWalkSpeed, float maxHeight, float maxLength) // v0 = 2 * h / t_h || 2 * h * v / L_h
-    //{
-    //    return 2 * maxHeight * baseWalkSpeed / ((maxLength * 0.5f));
-    //}
+    public float InitSpeed(float baseWalkSpeed, float maxHeight, float maxLength) // v0 = 2 * h / t_h || 2 * h * v / L_h
+    {
+        return 2 * maxHeight * baseWalkSpeed / ((maxLength * 0.5f));
+    }
 
     #endregion Jump
 
     #region Dash
     public void GetDashInput(Vector2 Dashinput)
     {
-        _dashMovementInput = Dashinput;
+        float scalaire = Vector2.Dot(Vector2.up, Dashinput);
+        /*On multiplie un ensemble de valeur par le nombre de marche,
+         * qu'on arrondis à l'inferieur ensuite,
+         * puis on redivise par le nombre de marche pour obtenirun ensemble restreint de valeur (0, 0,5, 1),
+         * Cet ensemble a un décalage arbitraire de 0,25 (marche de manoeuvre joystick)*/
+        float step = Mathf.Floor((MathF.Abs(scalaire) + 0.25f) * 2) / 2f;
+        /* Déplacement horizontal si le step > 0,5 dans ce cas déplcaement vertical strict, donc pas horizontal, sinon on * le signe du déplacement (-1 ou 1),
+         * par l'inverse du déplacement vertical (1 - step) qui donne soit 1 (déplcamenet horizontal strict ou 0,5 déplcameent diagonal)*/
+        float Mx = step > 0.5f ? 0 : Mathf.Sign(Dashinput.x) * (1 - step);
+        _dashMovementInput = (new Vector2(Mx, step * Mathf.Sign(scalaire))).normalized;
+        Debug.Log(_dashMovementInput);
     }
 
     public void StartDash()
@@ -692,7 +703,7 @@ public class PlayerCharacter : MonoBehaviour
             gameObject.GetComponent<Health>()?.TakeDamage(25);
             Knockback(collision);
         }
-        else if (collision.CompareTag("Dash") && _isDashing)
+        else if (collision.transform != dashHitbox.transform && collision.CompareTag("Dash") && _isDashing)
         {
             StopDashOnEnemy(collision);
             BounceOnEnemy();
