@@ -91,14 +91,14 @@ public class PlayerCharacter : MonoBehaviour
 
     //Components
     public Rigidbody2D _rigidbody = null;
-    [SerializeField] private Animator _DAnimation;
+    [SerializeField] public Animator _DAnimation;
 
     //Force
     public Vector2 _forceToAdd = Vector2.zero;
     private Vector2 _prePhysicPosition = Vector2.zero;
 
     //Horizontal movement
-    private Vector2 _currentHorizontalVelocity = Vector2.zero;
+    public Vector2 _currentHorizontalVelocity = Vector2.zero;
     public float _movementInput = 0.0f;
     private MovementValues _horizontalPhysic = new MovementValues();
 
@@ -214,7 +214,7 @@ public class PlayerCharacter : MonoBehaviour
 
     private void Update()
     {
-        if (_attack.isAttacking)
+        if (_attack.isAttacking || _isDashing)
             return;
 
         RotateMesh();
@@ -252,7 +252,9 @@ public class PlayerCharacter : MonoBehaviour
     public void DisableMovement()
     {
         if (MovementDisabled == true)
+        {
             return;
+        }
 
         else
             //On reset la force � ajouter cette boucle de fixed update
@@ -286,8 +288,13 @@ public class PlayerCharacter : MonoBehaviour
         //Si le rigidbody touche le sol mais on a en m�moire qu'il ne le touche pas, on est sur la frame o� il touche le sol
         if (isTouchingGround && !IsGrounded)
         {
+            if(!_canDash)
+            {
+                _canDash = true;
+                ChauveSouris.gameObject.SetActive(true);
+            }
+
             IsGrounded = true;
-            StartCoroutine(CdDash());
             //On invoque l'event en passant true pour signifier que le joueur arrive au sol
             OnPhysicStateChanged.Invoke(PhysicState.Ground);
         }
@@ -575,14 +582,13 @@ public class PlayerCharacter : MonoBehaviour
         float scalaire = Vector2.Dot(Vector2.up, Dashinput);
         /*On multiplie un ensemble de valeur par le nombre de marche,
          * qu'on arrondis à l'inferieur ensuite,
-         * puis on redivise par le nombre de marche pour obtenirun ensemble restreint de valeur (0, 0,5, 1),
+         * puis on redivise par le nombre de marche pour obtenir un ensemble restreint de valeur (0, 0,5, 1),
          * Cet ensemble a un décalage arbitraire de 0,25 (marche de manoeuvre joystick)*/
         float step = Mathf.Floor((MathF.Abs(scalaire) + 0.25f) * 2) / 2f;
-        /* Déplacement horizontal si le step > 0,5 dans ce cas déplcaement vertical strict, donc pas horizontal, sinon on * le signe du déplacement (-1 ou 1),
-         * par l'inverse du déplacement vertical (1 - step) qui donne soit 1 (déplcamenet horizontal strict ou 0,5 déplcameent diagonal)*/
+        /* Déplacement horizontal si le step > 0,5 dans ce cas déplacement vertical strict, donc pas horizontal, sinon on * le signe du déplacement (-1 ou 1),
+         * par l'inverse du déplacement vertical (1 - step) qui donne soit 1 (déplcamenet horizontal strict ou 0,5 déplacement diagonal)*/
         float Mx = step > 0.5f ? 0 : Mathf.Sign(Dashinput.x) * (1 - step);
         _dashMovementInput = (new Vector2(Mx, step * Mathf.Sign(scalaire))).normalized;
-        Debug.Log(_dashMovementInput);
     }
 
     public void StartDash()
@@ -596,10 +602,14 @@ public class PlayerCharacter : MonoBehaviour
 
         if (_canDash)
         {
-
             if (_dashMovementInput.y == 1)
             {
                 _DAnimation.SetBool("IsDashingUp", true);
+            }
+            else if (_dashMovementInput.y > 0 && _dashMovementInput.x > 0)
+            {
+                
+                _DAnimation.SetBool("IsDashing", true);
             }
             else if (_dashMovementInput.x != 0)
             {
@@ -642,6 +652,11 @@ public class PlayerCharacter : MonoBehaviour
             _DAnimation.SetBool("IsDashing", false);
             _DAnimation.SetBool("IsDashingUp", false);
             _DAnimation.SetBool("IsDashingDown", false);
+
+            if (IsGrounded && !_canDash)
+            {
+                StartCoroutine(CdDash());
+            }
         }
     }
 
@@ -707,6 +722,7 @@ public class PlayerCharacter : MonoBehaviour
         {
             StopDashOnEnemy(collision);
             BounceOnEnemy();
+            ChauveSouris.gameObject.SetActive(true);
             _canDash = true;
             Destroy(collision.gameObject);
         }
