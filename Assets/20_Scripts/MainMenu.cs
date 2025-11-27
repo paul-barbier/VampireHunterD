@@ -10,6 +10,7 @@ public class MainMenu : MonoBehaviour
 
     public void Start()
     {
+        DontDestroyOnLoad(gameObject);
         _mainMenu.SetActive(true);
         _optionsMenu.SetActive(false);
         _commandesMenu.SetActive(false);
