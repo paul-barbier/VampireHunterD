@@ -21,6 +21,10 @@ public class Attack : MonoBehaviour
     {
         if (isAttacking)
         {
+            _playerCharacter.DisableMovement();
+            _playerCharacter._DAnimation.SetBool("IsRunning", false);
+            _playerCharacter._currentHorizontalVelocity = Vector2.zero;
+
             highAngle = Mathf.MoveTowards(highAngle, lowAngle, attackSpeed * Time.deltaTime);
             attackPivot.localRotation = Quaternion.Euler(0, 0, highAngle);
             _DAnimation.SetBool("IsAttacking", true);
