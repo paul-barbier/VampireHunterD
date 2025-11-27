@@ -12,6 +12,7 @@ public class UIDialogue : MonoBehaviour
 
     public void Start()
     {
+        Time.timeScale = 1.0f;
         _pauseMenu.SetActive(false);
         _optionsMenu.SetActive(false);
     }
