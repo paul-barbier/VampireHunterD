@@ -29,7 +29,6 @@ public class Dialogue : MonoBehaviour
 
     private void Start()
     {
-
         _playerMovementScript = FindAnyObjectByType<PlayerCharacter>();
         if (_playerMovementScript == null )
         {

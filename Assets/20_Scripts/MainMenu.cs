@@ -1,55 +1,72 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
+using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 
 public class MainMenu : MonoBehaviour
 {
-    [SerializeField] private GameObject _mainMenuCanva;
-    [SerializeField] private GameObject _optionsCanva;
-    [SerializeField] private GameObject _controlesCanva;
+    [SerializeField] private GameObject _mainMenu, _optionsMenu, _commandesMenu;
+    [SerializeField] private GameObject _menuFirstButton, _optionsFirstButton, _optionsClosedButton, _commandesFirstButton, _commandesClosedButton;
 
-    private void Start()
+    public void Start()
     {
-        _mainMenuCanva.SetActive(true);
-        _optionsCanva.SetActive(false);
-        _controlesCanva.SetActive(false);
+        DontDestroyOnLoad(gameObject);
+        _mainMenu.SetActive(true);
+        _optionsMenu.SetActive(false);
+        _commandesMenu.SetActive(false);
+        EventSystem.current.SetSelectedGameObject(null);
+        EventSystem.current.SetSelectedGameObject(_menuFirstButton);
     }
 
-    public void Play()
+    public void OpenOptions()
     {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+        _optionsMenu.SetActive(true);
+        EventSystem.current.SetSelectedGameObject(null);
+        EventSystem.current.SetSelectedGameObject(_optionsFirstButton);
     }
 
-    public void Options()
+    public void CloseOptions()
     {
-        _mainMenuCanva.SetActive(false);
-        _optionsCanva.SetActive(true);
-        _controlesCanva.SetActive(false);
+        _optionsMenu?.SetActive(false);
+        EventSystem.current.SetSelectedGameObject(null);
+        EventSystem.current.SetSelectedGameObject(_optionsClosedButton);
     }
 
-    public void QuitOptions()
+    public void OpenCommandes()
     {
-        _mainMenuCanva.SetActive(true);
-        _optionsCanva.SetActive(false);
-        _controlesCanva.SetActive(false);
+        _commandesMenu.SetActive(true);
+        EventSystem.current.SetSelectedGameObject(null);
+        EventSystem.current.SetSelectedGameObject(_commandesFirstButton);
     }
 
-    public void Controles()
+    public void CloseCommandes()
     {
-        _mainMenuCanva.SetActive(false);
-        _optionsCanva.SetActive(false);
-        _controlesCanva.SetActive(true);
+        _commandesMenu?.SetActive(false);
+        EventSystem.current.SetSelectedGameObject(null);
+        EventSystem.current.SetSelectedGameObject(_commandesClosedButton);
     }
 
-    public void QuitControles()
+    public void Jouer()
     {
-        _mainMenuCanva.SetActive(false);
-        _optionsCanva.SetActive(true);
-        _controlesCanva.SetActive(false);
+        SceneManager.LoadScene(1);
     }
 
     public void Quit()
     {
         Debug.Log("QUIT");
         Application.Quit();
+    }
+
+    public void BackMenu()
+    {
+        Debug.Log("Rond APPUY1");
+        if (_optionsMenu.activeInHierarchy && _mainMenu.activeInHierarchy)
+        {
+            CloseOptions();
+        }
+        else if (_commandesMenu.activeInHierarchy && _mainMenu.activeInHierarchy)
+        {
+            CloseCommandes();
+        }
     }
 }

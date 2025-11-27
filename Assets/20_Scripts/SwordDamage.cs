@@ -1,7 +1,10 @@
+using System.Collections;
 using UnityEngine;
 
 public class SwordDamage : MonoBehaviour
 {
+    private float respawnTime;
+
     private void OnTriggerEnter2D(Collider2D collision)
     {
         MouvementScript enemy = collision.GetComponentInParent<MouvementScript>();
@@ -10,5 +13,10 @@ public class SwordDamage : MonoBehaviour
             Debug.Log("Ennemi touché et détruit !");
             Destroy(enemy.gameObject);
         }
+    }
+
+    IEnumerator RespawnEnemy()
+    {
+        yield return new WaitForSeconds(respawnTime);
     }
 }
