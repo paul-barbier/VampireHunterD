@@ -84,7 +84,7 @@ public class PlayerCharacter : MonoBehaviour
     [Header("Setup")]
     [SerializeField] private Transform _mesh = null;
     [SerializeField] private Health _health;
-    [SerializeField] private GameObject ChauveSouris;
+    [SerializeField] public GameObject ChauveSouris;
     #endregion EditorVariables
 
     #region Variables
@@ -607,9 +607,9 @@ public class PlayerCharacter : MonoBehaviour
             {
                 _DAnimation.SetBool("IsDashingUp", true);
             }
-            else if (_dashMovementInput.y != 0 && _dashMovementInput.x != 0 || _dashMovementInput.y == 0 && _dashMovementInput.x == 0)
+            else if (_dashMovementInput.y != 0 && _dashMovementInput.x != 0)
             {
-                _mesh.rotation = Quaternion.Euler(_dashMovementInput * 45);
+                _mesh.rotation = Quaternion.Euler(0 , 0 ,_dashMovementInput.x);
                 _DAnimation.SetBool("IsDashing", true);
             }
             else if (_dashMovementInput.x != 0)
