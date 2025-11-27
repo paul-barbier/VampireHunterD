@@ -589,6 +589,7 @@ public class PlayerCharacter : MonoBehaviour
          * par l'inverse du déplacement vertical (1 - step) qui donne soit 1 (déplcamenet horizontal strict ou 0,5 déplacement diagonal)*/
         float Mx = step > 0.5f ? 0 : Mathf.Sign(Dashinput.x) * (1 - step);
         _dashMovementInput = (new Vector2(Mx, step * Mathf.Sign(scalaire))).normalized;
+        Debug.Log(_dashMovementInput);
     }
 
     public void StartDash()
@@ -606,9 +607,9 @@ public class PlayerCharacter : MonoBehaviour
             {
                 _DAnimation.SetBool("IsDashingUp", true);
             }
-            else if (_dashMovementInput.y > 0 && _dashMovementInput.x > 0)
+            else if (_dashMovementInput.y != 0 && _dashMovementInput.x != 0 || _dashMovementInput.y == 0 && _dashMovementInput.x == 0)
             {
-                
+                _mesh.rotation = Quaternion.Euler(_dashMovementInput * 45);
                 _DAnimation.SetBool("IsDashing", true);
             }
             else if (_dashMovementInput.x != 0)
