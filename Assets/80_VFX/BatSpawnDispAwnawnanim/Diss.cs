@@ -2,14 +2,18 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.InputSystem;
+using UnityEngine.Events;
 
 public class Diss : MonoBehaviour
 {
 
     [SerializeField] private float _dissolveSpeed = 1f;
     [SerializeField] private float _dissolveDelay = 0f;
+    [SerializeField] private PlayerCharacter _playerCharacter;
     private SpriteRenderer[] _spriteRenderer;
     private Material[] _materials;
+
+    [SerializeField] UnityEvent OnDissolve;
 
     private int _dissolveAmount = Shader.PropertyToID("_Dissolve");
 
@@ -57,15 +61,16 @@ public class Diss : MonoBehaviour
 
     private void Update()
     {
-        if (Keyboard.current.aKey.wasPressedThisFrame)
-        {
-            StartCoroutine(Vanish(true));
-        }
-        if (Keyboard.current.zKey.wasPressedThisFrame)
+        if (_playerCharacter.ChauveSouris.activeSelf) 
         {
             StartCoroutine(Appear(true));
         }
-}
+        else 
+        {
+            StartCoroutine(Vanish(true));
+        }
+        OnDissolve.Invoke();
+    }
 
 
 }

@@ -28,7 +28,11 @@ Transform:
   m_GameObject: {fileID: 321379243702358425}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 4.027678, y: 1.3, z: -10}
+<<<<<<< HEAD
+  m_LocalPosition: {x: 4.602322, y: 1.3, z: -10}
+=======
+  m_LocalPosition: {x: -0.2593174, y: 1.755951, z: -10}
+>>>>>>> 82e51359e18941b780e3971ee65c6825179e3116
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -58,7 +62,7 @@ MonoBehaviour:
     LookAtTarget: {fileID: 0}
     CustomLookAtTarget: 0
   Lens:
-    FieldOfView: 80
+    FieldOfView: 85
     OrthographicSize: 5
     NearClipPlane: 0.3
     FarClipPlane: 1000
@@ -92,22 +96,22 @@ MonoBehaviour:
   CameraDistance: 10
   DeadZoneDepth: 0
   Composition:
-    ScreenPosition: {x: 0, y: 0}
+    ScreenPosition: {x: -0.00000032782555, y: -0.12}
     DeadZone:
       Enabled: 1
-      Size: {x: 0.27, y: 0.63}
+      Size: {x: 0.5885413, y: 0.5240063}
     HardLimits:
       Enabled: 1
-      Size: {x: 0.77, y: 0.79}
+      Size: {x: 0.7304167, y: 0.55741453}
       Offset: {x: 0.03, y: -0.09}
   CenterOnActivate: 0
   TargetOffset: {x: 0, y: 0, z: 0}
-  Damping: {x: 0, y: 0, z: 0}
+  Damping: {x: 0.5, y: 0.5, z: 1}
   Lookahead:
     Enabled: 1
-    Time: 0.525
+    Time: 1
     Smoothing: 4.9
-    IgnoreY: 0
+    IgnoreY: 1
 --- !u!81 &723548768040321132
 AudioListener:
   m_ObjectHideFlags: 0
@@ -336,6 +340,13 @@ MonoBehaviour:
     sounds: []
   - Name: Ambiance_Clocher
     sounds: []
+  - Name: BatExplosion
+    sounds:
+    - {fileID: 8300000, guid: ecea5c13d387a8a48907567acaac477c, type: 3}
+    - {fileID: 8300000, guid: 20409b7c5f8c70141bcb20e5420dc694, type: 3}
+    - {fileID: 8300000, guid: 4acd9f61150fb4442ab044bcf109901e, type: 3}
+    - {fileID: 8300000, guid: 83e57477f3d96b54ba92b963fb6d9a11, type: 3}
+    - {fileID: 8300000, guid: f49c4dd4c2c02e8488843f6c2d3616b7, type: 3}
 --- !u!1 &5946286106577519382
 GameObject:
   m_ObjectHideFlags: 0
@@ -397,7 +408,11 @@ Transform:
   m_GameObject: {fileID: 7614178230349327506}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 4.027678, y: 1.3, z: -10}
+<<<<<<< HEAD
+  m_LocalPosition: {x: 4.602322, y: 1.3, z: -10}
+=======
+  m_LocalPosition: {x: -0.2593174, y: 1.755951, z: -10}
+>>>>>>> 82e51359e18941b780e3971ee65c6825179e3116
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -437,7 +452,7 @@ Camera:
     height: 1
   near clip plane: 0.3
   far clip plane: 1000
-  field of view: 80
+  field of view: 85
   orthographic: 0
   orthographic size: 5
   m_Depth: -1
