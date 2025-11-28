@@ -15,6 +15,7 @@ public enum SoundType
     Land,
     Vampire,
     Ambiance_Clocher,
+    BatExplosion,
 }
 
 [RequireComponent(typeof(AudioSource)), ExecuteInEditMode]
@@ -36,9 +37,10 @@ public class SoundManager : MonoBehaviour
     {
         AudioClip[] clips = instance.soundList[(int)sound].Sounds;
         AudioClip randomclip = clips[UnityEngine.Random.Range(0, clips.Length)];
+        instance.audiosource.pitch = UnityEngine.Random.Range(0.85f, 1.15f);
         instance.audiosource.PlayOneShot(randomclip, volume);
         //instance.audiosource.PlayOneShot(instance.soundList[(int)sound], volume);
-        
+
     }
 
     public static void LoopSound(SoundType sound, float volume = 1)
