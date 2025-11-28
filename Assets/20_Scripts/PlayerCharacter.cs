@@ -132,7 +132,7 @@ public class PlayerCharacter : MonoBehaviour
     public bool _isDashing = false;
     private float _startDashTime = 0.0f;
     private bool _bufferDash = false;
-    [SerializeField] private bool _lockedDash = false;
+    [SerializeField] private bool _hittingDash = false;
     private float _dashAnimTime;
 
     [SerializeField] private Vector2 enemyBounceForce;
@@ -149,9 +149,10 @@ public class PlayerCharacter : MonoBehaviour
     //Sprite
     private Vector3 _currentMeshRotation = Vector3.zero;
     private float rotationSpeed = 8000f;
+    [SerializeField] private bool _lockedRotation = false;
 
     //Disable movement
-    [SerializeField] public bool MovementDisabled = false;
+    public bool MovementDisabled = false;
 
     [SerializeField] private Attack _attack;
 
@@ -214,14 +215,14 @@ public class PlayerCharacter : MonoBehaviour
 
     private void Update()
     {
-        if (_attack.isAttacking || _isDashing)
-            return;
-
         RotateMesh();
     }
 
     private void RotateMesh()
     {
+        if (_attack.isAttacking || _isDashing)
+            return;
+
         float targetRotation = _movementInput >= 0.01 ? 0f : _movementInput <= -0.01 ? 180f : _currentMeshRotation.y;
 
         _currentMeshRotation.y = Mathf.MoveTowards(_currentMeshRotation.y, targetRotation, rotationSpeed * Time.deltaTime);
@@ -288,7 +289,7 @@ public class PlayerCharacter : MonoBehaviour
         //Si le rigidbody touche le sol mais on a en m�moire qu'il ne le touche pas, on est sur la frame o� il touche le sol
         if (isTouchingGround && !IsGrounded)
         {
-            if(!_canDash)
+            if (!_canDash)
             {
                 _canDash = true;
                 ChauveSouris.gameObject.SetActive(true);
@@ -420,7 +421,7 @@ public class PlayerCharacter : MonoBehaviour
 
     private void Gravity()
     {
-        if (IsGrounded || _isJumping || _isDashing || _lockedDash)
+        if (IsGrounded || _isJumping || _isDashing || _hittingDash)
             return;
 
         float coyoteTimeRatio = Mathf.Clamp01(_airTime / _gravityParameters.CoyoteTime);
@@ -563,16 +564,16 @@ public class PlayerCharacter : MonoBehaviour
         }
     }
 
-    public float GravityValue(float baseWalkSpeed, float maxHeight, float maxLength) // v0 = -2 * h / t_h^2 || -2 * h * v^2 / L_h^2
-    {
+    //public float GravityValue(float baseWalkSpeed, float maxHeight, float maxLength) // v0 = -2 * h / t_h^2 || -2 * h * v^2 / L_h^2
+    //{
 
-        return -2 * maxHeight * baseWalkSpeed * baseWalkSpeed / ((maxLength * 0.5f) * (maxLength * 0.5f));
-    }
+    //    return -2 * maxHeight * baseWalkSpeed * baseWalkSpeed / ((maxLength * 0.5f) * (maxLength * 0.5f));
+    //}
 
-    public float InitSpeed(float baseWalkSpeed, float maxHeight, float maxLength) // v0 = 2 * h / t_h || 2 * h * v / L_h
-    {
-        return 2 * maxHeight * baseWalkSpeed / ((maxLength * 0.5f));
-    }
+    //public float InitSpeed(float baseWalkSpeed, float maxHeight, float maxLength) // v0 = 2 * h / t_h || 2 * h * v / L_h
+    //{
+    //    return 2 * maxHeight * baseWalkSpeed / ((maxLength * 0.5f));
+    //}
 
     #endregion Jump
 
@@ -603,13 +604,21 @@ public class PlayerCharacter : MonoBehaviour
 
         if (_canDash)
         {
+            _isDashing = true;
+            _canDash = false;
+
             if (_dashMovementInput.y == 1)
             {
                 _DAnimation.SetBool("IsDashingUp", true);
             }
             else if (_dashMovementInput.y != 0 && _dashMovementInput.x != 0)
             {
-                _mesh.rotation = Quaternion.Euler(0 , 0 ,_dashMovementInput.x);
+                _lockedRotation = true;
+
+                float angle = Mathf.Atan2(_dashMovementInput.y, _dashMovementInput.x) * Mathf.Rad2Deg;
+
+                _mesh.rotation = Quaternion.Euler(0, 0, angle);
+
                 _DAnimation.SetBool("IsDashing", true);
             }
             else if (_dashMovementInput.x != 0)
@@ -620,9 +629,6 @@ public class PlayerCharacter : MonoBehaviour
             {
                 _DAnimation.SetBool("IsDashingDown", true);
             }
-
-            _isDashing = true;
-            _canDash = false;
 
             _currentDashForce = _dashMovementInput.normalized * _dashParameters.DashImpulseForce;
 
@@ -653,6 +659,7 @@ public class PlayerCharacter : MonoBehaviour
             _DAnimation.SetBool("IsDashing", false);
             _DAnimation.SetBool("IsDashingUp", false);
             _DAnimation.SetBool("IsDashingDown", false);
+            _lockedRotation = false;
 
             if (IsGrounded && !_canDash)
             {
@@ -679,7 +686,6 @@ public class PlayerCharacter : MonoBehaviour
     private void OnCollisionEnter2D(Collision2D collision)
     {
         _isDashing = false;
-        _currentDashForce = Vector2.zero;
         _currentJumpForce = Vector2.zero;
         _DAnimation.SetBool("IsDashing", false);
         _DAnimation.SetBool("IsDashingUp", false);
@@ -713,7 +719,7 @@ public class PlayerCharacter : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.CompareTag("AttackZone") && !_lockedDash)
+        if (collision.CompareTag("AttackZone") && !_hittingDash)
         {
             _enemyCollider = collision;
             gameObject.GetComponent<Health>()?.TakeDamage(25);
@@ -730,12 +736,12 @@ public class PlayerCharacter : MonoBehaviour
     }
     IEnumerator BounceTime()
     {
-        _lockedDash = true;
+        _hittingDash = true;
         _rigidbody.AddForce(enemyBounceForce, ForceMode2D.Impulse);
         _isJumping = false;
         _currentGravity = 0f;
         yield return new WaitForSeconds(BouncingTime);
-        _lockedDash = false;
+        _hittingDash = false;
     }
     #endregion Dash
     private void Knockback(Collider2D enemy)
