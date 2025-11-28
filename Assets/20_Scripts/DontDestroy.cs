@@ -1,10 +1,11 @@
 using UnityEngine;
+using UnityEngine.UI;
 
 public class DontDestroy : MonoBehaviour
 {
     public static DontDestroy Instance;
 
-    public float sliderValue = 100f;
+    [SerializeField] private Slider _uiSlider;
 
     private void Awake()
     {
@@ -18,5 +19,10 @@ public class DontDestroy : MonoBehaviour
         {
             Destroy(gameObject);
         }
+    }
+
+    private void Start()
+    {
+
     }
 }
