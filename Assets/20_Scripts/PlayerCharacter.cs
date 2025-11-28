@@ -220,7 +220,7 @@ public class PlayerCharacter : MonoBehaviour
 
     private void RotateMesh()
     {
-        if (_attack.isAttacking || _isDashing)
+        if (_attack.isAttacking || _isDashing && _lockedRotation)
             return;
 
         float targetRotation = _movementInput >= 0.01 ? 0f : _movementInput <= -0.01 ? 180f : _currentMeshRotation.y;
