@@ -220,14 +220,18 @@ public class PlayerCharacter : MonoBehaviour
 
     private void RotateMesh()
     {
-        if (_attack.isAttacking || _isDashing && _lockedRotation)
+        if (_lockedRotation)
             return;
+
+        if (_attack.isAttacking || _isDashing)
+            return;
+
 
         float targetRotation = _movementInput >= 0.01 ? 0f : _movementInput <= -0.01 ? 180f : _currentMeshRotation.y;
 
         _currentMeshRotation.y = Mathf.MoveTowards(_currentMeshRotation.y, targetRotation, rotationSpeed * Time.deltaTime);
 
-        _mesh.rotation = Quaternion.Euler(_currentMeshRotation);
+        _mesh.rotation = Quaternion.Euler(0, _currentMeshRotation.y, 0);
     }
 
     #endregion Visual
@@ -659,6 +663,7 @@ public class PlayerCharacter : MonoBehaviour
             _DAnimation.SetBool("IsDashing", false);
             _DAnimation.SetBool("IsDashingUp", false);
             _DAnimation.SetBool("IsDashingDown", false);
+
             _lockedRotation = false;
 
             if (IsGrounded && !_canDash)
