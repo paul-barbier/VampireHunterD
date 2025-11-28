@@ -19,18 +19,19 @@ public class UIDialogue : MonoBehaviour
 
     public void Pause()
     {
-        if (!_pauseMenu.activeInHierarchy && !_optionsMenu.activeInHierarchy)
+        if (!_pauseMenu.activeInHierarchy && !_optionsMenu.activeInHierarchy && !_commandesMenu.activeInHierarchy)
         {
             _pauseMenu.SetActive(true);
             Time.timeScale = 0.0f;
             EventSystem.current.SetSelectedGameObject(null);
             EventSystem.current.SetSelectedGameObject(_pauseFirstButton);
         }
-        else if (_pauseMenu.activeInHierarchy || _optionsMenu.activeInHierarchy)
+        else if (_pauseMenu.activeInHierarchy || _optionsMenu.activeInHierarchy || _commandesMenu.activeInHierarchy)
         {
             Time.timeScale = 1.0f;
             _pauseMenu.SetActive(false);
             _optionsMenu.SetActive(false);
+            _commandesMenu.SetActive(false);
         }
     }
 
@@ -44,6 +45,7 @@ public class UIDialogue : MonoBehaviour
     public void OpenOptions()
     {
         _optionsMenu.SetActive(true);
+        _pauseMenu.SetActive(false);
         EventSystem.current.SetSelectedGameObject(null);
         EventSystem.current.SetSelectedGameObject(_optionsFirstButton);
     }
@@ -59,6 +61,7 @@ public class UIDialogue : MonoBehaviour
     public void OpenCommandes()
     {
         _commandesMenu.SetActive(true);
+        _pauseMenu.SetActive(false);
         EventSystem.current.SetSelectedGameObject(null);
         EventSystem.current.SetSelectedGameObject(_commandesFirstButton);
     }
@@ -66,6 +69,7 @@ public class UIDialogue : MonoBehaviour
     public void CloseCommandes()
     {
         _commandesMenu?.SetActive(false);
+        _pauseMenu.SetActive(true);
         EventSystem.current.SetSelectedGameObject(null);
         EventSystem.current.SetSelectedGameObject(_commandesClosedButton);
     }
