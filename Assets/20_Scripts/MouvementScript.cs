@@ -89,5 +89,4 @@ public class MouvementScript : MonoBehaviour
             _ennemySprite.flipX = true;
         }
     }
-
 }
