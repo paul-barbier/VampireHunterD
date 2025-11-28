@@ -6,12 +6,14 @@ public class Attack : MonoBehaviour
     [SerializeField] private float attackSpeed;
     [SerializeField] private float lowAngle;
     [SerializeField] private float highAngle;
-    private bool isAttacking = false;
+    public bool isAttacking = false;
     [SerializeField] private Animator _DAnimation;
+    private PlayerCharacter _playerCharacter;
 
 
     void Awake()
     {
+        _playerCharacter = GetComponent<PlayerCharacter>();
         attackPivot.gameObject.SetActive(false);
     }
 
@@ -19,6 +21,10 @@ public class Attack : MonoBehaviour
     {
         if (isAttacking)
         {
+            _playerCharacter.DisableMovement();
+            _playerCharacter._DAnimation.SetBool("IsRunning", false);
+            _playerCharacter._currentHorizontalVelocity = Vector2.zero;
+
             highAngle = Mathf.MoveTowards(highAngle, lowAngle, attackSpeed * Time.deltaTime);
             attackPivot.localRotation = Quaternion.Euler(0, 0, highAngle);
             _DAnimation.SetBool("IsAttacking", true);
@@ -39,6 +45,7 @@ public class Attack : MonoBehaviour
     {
         attackPivot.gameObject.SetActive(true);
         isAttacking = true;
+        SoundManager.PlaySound(SoundType.Attack);
     }
 }
 

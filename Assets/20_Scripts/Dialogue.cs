@@ -5,10 +5,12 @@ using System.Collections;
 using System;
 using Unity.Multiplayer.Center.Common;
 using Unity.VisualScripting;
+using UnityEngine.InputSystem;
 
 public class Dialogue : MonoBehaviour
 {
     private PlayerCharacter _playerMovementScript;
+
     [SerializeField] private GameObject _playerCharacterMovement;
 
     [SerializeField] private GameObject _dialogueCanva;
@@ -27,7 +29,6 @@ public class Dialogue : MonoBehaviour
 
     private void Start()
     {
-
         _playerMovementScript = FindAnyObjectByType<PlayerCharacter>();
         if (_playerMovementScript == null )
         {
@@ -47,7 +48,6 @@ public class Dialogue : MonoBehaviour
     {
         if (collision.CompareTag("Player"))
         {
-            //_playerMovementScript.MovementDisabled = true;
             _dialogueActivated = true;
             _dialogueCanva.SetActive(true);
             SettingVelocity();

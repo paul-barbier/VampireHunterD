@@ -84,21 +84,21 @@ public class PlayerCharacter : MonoBehaviour
     [Header("Setup")]
     [SerializeField] private Transform _mesh = null;
     [SerializeField] private Health _health;
-    [SerializeField] private GameObject ChauveSouris;
+    [SerializeField] public GameObject ChauveSouris;
     #endregion EditorVariables
 
     #region Variables
 
     //Components
     public Rigidbody2D _rigidbody = null;
-    [SerializeField] private Animator _DAnimation;
+    [SerializeField] public Animator _DAnimation;
 
     //Force
     public Vector2 _forceToAdd = Vector2.zero;
     private Vector2 _prePhysicPosition = Vector2.zero;
 
     //Horizontal movement
-    private Vector2 _currentHorizontalVelocity = Vector2.zero;
+    public Vector2 _currentHorizontalVelocity = Vector2.zero;
     public float _movementInput = 0.0f;
     private MovementValues _horizontalPhysic = new MovementValues();
 
@@ -129,8 +129,7 @@ public class PlayerCharacter : MonoBehaviour
     public Vector2 _currentDashForce = Vector2.zero;
     private Vector2 _dashMovementInput = Vector2.zero;
     [SerializeField] private bool _canDash = true;
-    [SerializeField] private bool _isDashing = false;
-    private float _dashTime = 0.0f;
+    public bool _isDashing = false;
     private float _startDashTime = 0.0f;
     private bool _bufferDash = false;
     [SerializeField] private bool _lockedDash = false;
@@ -154,6 +153,15 @@ public class PlayerCharacter : MonoBehaviour
     //Disable movement
     [SerializeField] public bool MovementDisabled = false;
 
+    [SerializeField] private Attack _attack;
+
+    [SerializeField] private CapsuleCollider2D _capsuleBox;
+    private Vector2 _sizeCapsule;
+    private Vector2 _offsetCapsule;
+
+    [SerializeField] private BoxCollider2D dashHitbox;
+    private Vector2 _sizeDashHitbox;
+    private Vector2 _offsetDashHitbox;
 
 
     #endregion Variables
@@ -162,7 +170,13 @@ public class PlayerCharacter : MonoBehaviour
 
     private void Awake()
     {
+        _attack = GetComponent<Attack>();
+
         _rigidbody = GetComponent<Rigidbody2D>();
+        _capsuleBox = GetComponent<CapsuleCollider2D>();
+        _sizeCapsule = _capsuleBox.size;
+        _offsetCapsule = _capsuleBox.offset;
+
         _horizontalPhysic = _groundPhysic;
         CalculateJumpTime();
 
@@ -200,6 +214,9 @@ public class PlayerCharacter : MonoBehaviour
 
     private void Update()
     {
+        if (_attack.isAttacking || _isDashing)
+            return;
+
         RotateMesh();
     }
 
@@ -214,6 +231,7 @@ public class PlayerCharacter : MonoBehaviour
 
     #endregion Visual
 
+    #region Update
     private void FixedUpdate()
     {
         DisableMovement();
@@ -227,13 +245,17 @@ public class PlayerCharacter : MonoBehaviour
             _currentHorizontalVelocity.x = 0.0f;
         }
     }
+    #endregion Update
 
     #region PhysicState
 
     public void DisableMovement()
     {
         if (MovementDisabled == true)
+        {
             return;
+        }
+
         else
             //On reset la force � ajouter cette boucle de fixed update
             _forceToAdd = Vector2.zero;
@@ -266,8 +288,13 @@ public class PlayerCharacter : MonoBehaviour
         //Si le rigidbody touche le sol mais on a en m�moire qu'il ne le touche pas, on est sur la frame o� il touche le sol
         if (isTouchingGround && !IsGrounded)
         {
+            if(!_canDash)
+            {
+                _canDash = true;
+                ChauveSouris.gameObject.SetActive(true);
+            }
+
             IsGrounded = true;
-            StartCoroutine(CdDash());
             //On invoque l'event en passant true pour signifier que le joueur arrive au sol
             OnPhysicStateChanged.Invoke(PhysicState.Ground);
         }
@@ -339,13 +366,24 @@ public class PlayerCharacter : MonoBehaviour
         //On a ajoute le delta de v�locit� � la force � donn� ce tour de boucle au rigidbody
         _forceToAdd += velocityDelta;
 
-        if (_movementInput >= 0.01 || _movementInput <= -0.01)
+        if (_movementInput >= 0.01 && IsGrounded)
         {
             _DAnimation.SetBool("IsRunning", true);
+            _capsuleBox.size = _sizeCapsule * new Vector2(2, 1);
+            _capsuleBox.offset = new Vector2(1, 0.3f);
         }
-        else if (_movementInput == 0)
+        else if (_movementInput <= -0.01 && IsGrounded)
+        {
+            _DAnimation.SetBool("IsRunning", true);
+            _capsuleBox.size = _sizeCapsule * new Vector2(2, 1);
+            _capsuleBox.offset = new Vector2(-1, 0.3f);
+
+        }
+        else if (_movementInput == 0 && IsGrounded || _movementInput != 0 && !IsGrounded)
         {
             _DAnimation.SetBool("IsRunning", false);
+            _capsuleBox.size = _sizeCapsule;
+            _capsuleBox.offset = _offsetCapsule;
         }
     }
 
@@ -395,8 +433,12 @@ public class PlayerCharacter : MonoBehaviour
         float velocityDelta = _currentGravity - _rigidbody.linearVelocity.y;
 
         velocityDelta = Mathf.Clamp(velocityDelta, -_gravityParameters.MaxAcceleration, 0.0f);
-        _DAnimation.SetBool("IsDashing", false);
-        _DAnimation.SetBool("IsFalling", true);
+
+        if (!_isDashing)
+        {
+            _DAnimation.SetBool("IsFalling", true);
+        }
+
         _forceToAdd.y += velocityDelta;
     }
 
@@ -424,7 +466,6 @@ public class PlayerCharacter : MonoBehaviour
             return;
         }
         _DAnimation.SetBool("IsJumping", true);
-        _DAnimation.SetBool("IsDashing", false);
 
         //_currentJumpForce.y = _jumpParameters.InitValue;
         _currentJumpForce.y = _jumpParameters.ImpulseForce;
@@ -445,6 +486,7 @@ public class PlayerCharacter : MonoBehaviour
     {
         if (!_isJumping)
             return;
+        _capsuleBox.offset = new Vector2(0, 1.5f);
 
         ContactPoint2D[] contactPointArray = new ContactPoint2D[1];
         ContactFilter2D filter = _ceilingContactFilter;
@@ -471,8 +513,8 @@ public class PlayerCharacter : MonoBehaviour
         {
             _isJumping = false;
             _DAnimation.SetBool("IsJumping", false);
-            _DAnimation.SetBool("IsFalling", true);
-            _DAnimation.SetBool("IsDashing", false);
+
+            _capsuleBox.offset = _offsetCapsule;
 
             _currentJumpForce = Vector2.zero;
         }
@@ -480,8 +522,8 @@ public class PlayerCharacter : MonoBehaviour
         {
             _isJumping = false;
             _DAnimation.SetBool("IsJumping", false);
-            _DAnimation.SetBool("IsFalling", true);
-            _DAnimation.SetBool("IsDashing", false);
+
+            _capsuleBox.offset = _offsetCapsule;
 
             _currentJumpForce = _currentDashForce;
         }
@@ -508,7 +550,6 @@ public class PlayerCharacter : MonoBehaviour
             _currentJumpForce = Vector2.zero;
             _DAnimation.SetBool("IsJumping", false);
             _DAnimation.SetBool("IsFalling", false);
-            _DAnimation.SetBool("IsDashing", false);
         }
     }
 
@@ -522,23 +563,33 @@ public class PlayerCharacter : MonoBehaviour
         }
     }
 
-    //public float GravityValue(float baseWalkSpeed, float maxHeight, float maxLength) // v0 = -2 * h / t_h^2 || -2 * h * v^2 / L_h^2
-    //{
+    public float GravityValue(float baseWalkSpeed, float maxHeight, float maxLength) // v0 = -2 * h / t_h^2 || -2 * h * v^2 / L_h^2
+    {
 
-    //    return -2 * maxHeight * baseWalkSpeed * baseWalkSpeed / ((maxLength * 0.5f) * (maxLength * 0.5f));
-    //}
+        return -2 * maxHeight * baseWalkSpeed * baseWalkSpeed / ((maxLength * 0.5f) * (maxLength * 0.5f));
+    }
 
-    //public float InitSpeed(float baseWalkSpeed, float maxHeight, float maxLength) // v0 = 2 * h / t_h || 2 * h * v / L_h
-    //{
-    //    return 2 * maxHeight * baseWalkSpeed / ((maxLength * 0.5f));
-    //}
+    public float InitSpeed(float baseWalkSpeed, float maxHeight, float maxLength) // v0 = 2 * h / t_h || 2 * h * v / L_h
+    {
+        return 2 * maxHeight * baseWalkSpeed / ((maxLength * 0.5f));
+    }
 
     #endregion Jump
 
     #region Dash
     public void GetDashInput(Vector2 Dashinput)
     {
-        _dashMovementInput = Dashinput;
+        float scalaire = Vector2.Dot(Vector2.up, Dashinput);
+        /*On multiplie un ensemble de valeur par le nombre de marche,
+         * qu'on arrondis à l'inferieur ensuite,
+         * puis on redivise par le nombre de marche pour obtenir un ensemble restreint de valeur (0, 0,5, 1),
+         * Cet ensemble a un décalage arbitraire de 0,25 (marche de manoeuvre joystick)*/
+        float step = Mathf.Floor((MathF.Abs(scalaire) + 0.25f) * 2) / 2f;
+        /* Déplacement horizontal si le step > 0,5 dans ce cas déplacement vertical strict, donc pas horizontal, sinon on * le signe du déplacement (-1 ou 1),
+         * par l'inverse du déplacement vertical (1 - step) qui donne soit 1 (déplcamenet horizontal strict ou 0,5 déplacement diagonal)*/
+        float Mx = step > 0.5f ? 0 : Mathf.Sign(Dashinput.x) * (1 - step);
+        _dashMovementInput = (new Vector2(Mx, step * Mathf.Sign(scalaire))).normalized;
+        Debug.Log(_dashMovementInput);
     }
 
     public void StartDash()
@@ -552,7 +603,23 @@ public class PlayerCharacter : MonoBehaviour
 
         if (_canDash)
         {
-            _DAnimation.SetBool("IsDashing", true);
+            if (_dashMovementInput.y == 1)
+            {
+                _DAnimation.SetBool("IsDashingUp", true);
+            }
+            else if (_dashMovementInput.y != 0 && _dashMovementInput.x != 0)
+            {
+                _mesh.rotation = Quaternion.Euler(0 , 0 ,_dashMovementInput.x);
+                _DAnimation.SetBool("IsDashing", true);
+            }
+            else if (_dashMovementInput.x != 0)
+            {
+                _DAnimation.SetBool("IsDashing", true);
+            }
+            else if (_dashMovementInput.y == -1)
+            {
+                _DAnimation.SetBool("IsDashingDown", true);
+            }
 
             _isDashing = true;
             _canDash = false;
@@ -560,12 +627,13 @@ public class PlayerCharacter : MonoBehaviour
             _currentDashForce = _dashMovementInput.normalized * _dashParameters.DashImpulseForce;
 
             _rigidbody.linearVelocity = Vector2.zero;
+            _currentJumpForce = Vector2.zero;
             _forceToAdd = Vector2.zero;
 
             _startDashTime = Time.time;
+            ChauveSouris.SetActive(false);
         }
     }
-
 
     public void Dash()
     {
@@ -583,9 +651,15 @@ public class PlayerCharacter : MonoBehaviour
             _isDashing = false;
             _currentDashForce = Vector2.zero;
             _DAnimation.SetBool("IsDashing", false);
+            _DAnimation.SetBool("IsDashingUp", false);
+            _DAnimation.SetBool("IsDashingDown", false);
+
+            if (IsGrounded && !_canDash)
+            {
+                StartCoroutine(CdDash());
+            }
         }
     }
-
 
     private void StopDashBuffer()
     {
@@ -604,8 +678,12 @@ public class PlayerCharacter : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        //_isDashing = false;
+        _isDashing = false;
         _currentDashForce = Vector2.zero;
+        _currentJumpForce = Vector2.zero;
+        _DAnimation.SetBool("IsDashing", false);
+        _DAnimation.SetBool("IsDashingUp", false);
+        _DAnimation.SetBool("IsDashingDown", false);
     }
 
     IEnumerator CdDash()
@@ -626,21 +704,28 @@ public class PlayerCharacter : MonoBehaviour
         _currentHorizontalVelocity = Vector2.zero;
         _rigidbody.linearVelocity = Vector2.zero;
         _forceToAdd = Vector2.zero;
+        _currentGravity = 0.0f;
+        _DAnimation.SetBool("IsDashing", false);
+        _DAnimation.SetBool("IsDashingUp", false);
+        _DAnimation.SetBool("IsDashingDown", false);
+
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.CompareTag("Ennemy") && !_lockedDash)
+        if (collision.CompareTag("AttackZone") && !_lockedDash)
         {
             _enemyCollider = collision;
             gameObject.GetComponent<Health>()?.TakeDamage(25);
             Knockback(collision);
         }
-        else if (collision.CompareTag("Dash") && _isDashing)
+        else if (collision.transform != dashHitbox.transform && collision.CompareTag("Dash") && _isDashing)
         {
             StopDashOnEnemy(collision);
             BounceOnEnemy();
+            ChauveSouris.gameObject.SetActive(true);
             _canDash = true;
+            Destroy(collision.gameObject);
         }
     }
     IEnumerator BounceTime()

@@ -8,9 +8,6 @@ public class PlatformeOneWay : MonoBehaviour
 
     [SerializeField] private CapsuleCollider2D playerCollider;
 
-    // Update is called once per frame
-   
-
     private void OnCollisionEnter2D(UnityEngine.Collision2D collision)
     {
         if (collision.gameObject.CompareTag("OneWayPlatform"))
@@ -32,7 +29,12 @@ public class PlatformeOneWay : MonoBehaviour
 
     private IEnumerator DisableCollision()
     {
-        BoxCollider2D platformCollider = currentOnewayPlatform.GetComponent<BoxCollider2D>();
+        if (currentOnewayPlatform == null)
+            yield break;
+
+        Collider2D platformCollider = currentOnewayPlatform.GetComponent<Collider2D>();
+        if (platformCollider == null)
+            yield break;
 
         Physics2D.IgnoreCollision(playerCollider, platformCollider);
         yield return new WaitForSeconds(1.5f);

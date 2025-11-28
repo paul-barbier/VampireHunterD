@@ -5,6 +5,7 @@ using System;
 
 public class MouvementScript : MonoBehaviour
 {
+    
     [Serializable]
     private struct MovementValues
     {
@@ -31,6 +32,7 @@ public class MouvementScript : MonoBehaviour
         _pointsMovement._targetPoints = 0;
     }
 
+
     private void FixedUpdate()
     {
         if (_isMoving == true)
@@ -53,6 +55,7 @@ public class MouvementScript : MonoBehaviour
             RotateMesh();
         }
     }
+
 
     void IncreaseTargetInt()
     {
@@ -86,4 +89,5 @@ public class MouvementScript : MonoBehaviour
             _ennemySprite.flipX = true;
         }
     }
+
 }

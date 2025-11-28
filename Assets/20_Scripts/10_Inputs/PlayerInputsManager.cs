@@ -11,29 +11,36 @@ public class PlayerInputsManager : MonoBehaviour
     private PlayerTeleport _playerTP = null;
     private Dialogue _dialogue = null;
     private PlatformeOneWay _oneWay = null;
+    private UIDialogue _dialogueMenu = null;
+    private MainMenu _mainMenu = null;
 
     private void Awake()
     {
         _character = GetComponent<PlayerCharacter>();
         _attack = GetComponent<Attack>();
         _playerTP = GetComponent<PlayerTeleport>();
-        _dialogue = GetComponent<Dialogue>();
+        _dialogue = FindFirstObjectByType<Dialogue>();
         _oneWay = GetComponent<PlatformeOneWay>();
+        _dialogueMenu = FindFirstObjectByType<UIDialogue>();
+        _mainMenu = GetComponent<MainMenu>();
 
         _inputs = new PlayerInputs();
-        _inputs.Actions.Jump.started += _ => _character.StartJump();
-        _inputs.Actions.Attack.started += _ => _attack.AttackZone();
-        _inputs.Actions.Interact.started += _ => _playerTP.UseTP();
-        _inputs.Actions.Dash.started += _ => _character.StartDash();
-        _inputs.Actions.OneWayDown.started += _ => _oneWay.DownOneWay();
-        _inputs.Actions.SkipDialogue.started += _ => _dialogue.SkipDialogue();  
+        _inputs.Player.Jump.started += _ => _character.StartJump();
+        _inputs.Player.Attack.started += _ => _attack.AttackZone();
+        _inputs.Player.Interact.started += _ => _playerTP.UseTP();
+        _inputs.Player.Dash.started += _ => _character.StartDash();
+        _inputs.Player.OneWayDown.started += _ => _oneWay.DownOneWay();
+        _inputs.Player.SkipDialogue.started += _ => _dialogue.SkipDialogue();
+        _inputs.Menu.PauseMenu.started += _ => _dialogueMenu.Pause();
+        _inputs.Menu.Back.started += _ => _dialogueMenu.Back();
+        _inputs.Menu.BackMenu.started += _ => _mainMenu.BackMenu();
         _inputs.Enable();
     }
 
     private void FixedUpdate()
     {
-        _character.GetMovementInput(_inputs.Actions.Move.ReadValue<float>());
+        _character.GetMovementInput(_inputs.Player.Move.ReadValue<float>());
 
-        _character.GetDashInput(_inputs.Actions.DashDirection.ReadValue<Vector2>());
+        _character.GetDashInput(_inputs.Player.DashDirection.ReadValue<Vector2>());
     }
 }
