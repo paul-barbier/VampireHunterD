@@ -642,6 +642,7 @@ public class PlayerCharacter : MonoBehaviour
 
             _startDashTime = Time.time;
             ChauveSouris.SetActive(false);
+            SoundManager.PlaySound(SoundType.Dash, 15.0f);
         }
     }
 
