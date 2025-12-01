@@ -85,6 +85,7 @@ public class PlayerCharacter : MonoBehaviour
     [SerializeField] private Transform _mesh = null;
     [SerializeField] private Health _health;
     [SerializeField] public GameObject ChauveSouris;
+    private CameraFollow cameraFollow;
     #endregion EditorVariables
 
     #region Variables
@@ -164,7 +165,6 @@ public class PlayerCharacter : MonoBehaviour
     private Vector2 _sizeDashHitbox;
     private Vector2 _offsetDashHitbox;
 
-
     #endregion Variables
 
     #region Initialization
@@ -188,7 +188,7 @@ public class PlayerCharacter : MonoBehaviour
         OnPhysicStateChanged += TryJumpBuffer;
         OnPhysicStateChanged += TryDashBuffer;
 
-        //IsGrounded = true;
+        dashHitbox.gameObject.SetActive(false);
     }
 
 #if UNITY_EDITOR
@@ -285,6 +285,8 @@ public class PlayerCharacter : MonoBehaviour
         //On utilise le filtre qui contient l'inclinaison du sol pour savoir si le rigidbody touche le sol ou non
         ContactFilter2D filter = _groundContactFilter;
         bool isTouchingGround = _rigidbody.IsTouching(filter);
+        cameraFollow.LockCamOnPlayer();
+
 
         //Si le rigidbody touche le sol mais on a en m�moire qu'il ne le touche pas, on est sur la frame o� il touche le sol
         if (isTouchingGround && !IsGrounded)

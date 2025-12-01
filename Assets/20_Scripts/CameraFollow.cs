@@ -8,37 +8,37 @@ using UnityEngine.UIElements;
 public class CameraFollow : MonoBehaviour
 {
     [SerializeField] private CinemachineCamera _camera;
-    [SerializeField] private PlayerCharacter _playerCam = null;
-    [SerializeField] private float RunTimer;
+    [SerializeField] private PlayerCharacter _player = null;
 
     private void Awake()
     {
-        _playerCam = GetComponent<PlayerCharacter>();
+        _player = GetComponent<PlayerCharacter>();
     }
 
     private void Update()
     {
-        RunTimer += Time.deltaTime;
-
         var composer = _camera.GetComponent<CinemachinePositionComposer>();
-        if (_playerCam._movementInput == 1)
+        if (_player._movementInput == 1)
         {
             if (composer != null)
             {
                 composer.TargetOffset = new Vector3(8.0f, 0.0f, 0.0f);
             }
         }
-        else if (_playerCam._movementInput == -1)
+        else if (_player._movementInput == -1)
         {
             if (composer != null)
             {
                 composer.TargetOffset = new Vector3(-8.0f, 0.0f, 0.0f);
             }
         }
-        else if (_playerCam._movementInput == 0)
-        {
-            RunTimer = 0.0f;
-        }
-
     }
+
+    public void LockCamOnPlayer()
+    {
+        var composer = _camera.GetComponent<CinemachinePositionComposer>();
+
+        composer.CenterOnActivate = true;
+    }
+
 }
