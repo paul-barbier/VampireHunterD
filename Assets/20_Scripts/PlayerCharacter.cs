@@ -85,6 +85,7 @@ public class PlayerCharacter : MonoBehaviour
     [SerializeField] private Transform _mesh = null;
     [SerializeField] private Health _health;
     [SerializeField] public GameObject ChauveSouris;
+    private CameraFollow cameraFollow;
     #endregion EditorVariables
 
     #region Variables
@@ -128,11 +129,11 @@ public class PlayerCharacter : MonoBehaviour
     //Dash
     public Vector2 _currentDashForce = Vector2.zero;
     private Vector2 _dashMovementInput = Vector2.zero;
-    [SerializeField] private bool _canDash = true;
+    [SerializeField] public bool _canDash = true;
     public bool _isDashing = false;
     private float _startDashTime = 0.0f;
     private bool _bufferDash = false;
-    [SerializeField] private bool _hittingDash = false;
+    [SerializeField] public bool _hittingDash = false;
     private float _dashAnimTime;
 
     [SerializeField] private Vector2 enemyBounceForce;
@@ -160,10 +161,10 @@ public class PlayerCharacter : MonoBehaviour
     private Vector2 _sizeCapsule;
     private Vector2 _offsetCapsule;
 
-    [SerializeField] private BoxCollider2D dashHitbox;
+    [SerializeField] public BoxCollider2D attackHitbox;
+    [SerializeField] public BoxCollider2D dashHitbox;
     private Vector2 _sizeDashHitbox;
     private Vector2 _offsetDashHitbox;
-
 
     #endregion Variables
 
@@ -188,7 +189,7 @@ public class PlayerCharacter : MonoBehaviour
         OnPhysicStateChanged += TryJumpBuffer;
         OnPhysicStateChanged += TryDashBuffer;
 
-        //IsGrounded = true;
+        dashHitbox.gameObject.SetActive(false);
     }
 
 #if UNITY_EDITOR
@@ -220,12 +221,8 @@ public class PlayerCharacter : MonoBehaviour
 
     private void RotateMesh()
     {
-        if (_lockedRotation)
-            return;
-
         if (_attack.isAttacking || _isDashing)
             return;
-
 
         float targetRotation = _movementInput >= 0.01 ? 0f : _movementInput <= -0.01 ? 180f : _currentMeshRotation.y;
 
@@ -289,6 +286,8 @@ public class PlayerCharacter : MonoBehaviour
         //On utilise le filtre qui contient l'inclinaison du sol pour savoir si le rigidbody touche le sol ou non
         ContactFilter2D filter = _groundContactFilter;
         bool isTouchingGround = _rigidbody.IsTouching(filter);
+        cameraFollow.LockCamOnPlayer();
+
 
         //Si le rigidbody touche le sol mais on a en m�moire qu'il ne le touche pas, on est sur la frame o� il touche le sol
         if (isTouchingGround && !IsGrounded)
@@ -656,9 +655,12 @@ public class PlayerCharacter : MonoBehaviour
         if (elapsed < _dashParameters.DashDuration)
         {
             _forceToAdd += _currentDashForce;
+            dashHitbox.gameObject.SetActive(true);
         }
         else
         {
+            dashHitbox.gameObject.SetActive(false);
+
             _isDashing = false;
             _currentDashForce = Vector2.zero;
             _DAnimation.SetBool("IsDashing", false);
@@ -705,12 +707,12 @@ public class PlayerCharacter : MonoBehaviour
         ChauveSouris.gameObject.SetActive(true);
     }
 
-    private void BounceOnEnemy()
+    public void BounceOnEnemy()
     {
         StartCoroutine(BounceTime());
     }
 
-    private void StopDashOnEnemy(Collider2D enemy)
+    public void StopDashOnEnemy(Collider2D enemy)
     {
         _currentDashForce = Vector2.zero;
         _currentHorizontalVelocity = Vector2.zero;
@@ -725,21 +727,24 @@ public class PlayerCharacter : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.CompareTag("AttackZone") && !_hittingDash)
+        _enemyCollider = collision;
+
+        if (collision.CompareTag("AttackZone") && !_hittingDash && collision != attackHitbox)
         {
-            _enemyCollider = collision;
-            gameObject.GetComponent<Health>()?.TakeDamage(25);
+            _health.TakeDamage(25);
             Knockback(collision);
+            return;
         }
-        else if (collision.transform != dashHitbox.transform && collision.CompareTag("Dash") && _isDashing)
+        if (collision.CompareTag("Dash") && _isDashing && collision != dashHitbox)
         {
             StopDashOnEnemy(collision);
             BounceOnEnemy();
             ChauveSouris.gameObject.SetActive(true);
             _canDash = true;
-            Destroy(collision.gameObject);
+            collision.gameObject.SetActive(false);
         }
     }
+
     IEnumerator BounceTime()
     {
         _hittingDash = true;
@@ -750,7 +755,7 @@ public class PlayerCharacter : MonoBehaviour
         _hittingDash = false;
     }
     #endregion Dash
-    private void Knockback(Collider2D enemy)
+    public void Knockback(Collider2D enemy)
     {
         StopDashOnEnemy(enemy);
         _knockbackValues._knockbackDirection.x = (transform.position.x - _enemyCollider.transform.position.x);
