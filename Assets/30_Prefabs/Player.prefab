@@ -201,6 +201,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 469ebf7b4ea393a418cdc7fa77101ba1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  respawnTime: 0
 --- !u!1 &4634869587052838177
 GameObject:
   m_ObjectHideFlags: 0
@@ -282,7 +283,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 10
+  m_SortingOrder: 25
   m_Sprite: {fileID: 8164408767924170613, guid: 19dba204746b2f247a181069e8f9fa7a, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -636,13 +637,15 @@ MonoBehaviour:
   _currentDashForce: {x: 0, y: 0}
   _canDash: 1
   _isDashing: 0
-  _lockedDash: 0
+  _hittingDash: 0
   enemyBounceForce: {x: 0, y: 8}
   BouncingTime: 0.3
   checkpoint: {fileID: 0}
+  _lockedRotation: 0
   MovementDisabled: 0
   _attack: {fileID: 0}
   _capsuleBox: {fileID: 0}
+  attackHitbox: {fileID: 0}
   dashHitbox: {fileID: 8076329334359803592}
 --- !u!114 &7089133477461453087
 MonoBehaviour:
@@ -701,6 +704,12 @@ MonoBehaviour:
   _maxHealth: 100
   _currentHealth: 0
   HpAnime: {fileID: 0}
+  _hurtDisplayTime: 0.2
+  _hurtFadeOutTime: 0.2
+  _hurtEffect: {fileID: 0}
+  _Material: {fileID: 0}
+  _maxIntensity: 1
+  _vignetteIntensityStat: 0.1
 --- !u!1 &8433288027733050475
 GameObject:
   m_ObjectHideFlags: 0
