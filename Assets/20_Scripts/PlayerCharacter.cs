@@ -286,8 +286,6 @@ public class PlayerCharacter : MonoBehaviour
         //On utilise le filtre qui contient l'inclinaison du sol pour savoir si le rigidbody touche le sol ou non
         ContactFilter2D filter = _groundContactFilter;
         bool isTouchingGround = _rigidbody.IsTouching(filter);
-        cameraFollow.LockCamOnPlayer();
-
 
         //Si le rigidbody touche le sol mais on a en m�moire qu'il ne le touche pas, on est sur la frame o� il touche le sol
         if (isTouchingGround && !IsGrounded)
@@ -301,6 +299,8 @@ public class PlayerCharacter : MonoBehaviour
             IsGrounded = true;
             //On invoque l'event en passant true pour signifier que le joueur arrive au sol
             OnPhysicStateChanged.Invoke(PhysicState.Ground);
+            cameraFollow.LockCamOnPlayer();
+
         }
         //Si le rigidbody ne touche pas le sol mais on a en m�moire qu'il le touche, on est sur la frame o� il quitte le sol
         else if (!isTouchingGround && IsGrounded)
@@ -310,6 +310,8 @@ public class PlayerCharacter : MonoBehaviour
                 _isInCoyoteTime = true;
             //On invoque l'event en passant false pour signifier que le joueur quitte au sol
             OnPhysicStateChanged.Invoke(PhysicState.Air);
+            cameraFollow.UnLockCamOnPlayer();
+
         }
     }
 
