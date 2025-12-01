@@ -496,7 +496,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: -9}
   m_SizeDelta: {x: 3740, y: 2060}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &8166151551368277946
@@ -782,7 +782,7 @@ MonoBehaviour:
     m_SelectOnDown: {fileID: 0}
     m_SelectOnLeft: {fileID: 0}
     m_SelectOnRight: {fileID: 0}
-  m_Transition: 1
+  m_Transition: 2
   m_Colors:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
     m_HighlightedColor: {r: 1, g: 0, b: 0, a: 1}
@@ -792,9 +792,9 @@ MonoBehaviour:
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
   m_SpriteState:
-    m_HighlightedSprite: {fileID: 0}
-    m_PressedSprite: {fileID: 0}
-    m_SelectedSprite: {fileID: 0}
+    m_HighlightedSprite: {fileID: -7025144413645642477, guid: 7394cf6657898744086a91b5b1d7bc2b, type: 3}
+    m_PressedSprite: {fileID: -7025144413645642477, guid: 7394cf6657898744086a91b5b1d7bc2b, type: 3}
+    m_SelectedSprite: {fileID: -7025144413645642477, guid: 7394cf6657898744086a91b5b1d7bc2b, type: 3}
     m_DisabledSprite: {fileID: 0}
   m_AnimationTriggers:
     m_NormalTrigger: Normal
@@ -1352,7 +1352,7 @@ PrefabInstance:
       objectReference: {fileID: 1883894258760443842}
     - target: {fileID: 786521924455460994, guid: 242932799629f224c8aff174f5ad1d8d, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 786521924455460994, guid: 242932799629f224c8aff174f5ad1d8d, type: 3}
       propertyPath: m_LocalScale.x
@@ -1519,6 +1519,22 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4481614004166267558, guid: 242932799629f224c8aff174f5ad1d8d, type: 3}
+      propertyPath: m_Transition
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4481614004166267558, guid: 242932799629f224c8aff174f5ad1d8d, type: 3}
+      propertyPath: m_SpriteState.m_PressedSprite
+      value: 
+      objectReference: {fileID: -7025144413645642477, guid: 7394cf6657898744086a91b5b1d7bc2b, type: 3}
+    - target: {fileID: 4481614004166267558, guid: 242932799629f224c8aff174f5ad1d8d, type: 3}
+      propertyPath: m_SpriteState.m_SelectedSprite
+      value: 
+      objectReference: {fileID: -7025144413645642477, guid: 7394cf6657898744086a91b5b1d7bc2b, type: 3}
+    - target: {fileID: 4481614004166267558, guid: 242932799629f224c8aff174f5ad1d8d, type: 3}
+      propertyPath: m_SpriteState.m_HighlightedSprite
+      value: 
+      objectReference: {fileID: -7025144413645642477, guid: 7394cf6657898744086a91b5b1d7bc2b, type: 3}
+    - target: {fileID: 4481614004166267558, guid: 242932799629f224c8aff174f5ad1d8d, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 1883894258760443842}
@@ -1528,7 +1544,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4720304113922500855, guid: 242932799629f224c8aff174f5ad1d8d, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4720304113922500855, guid: 242932799629f224c8aff174f5ad1d8d, type: 3}
       propertyPath: m_AnchoredPosition.x
@@ -1766,7 +1782,8 @@ PrefabInstance:
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 2409307544726081972, guid: 242932799629f224c8aff174f5ad1d8d, type: 3}
     m_RemovedGameObjects:
     - {fileID: 8699807237036034617, guid: 242932799629f224c8aff174f5ad1d8d, type: 3}
     - {fileID: 3411626404164978242, guid: 242932799629f224c8aff174f5ad1d8d, type: 3}
@@ -2031,7 +2048,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7771358298708907610, guid: 96a97a4f7118b754db439affd18dfbcc, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8613279772189937924, guid: 96a97a4f7118b754db439affd18dfbcc, type: 3}
       propertyPath: m_Name

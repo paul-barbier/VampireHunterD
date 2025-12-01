@@ -85,7 +85,7 @@ public class PlayerCharacter : MonoBehaviour
     [SerializeField] private Transform _mesh = null;
     [SerializeField] private Health _health;
     [SerializeField] public GameObject ChauveSouris;
-    [SerializeField] private CameraFollow cameraFollow;
+    private CameraFollow cameraFollow;
     #endregion EditorVariables
 
     #region Variables
@@ -129,11 +129,11 @@ public class PlayerCharacter : MonoBehaviour
     //Dash
     public Vector2 _currentDashForce = Vector2.zero;
     private Vector2 _dashMovementInput = Vector2.zero;
-    [SerializeField] private bool _canDash = true;
+    [SerializeField] public bool _canDash = true;
     public bool _isDashing = false;
     private float _startDashTime = 0.0f;
     private bool _bufferDash = false;
-    [SerializeField] private bool _hittingDash = false;
+    [SerializeField] public bool _hittingDash = false;
     private float _dashAnimTime;
 
     [SerializeField] private Vector2 enemyBounceForce;
@@ -161,7 +161,8 @@ public class PlayerCharacter : MonoBehaviour
     private Vector2 _sizeCapsule;
     private Vector2 _offsetCapsule;
 
-    [SerializeField] private BoxCollider2D dashHitbox;
+    [SerializeField] public BoxCollider2D attackHitbox;
+    [SerializeField] public BoxCollider2D dashHitbox;
     private Vector2 _sizeDashHitbox;
     private Vector2 _offsetDashHitbox;
 
@@ -227,7 +228,7 @@ public class PlayerCharacter : MonoBehaviour
 
         _currentMeshRotation.y = Mathf.MoveTowards(_currentMeshRotation.y, targetRotation, rotationSpeed * Time.deltaTime);
 
-        _mesh.rotation = Quaternion.Euler(_currentMeshRotation);
+        _mesh.rotation = Quaternion.Euler(0, _currentMeshRotation.y, 0);
     }
 
     #endregion Visual
@@ -653,14 +654,18 @@ public class PlayerCharacter : MonoBehaviour
         if (elapsed < _dashParameters.DashDuration)
         {
             _forceToAdd += _currentDashForce;
+            dashHitbox.gameObject.SetActive(true);
         }
         else
         {
+            dashHitbox.gameObject.SetActive(false);
+
             _isDashing = false;
             _currentDashForce = Vector2.zero;
             _DAnimation.SetBool("IsDashing", false);
             _DAnimation.SetBool("IsDashingUp", false);
             _DAnimation.SetBool("IsDashingDown", false);
+
             _lockedRotation = false;
 
             if (IsGrounded && !_canDash)
@@ -701,12 +706,12 @@ public class PlayerCharacter : MonoBehaviour
         ChauveSouris.gameObject.SetActive(true);
     }
 
-    private void BounceOnEnemy()
+    public void BounceOnEnemy()
     {
         StartCoroutine(BounceTime());
     }
 
-    private void StopDashOnEnemy(Collider2D enemy)
+    public void StopDashOnEnemy(Collider2D enemy)
     {
         _currentDashForce = Vector2.zero;
         _currentHorizontalVelocity = Vector2.zero;
@@ -721,21 +726,24 @@ public class PlayerCharacter : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.CompareTag("AttackZone") && !_hittingDash)
+        _enemyCollider = collision;
+
+        if (collision.CompareTag("AttackZone") && !_hittingDash && collision != attackHitbox)
         {
-            _enemyCollider = collision;
-            gameObject.GetComponent<Health>()?.TakeDamage(25);
+            _health.TakeDamage(25);
             Knockback(collision);
+            return;
         }
-        else if (collision.transform != dashHitbox.transform && collision.CompareTag("Dash") && _isDashing)
+        if (collision.CompareTag("Dash") && _isDashing && collision != dashHitbox)
         {
             StopDashOnEnemy(collision);
             BounceOnEnemy();
             ChauveSouris.gameObject.SetActive(true);
             _canDash = true;
-            Destroy(collision.gameObject);
+            collision.gameObject.SetActive(false);
         }
     }
+
     IEnumerator BounceTime()
     {
         _hittingDash = true;
@@ -746,7 +754,7 @@ public class PlayerCharacter : MonoBehaviour
         _hittingDash = false;
     }
     #endregion Dash
-    private void Knockback(Collider2D enemy)
+    public void Knockback(Collider2D enemy)
     {
         StopDashOnEnemy(enemy);
         _knockbackValues._knockbackDirection.x = (transform.position.x - _enemyCollider.transform.position.x);

@@ -7,7 +7,7 @@ using UnityEngine.UIElements;
 
 public class CameraFollow : MonoBehaviour
 {
-    [SerializeField] private CinemachinePositionComposer _camera;
+    [SerializeField] private CinemachineCamera _camera;
     [SerializeField] private PlayerCharacter _player = null;
 
     private void Awake()
@@ -17,35 +17,28 @@ public class CameraFollow : MonoBehaviour
 
     private void Update()
     {
-        if (_camera == null)
-        {
-            Debug.LogError("composer Not Found");
-            return;
-        }
+        var composer = _camera.GetComponent<CinemachinePositionComposer>();
         if (_player._movementInput == 1)
         {
-            if (_camera != null)
+            if (composer != null)
             {
-                _camera.TargetOffset = new Vector3(8.0f, 0.0f, 0.0f);
+                composer.TargetOffset = new Vector3(8.0f, 0.0f, 0.0f);
             }
         }
         else if (_player._movementInput == -1)
         {
-            if (_camera != null)
+            if (composer != null)
             {
-                _camera.TargetOffset = new Vector3(-8.0f, 0.0f, 0.0f);
+                composer.TargetOffset = new Vector3(-8.0f, 0.0f, 0.0f);
             }
         }
     }
 
     public void LockCamOnPlayer()
     {
-        if (_camera == null)
-        {
-            Debug.LogError("composer Not Found");
-            return;
-        }
-        _camera.CenterOnActivate = true;
+        var composer = _camera.GetComponent<CinemachinePositionComposer>();
+
+        composer.CenterOnActivate = true;
     }
 
 }
