@@ -16,6 +16,10 @@ public enum SoundType
     Vampire,
     Ambiance_Clocher,
     BatExplosion,
+    D_Dmg,
+    Dash,
+    Jump,
+    VampireDeath,
 }
 
 [RequireComponent(typeof(AudioSource)), ExecuteInEditMode]
