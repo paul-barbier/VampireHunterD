@@ -27,16 +27,28 @@ public class Dialogue : MonoBehaviour
     public bool _dialogueActivated;
     private int _step;
 
+    [SerializeField] private bool _Cinematic;
+
     private void Start()
     {
-        _playerMovementScript = FindAnyObjectByType<PlayerCharacter>();
-        if (_playerMovementScript == null )
+        if (_Cinematic == false)
         {
-            Debug.Log("Player null");
-        }
+            _playerMovementScript = FindAnyObjectByType<PlayerCharacter>();
+            if (_playerMovementScript == null)
+            {
+                Debug.Log("Player null");
+            }
 
-        _dialogueActivated = false;
-        _dialogueCanva.SetActive(false);
+            _dialogueActivated = false;
+            _dialogueCanva.SetActive(false);
+        }
+        else if (_Cinematic == true)
+        {
+            Debug.Log("Cinematique");
+            _dialogueActivated = true;
+            _dialogueCanva.SetActive(true);
+            ShowStep();
+        }
     }
 
     private void Update()
@@ -46,12 +58,15 @@ public class Dialogue : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.CompareTag("Player"))
+        if (_Cinematic == false)
         {
-            _dialogueActivated = true;
-            _dialogueCanva.SetActive(true);
-            SettingVelocity();
-            ShowStep();
+            if (collision.CompareTag("Player"))
+            {
+                _dialogueActivated = true;
+                _dialogueCanva.SetActive(true);
+                SettingVelocity();
+                ShowStep();
+            }
         }
     }
 
@@ -64,12 +79,11 @@ public class Dialogue : MonoBehaviour
 
     public void SkipDialogue()
     {
-        if (_dialogueActivated)
+        if (_Cinematic == false && _dialogueActivated)
         {
             _step++;
             if (_step >= _speaker.Length)
             {
-                //_playerMovementScript.MovementDisabled = false;
                 _dialogueCanva.SetActive(false);
                 _step = 0;
                 _dialogueActivated = false;
@@ -81,6 +95,12 @@ public class Dialogue : MonoBehaviour
                 ShowStep();
             }
         }
+
+        else if (_Cinematic == true && _dialogueActivated)
+        {
+            Debug.Log("CinematiqueInput");
+            return;
+        }
     }
 
     private void SettingVelocity()
@@ -88,4 +108,6 @@ public class Dialogue : MonoBehaviour
         _playerMovementScript._forceToAdd = Vector2.zero;
         _playerCharacterMovement.SetActive(false);
     }
+
+
 }
