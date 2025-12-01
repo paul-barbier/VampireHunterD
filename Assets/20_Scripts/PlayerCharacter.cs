@@ -85,7 +85,7 @@ public class PlayerCharacter : MonoBehaviour
     [SerializeField] private Transform _mesh = null;
     [SerializeField] private Health _health;
     [SerializeField] public GameObject ChauveSouris;
-    private CameraFollow cameraFollow;
+    [SerializeField] private CameraFollow cameraFollow;
     #endregion EditorVariables
 
     #region Variables
