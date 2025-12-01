@@ -744,6 +744,14 @@ public class PlayerCharacter : MonoBehaviour
             ChauveSouris.gameObject.SetActive(true);
             _canDash = true;
             collision.gameObject.SetActive(false);
+
+        }
+        if (collision.CompareTag("Cadavre") && _isDashing && collision != dashHitbox)
+        {
+            StopDashOnEnemy(collision);
+            BounceOnEnemy();
+            ChauveSouris.gameObject.SetActive(true);
+            _canDash = true;
         }
     }
 
