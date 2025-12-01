@@ -85,7 +85,7 @@ public class PlayerCharacter : MonoBehaviour
     [SerializeField] private Transform _mesh = null;
     [SerializeField] private Health _health;
     [SerializeField] public GameObject ChauveSouris;
-    private CameraFollow cameraFollow;
+    [SerializeField] private CameraFollow cameraFollow;
     #endregion EditorVariables
 
     #region Variables
@@ -311,7 +311,6 @@ public class PlayerCharacter : MonoBehaviour
             //On invoque l'event en passant false pour signifier que le joueur quitte au sol
             OnPhysicStateChanged.Invoke(PhysicState.Air);
             cameraFollow.UnLockCamOnPlayer();
-
         }
     }
 
@@ -658,6 +657,7 @@ public class PlayerCharacter : MonoBehaviour
         {
             _forceToAdd += _currentDashForce;
             dashHitbox.gameObject.SetActive(true);
+            cameraFollow.UnLockCamOnPlayer();
         }
         else
         {
@@ -675,6 +675,8 @@ public class PlayerCharacter : MonoBehaviour
             {
                 StartCoroutine(CdDash());
             }
+            cameraFollow.LockCamOnPlayer();
+
         }
     }
 
@@ -724,7 +726,6 @@ public class PlayerCharacter : MonoBehaviour
         _DAnimation.SetBool("IsDashing", false);
         _DAnimation.SetBool("IsDashingUp", false);
         _DAnimation.SetBool("IsDashingDown", false);
-
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
