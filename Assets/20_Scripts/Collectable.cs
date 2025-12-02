@@ -10,6 +10,7 @@ public class Collectable : MonoBehaviour
     [SerializeField] private float _oscillationFrequency = 0.0f;
     [SerializeField] private SpriteRenderer _spriteRenderer;
     [SerializeField] private GameObject CollectibleUI;
+    [SerializeField] private GameObject _playerCharacterMovement;
 
     private Vector3 _basePosition = Vector3.zero;
 
@@ -52,6 +53,7 @@ public class Collectable : MonoBehaviour
         yield return new WaitUntil(() => character.IsGrounded);
 
         Debug.Log("IsGrounded Collectible");
+        _playerCharacterMovement.SetActive(false);
         CollectibleUI.SetActive(true);
     }
 }
