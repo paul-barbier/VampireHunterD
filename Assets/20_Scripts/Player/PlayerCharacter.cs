@@ -456,7 +456,7 @@ public class PlayerCharacter : MonoBehaviour
             return;
         }
         _DAnimation.SetBool("IsJumping", true);
-        
+        SoundManager.PlaySound(SoundType.Jump, 1.0f);
 
         //_currentJumpForce.y = _jumpParameters.InitValue;
         _currentJumpForce.y = _jumpParameters.ImpulseForce;
