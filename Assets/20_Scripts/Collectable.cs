@@ -8,9 +8,10 @@ public class Collectable : MonoBehaviour
 
     [SerializeField] private float _oscillationAmplitude = 0.0f;
     [SerializeField] private float _oscillationFrequency = 0.0f;
+    [SerializeField] private SpriteRenderer _spriteRenderer;
+    [SerializeField] private GameObject CollectibleUI;
 
     private Vector3 _basePosition = Vector3.zero;
-    [SerializeField] private GameObject _collectibleVisual;
 
     [SerializeField] private bool _hasBeenCollected;
 
@@ -21,7 +22,10 @@ public class Collectable : MonoBehaviour
 
     private void Start()
     {
+        CollectibleUI.SetActive(false);
+        _spriteRenderer = GetComponent<SpriteRenderer>();
         _hasBeenCollected = false;
+        _spriteRenderer.enabled = true;
     }
 
     private void Update()
@@ -38,7 +42,7 @@ public class Collectable : MonoBehaviour
 
         Debug.Log("Collectible pris");
         _hasBeenCollected = true;
-        _collectibleVisual.SetActive(false);
+        _spriteRenderer.enabled = false;
         StartCoroutine(WaitForGrounded());
     }
 
@@ -48,5 +52,6 @@ public class Collectable : MonoBehaviour
         yield return new WaitUntil(() => character.IsGrounded);
 
         Debug.Log("IsGrounded Collectible");
+        CollectibleUI.SetActive(true);
     }
 }
