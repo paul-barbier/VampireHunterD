@@ -5,7 +5,6 @@ using System;
 
 public class MouvementScript : MonoBehaviour
 {
-    
     [Serializable]
     private struct MovementValues
     {
@@ -16,22 +15,20 @@ public class MouvementScript : MonoBehaviour
     }
 
     [SerializeField] private SpriteRenderer _ennemySprite;
-
     [SerializeField] private MovementValues _pointsMovement = new MovementValues();
 
     private float _reachThreshold = 0.5f;
     private bool _isWaiting = false;
-
     [SerializeField] private bool _isMoving = false;
-
     [SerializeField] private Animator _MobAnimation;
 
+    // track the waiting coroutine so we can stop it on reset
+    private Coroutine _waitingCoroutine;
 
     private void Start()
     {
         _pointsMovement._targetPoints = 0;
     }
-
 
     private void FixedUpdate()
     {
@@ -40,13 +37,17 @@ public class MouvementScript : MonoBehaviour
             if (_isWaiting) return; // Blocage du mouvement pendant l'attente
 
             _MobAnimation.SetBool("IsWalking", true);
+            if (_pointsMovement._patrolPoints == null || _pointsMovement._patrolPoints.Length == 0) return;
+
             Transform target = _pointsMovement._patrolPoints[_pointsMovement._targetPoints];
 
 
             // Si on est suffisamment proche du point
             if (Vector3.Distance(transform.position, target.position) <= _reachThreshold)
             {
-                StartCoroutine(WaitingTime());
+                // stocke la coroutine pour pouvoir l'annuler lors du reset
+                if (_waitingCoroutine == null)
+                    _waitingCoroutine = StartCoroutine(WaitingTime());
             }
 
             // Avancer vers la cible
@@ -74,10 +75,13 @@ public class MouvementScript : MonoBehaviour
         yield return new WaitForSeconds(_pointsMovement._waitingTime);
         IncreaseTargetInt();
         _isWaiting = false;
+        _waitingCoroutine = null;
     }
 
     private void RotateMesh()
     {
+        if (_pointsMovement._patrolPoints == null || _pointsMovement._patrolPoints.Length == 0) return;
+
         float target = _pointsMovement._patrolPoints[_pointsMovement._targetPoints].transform.position.x;
         float direction = transform.position.x - target;
         if (direction >= 0)
