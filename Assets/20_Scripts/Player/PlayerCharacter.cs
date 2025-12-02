@@ -470,6 +470,7 @@ public class PlayerCharacter : MonoBehaviour
             return;
         }
         _DAnimation.SetBool("IsJumping", true);
+        
 
         //_currentJumpForce.y = _jumpParameters.InitValue;
         _currentJumpForce.y = _jumpParameters.ImpulseForce;
