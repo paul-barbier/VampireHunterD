@@ -220,7 +220,7 @@ public class PlayerCharacter : MonoBehaviour
 
     private void RotateMesh()
     {
-        if (_attack.isAttacking || _isDashing)
+        if (_attack.rotateAttack || _isDashing)
             return;
 
         float targetRotation = _movementInput >= 0.01 ? 0f : _movementInput <= -0.01 ? 180f : _currentMeshRotation.y;
@@ -362,20 +362,17 @@ public class PlayerCharacter : MonoBehaviour
         if (_movementInput >= 0.01 && IsGrounded)
         {
             _DAnimation.SetBool("IsRunning", true);
-            _capsuleBox.size = _sizeCapsule * new Vector2(2, 1);
             _capsuleBox.offset = new Vector2(1, 0.3f);
         }
         else if (_movementInput <= -0.01 && IsGrounded)
         {
             _DAnimation.SetBool("IsRunning", true);
-            _capsuleBox.size = _sizeCapsule * new Vector2(2, 1);
             _capsuleBox.offset = new Vector2(-1, 0.3f);
 
         }
         else if (_movementInput == 0 && IsGrounded || _movementInput != 0 && !IsGrounded)
         {
             _DAnimation.SetBool("IsRunning", false);
-            _capsuleBox.size = _sizeCapsule;
             _capsuleBox.offset = _offsetCapsule;
         }
     }
