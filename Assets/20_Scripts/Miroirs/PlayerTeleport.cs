@@ -37,7 +37,7 @@ public class PlayerTeleport : MonoBehaviour
             else if (gameObject.layer == layerSecond)
             {
                 // Si joueur au SecondPlan, ignorer les collisions entre les deux plans
-                SetIgnoreBetweenPlans(true);
+                SetIgnoreBetweenPlans(false);
             }
         }
     }
@@ -75,7 +75,7 @@ public class PlayerTeleport : MonoBehaviour
         if (currentTeleporter != null)
         {
             transform.position = currentTeleporter.GetComponent<Teleporter>().GetDestination().position;
-            AudioSource.PlayClipAtPoint(SoundManager.instance.soundList[(int)SoundType.TP].Sounds[0], transform.position, 1f);
+            //AudioSource.PlayClipAtPoint(SoundManager.instance.soundList[(int)SoundType.TP].Sounds[0], transform.position, 1f);
 
             int currentLayer = gameObject.layer;
             if (currentLayer == layerPremier)
