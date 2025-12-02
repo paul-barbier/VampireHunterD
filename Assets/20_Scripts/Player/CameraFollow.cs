@@ -23,7 +23,7 @@ public class CameraFollow : MonoBehaviour
             if (_camera != null)
             {
                 _camera.TargetOffset = new Vector3(offsetCam, 1.0f, 0.0f);
-                _camera.Composition.HardLimits.Offset = new Vector2(1f, 0.46f);
+                _camera.Composition.HardLimits.Offset = new Vector2(-1f, 0f);
             }
         }
         else if (_player._movementInput <= -1)
@@ -31,8 +31,7 @@ public class CameraFollow : MonoBehaviour
             if (_camera != null)
             {
                 _camera.TargetOffset = new Vector3(-offsetCam, 1.0f, 0.0f);
-                _camera.Composition.HardLimits.Offset = new Vector2(-1f, 0.46f);
-
+                _camera.Composition.HardLimits.Offset = new Vector2(1f, 0f);
             }
         }
         else if (_player._movementInput == 0)
@@ -40,7 +39,6 @@ public class CameraFollow : MonoBehaviour
             if (_camera != null)
             {
                 _camera.TargetOffset = new Vector3(0.0f, 1.0f, 0.0f);
-                _camera.Composition.HardLimits.Offset = new Vector2(0, 0.46f);
             }
         }
     }

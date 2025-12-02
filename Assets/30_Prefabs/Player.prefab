@@ -122,7 +122,7 @@ GameObject:
   - component: {fileID: 1030361369149033380}
   - component: {fileID: 5015562107284513603}
   m_Layer: 6
-  m_Name: AttackZone
+  m_Name: Zone d'attaque
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -216,7 +216,7 @@ GameObject:
   - component: {fileID: 3268310108332250520}
   m_Layer: 6
   m_Name: Visual
-  m_TagString: Player
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -229,8 +229,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4634869587052838177}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
-  m_LocalPosition: {x: 0, y: 1.06, z: 0}
+  m_LocalRotation: {x: -0.00034529547, y: 0.99999994, z: -0, w: 0}
+  m_LocalPosition: {x: 0, y: 1, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children:
@@ -239,7 +239,7 @@ Transform:
   - {fileID: 5627316185133770394}
   - {fileID: 5678964012433711846}
   m_Father: {fileID: 280440432991570405}
-  m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 180, z: -0.04}
 --- !u!212 &5674561225617938969
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -345,6 +345,7 @@ GameObject:
   - component: {fileID: 1720546089308738315}
   - component: {fileID: 1539380187053205686}
   - component: {fileID: 7822740381902637360}
+  - component: {fileID: 2527351097556045588}
   m_Layer: 6
   m_Name: Player
   m_TagString: Player
@@ -529,29 +530,20 @@ MonoBehaviour:
       - serializedVersion: 3
         time: 0
         value: 0
-        inSlope: 0
-        outSlope: 0
+        inSlope: 1
+        outSlope: 1
         tangentMode: 34
         weightedMode: 0
         inWeight: 0
-        outWeight: 0.33333334
-      - serializedVersion: 3
-        time: 0.8
-        value: 0
-        inSlope: 0
-        outSlope: 0
-        tangentMode: 0
-        weightedMode: 0
-        inWeight: 0.33333334
-        outWeight: 0.33333334
+        outWeight: 0
       - serializedVersion: 3
         time: 1
         value: 1
-        inSlope: 11.573088
-        outSlope: 11.573088
-        tangentMode: 0
+        inSlope: 1
+        outSlope: 1
+        tangentMode: 34
         weightedMode: 0
-        inWeight: 0.07794798
+        inWeight: 0
         outWeight: 0
       m_PreInfinity: 2
       m_PostInfinity: 2
@@ -628,7 +620,8 @@ MonoBehaviour:
   _mesh: {fileID: 5167549000642208514}
   _health: {fileID: 7822740381902637360}
   ChauveSouris: {fileID: 1893569437254920610}
-  _rigidbody: {fileID: 0}
+  cameraFollow: {fileID: 2527351097556045588}
+  _rigidbody: {fileID: 948011244277554858}
   _DAnimation: {fileID: 317578980722878797}
   _forceToAdd: {x: 0, y: 0}
   _currentHorizontalVelocity: {x: 0, y: 0}
@@ -643,9 +636,9 @@ MonoBehaviour:
   checkpoint: {fileID: 0}
   _lockedRotation: 0
   MovementDisabled: 0
-  _attack: {fileID: 0}
-  _capsuleBox: {fileID: 0}
-  attackHitbox: {fileID: 0}
+  _attack: {fileID: 1720546089308738315}
+  _capsuleBox: {fileID: 1432363591201203488}
+  attackHitbox: {fileID: 1030361369149033380}
   dashHitbox: {fileID: 8076329334359803592}
 --- !u!114 &7089133477461453087
 MonoBehaviour:
@@ -710,6 +703,21 @@ MonoBehaviour:
   _Material: {fileID: 0}
   _maxIntensity: 1
   _vignetteIntensityStat: 0.1
+--- !u!114 &2527351097556045588
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5230953878154645213}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f3621ed0c4d29ff49aef6d5f3e63f541, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _camera: {fileID: 0}
+  _player: {fileID: 3403784465517668524}
+  offsetCam: 4
 --- !u!1 &8433288027733050475
 GameObject:
   m_ObjectHideFlags: 0
@@ -726,7 +734,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &5678964012433711846
 Transform:
   m_ObjectHideFlags: 0
@@ -830,7 +838,7 @@ GameObject:
   - component: {fileID: 7888530792909689178}
   m_Layer: 6
   m_Name: Attack
-  m_TagString: Player
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
