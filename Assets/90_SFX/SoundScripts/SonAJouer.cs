@@ -6,11 +6,6 @@ public class SonAJouer : MonoBehaviour
 
     public void PlayMobFoot()
     {
-        AudioSource.PlayClipAtPoint(SoundManager.instance.soundList[(int)SoundType.MobFootsteps].Sounds[0], transform.position, 1f);
-    }
-
-    private void OnDestroy()
-    {
-        AudioSource.PlayClipAtPoint(SoundManager.instance.soundList[(int)SoundType.VampireDeath].Sounds[0], transform.position, 10f);
+        AudioSource.PlayClipAtPoint(SoundManager.instance.soundList[(int)SoundType.MobFootsteps].Sounds[0], transform.position, 0.16f);
     }
 }

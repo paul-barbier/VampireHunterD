@@ -151,16 +151,16 @@ public class PlayerCharacter : MonoBehaviour
     [SerializeField] private bool _lockedRotation = false;
 
     //Disable movement
-    public bool MovementDisabled = false;
+    public bool _movementDisabled = false;
 
     //COLLIDER
-    //PLAYER
+        //PLAYER
     [SerializeField] private CapsuleCollider2D _capsuleBox;
     private Vector2 _sizeCapsule;
     private Vector2 _offsetCapsule;
-    //ATTACK
+        //ATTACK
     [SerializeField] public BoxCollider2D attackHitbox;
-    //DASH
+        //DASH
     [SerializeField] public BoxCollider2D dashHitbox;
     private Vector2 _sizeDashHitbox;
     private Vector2 _offsetDashHitbox;
@@ -235,31 +235,8 @@ public class PlayerCharacter : MonoBehaviour
     #region Update
     private void FixedUpdate()
     {
-        DisableMovement();
-    }
-
-    private void LateUpdate()
-    {
-        if (_prePhysicPosition == _rigidbody.position && _forceToAdd != Vector2.zero)
-        {
-            _rigidbody.linearVelocity = new Vector2(0.0f, _rigidbody.linearVelocity.y);
-            _currentHorizontalVelocity.x = 0.0f;
-        }
-    }
-    #endregion Update
-
-    #region PhysicState
-
-    public void DisableMovement()
-    {
-        if (MovementDisabled == true)
-        {
-            return;
-        }
-
-        else
-            //On reset la force � ajouter cette boucle de fixed update
-            _forceToAdd = Vector2.zero;
+        //On reset la force � ajouter cette boucle de fixed update
+        _forceToAdd = Vector2.zero;
         _prePhysicPosition = _rigidbody.position;
 
         //Fonction qui d�tecte si on touche le sol ou non
@@ -279,6 +256,18 @@ public class PlayerCharacter : MonoBehaviour
         //On ajoute la force au rigidbody
         _rigidbody.linearVelocity += _forceToAdd;
     }
+
+    private void LateUpdate()
+    {
+        if (_prePhysicPosition == _rigidbody.position && _forceToAdd != Vector2.zero)
+        {
+            _rigidbody.linearVelocity = new Vector2(0.0f, _rigidbody.linearVelocity.y);
+            _currentHorizontalVelocity.x = 0.0f;
+        }
+    }
+    #endregion Update
+
+    #region PhysicState
 
     private void GroundDetection()
     {
@@ -347,7 +336,7 @@ public class PlayerCharacter : MonoBehaviour
 
     private void Movement()
     {
-        if (_isDashing)
+        if (_movementDisabled || _isDashing)
             return;
 
         //Vector2 maxSpeed = new Vector2(_horizontalPhysic.MaxSpeed * _movementInput, 0.0f);
@@ -470,6 +459,7 @@ public class PlayerCharacter : MonoBehaviour
             return;
         }
         _DAnimation.SetBool("IsJumping", true);
+        
 
         //_currentJumpForce.y = _jumpParameters.InitValue;
         _currentJumpForce.y = _jumpParameters.ImpulseForce;
@@ -641,7 +631,7 @@ public class PlayerCharacter : MonoBehaviour
 
             _startDashTime = Time.time;
             ChauveSouris.SetActive(false);
-            SoundManager.PlaySound(SoundType.Dash, 15.0f);
+            SoundManager.PlaySound(SoundType.Dash, 7.0f);
         }
     }
 
@@ -678,7 +668,6 @@ public class PlayerCharacter : MonoBehaviour
 
         }
     }
-
     private void StopDashBuffer()
     {
         _bufferDash = false;

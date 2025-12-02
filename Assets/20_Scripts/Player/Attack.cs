@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class Attack : MonoBehaviour
@@ -7,6 +8,7 @@ public class Attack : MonoBehaviour
     [SerializeField] private float lowAngle;
     [SerializeField] private float highAngle;
     public bool isAttacking = false;
+    public bool canAttack = false;
     [SerializeField] private Animator _DAnimation;
     private PlayerCharacter _playerCharacter;
 
@@ -19,33 +21,59 @@ public class Attack : MonoBehaviour
 
     void Update()
     {
-        if (isAttacking)
+        if (!isAttacking)
+            return;
+
+        _playerCharacter._movementDisabled = true;
+
+        _playerCharacter._rigidbody.linearVelocity = new Vector2(0, _playerCharacter._rigidbody.linearVelocity.y);
+        _playerCharacter._currentHorizontalVelocity = Vector2.zero;
+        _playerCharacter._forceToAdd = Vector2.zero;
+
+        _playerCharacter._DAnimation.SetBool("IsRunning", false);
+        _DAnimation.SetBool("IsAttacking", true);
+
+        highAngle = Mathf.MoveTowards(highAngle, lowAngle, attackSpeed * Time.deltaTime);
+        attackPivot.localRotation = Quaternion.Euler(0, 0, highAngle);
+
+        if (Mathf.Approximately(highAngle, lowAngle))
         {
-            _playerCharacter.DisableMovement();
-            _playerCharacter._DAnimation.SetBool("IsRunning", false);
-            _playerCharacter._currentHorizontalVelocity = Vector2.zero;
-
-            highAngle = Mathf.MoveTowards(highAngle, lowAngle, attackSpeed * Time.deltaTime);
-            attackPivot.localRotation = Quaternion.Euler(0, 0, highAngle);
-            _DAnimation.SetBool("IsAttacking", true);
-
-            if (Mathf.Approximately(highAngle, lowAngle))
-            {
-                isAttacking = false;
-                attackPivot.gameObject.SetActive(false);
-                highAngle = 50f;
-                attackPivot.localRotation = Quaternion.identity;
-                _DAnimation.SetBool("IsAttacking", false);
-
-            }
+            isAttacking = false;
+            attackPivot.gameObject.SetActive(false);
+            highAngle = 50f;
+            attackPivot.localRotation = Quaternion.identity;
+            _DAnimation.SetBool("IsAttacking", false);
         }
     }
 
     public void AttackZone()
     {
-        attackPivot.gameObject.SetActive(true);
+        //if (!canAttack || isAttacking)
+        //    return;
+
         isAttacking = true;
+        canAttack = false;
+        attackPivot.gameObject.SetActive(true);
+
         SoundManager.PlaySound(SoundType.Attack);
+
+        StartCoroutine(AttackTime());
+        StartCoroutine(AttackCooldown());
+    }
+
+    IEnumerator AttackTime()
+    {
+        _playerCharacter._movementDisabled = true;
+
+        yield return new WaitForSeconds(0.5f);
+
+        _playerCharacter._movementDisabled = false;
+    }
+
+    IEnumerator AttackCooldown()
+    {
+        yield return new WaitForSeconds(0.5f);
+        canAttack = true;
     }
 }
 

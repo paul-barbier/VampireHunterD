@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 8787763197830081006}
   m_Layer: 0
   m_Name: Vampire_Woman
-  m_TagString: Ennemy
+  m_TagString: VampireEnnemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -209,7 +209,7 @@ MonoBehaviour:
     _targetPoints: 0
     _speed: 2
     _waitingTime: 1
-  _isMoving: 0
+  _isMoving: 1
   _MobAnimation: {fileID: 3277552423776059909}
 --- !u!95 &3277552423776059909
 Animator:
@@ -304,7 +304,7 @@ AudioSource:
   m_audioClip: {fileID: 0}
   m_Resource: {fileID: 0}
   m_PlayOnAwake: 0
-  m_Volume: 1
+  m_Volume: 0.12
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -313,9 +313,9 @@ AudioSource:
   Priority: 128
   DopplerLevel: 1
   MinDistance: 1
-  MaxDistance: 50
+  MaxDistance: 25.53
   Pan2D: 0
-  rolloffMode: 0
+  rolloffMode: 1
   BypassEffects: 0
   BypassListenerEffects: 0
   BypassReverbZones: 0
