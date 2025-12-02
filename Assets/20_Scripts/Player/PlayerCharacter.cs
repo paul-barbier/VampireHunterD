@@ -83,16 +83,18 @@ public class PlayerCharacter : MonoBehaviour
 
     [Header("Setup")]
     [SerializeField] private Transform _mesh = null;
-    [SerializeField] private Health _health;
     [SerializeField] public GameObject ChauveSouris;
-    [SerializeField] private CameraFollow cameraFollow;
+    public Rigidbody2D _rigidbody = null;
+    [SerializeField] public Animator _DAnimation;
     #endregion EditorVariables
 
     #region Variables
 
-    //Components
-    public Rigidbody2D _rigidbody = null;
-    [SerializeField] public Animator _DAnimation;
+    //REFERENCES SCRIPTS
+    public CheckPoints checkpoint;
+    [SerializeField] private Attack _attack;
+    [SerializeField] private Health _health;
+    [SerializeField] private CameraFollow cameraFollow;
 
     //Force
     public Vector2 _forceToAdd = Vector2.zero;
@@ -107,7 +109,7 @@ public class PlayerCharacter : MonoBehaviour
     private float _currentGravity = 0.0f;
 
     //Ground
-    public bool IsGrounded { get; private set; } = true;
+    public bool IsGrounded = true;
 
     //Air
     private float _airTime = 0.0f;
@@ -122,7 +124,6 @@ public class PlayerCharacter : MonoBehaviour
     private bool _bufferJump = false;
     private bool _hasBounce = false;
 
-
     //Event appel� quand on touche ou quitte le sol
     public event Action<PhysicState> OnPhysicStateChanged;
 
@@ -136,16 +137,13 @@ public class PlayerCharacter : MonoBehaviour
     [SerializeField] public bool _hittingDash = false;
     private float _dashAnimTime;
 
+    //Bounce
     [SerializeField] private Vector2 enemyBounceForce;
+    [SerializeField] private float BouncingTime;
 
     //KnockBack
     private Collider2D _enemyCollider;
     private Vector3 targetKnockback = Vector3.zero;
-
-    [SerializeField] private float BouncingTime;
-
-    //Checkpoint
-    public CheckPoints checkpoint;
 
     //Sprite
     private Vector3 _currentMeshRotation = Vector3.zero;
@@ -155,13 +153,14 @@ public class PlayerCharacter : MonoBehaviour
     //Disable movement
     public bool MovementDisabled = false;
 
-    [SerializeField] private Attack _attack;
-
+    //COLLIDER
+    //PLAYER
     [SerializeField] private CapsuleCollider2D _capsuleBox;
     private Vector2 _sizeCapsule;
     private Vector2 _offsetCapsule;
-
+    //ATTACK
     [SerializeField] public BoxCollider2D attackHitbox;
+    //DASH
     [SerializeField] public BoxCollider2D dashHitbox;
     private Vector2 _sizeDashHitbox;
     private Vector2 _offsetDashHitbox;
@@ -728,34 +727,6 @@ public class PlayerCharacter : MonoBehaviour
         _DAnimation.SetBool("IsDashingDown", false);
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        _enemyCollider = collision;
-
-        if (collision.CompareTag("AttackZone") && !_hittingDash && collision != attackHitbox)
-        {
-            _health.TakeDamage(25);
-            Knockback(collision);
-            return;
-        }
-        if (collision.CompareTag("Dash") && _isDashing && collision != dashHitbox)
-        {
-            StopDashOnEnemy(collision);
-            BounceOnEnemy();
-            ChauveSouris.gameObject.SetActive(true);
-            _canDash = true;
-            collision.gameObject.SetActive(false);
-
-        }
-        if (collision.CompareTag("Cadavre") && _isDashing && collision != dashHitbox)
-        {
-            StopDashOnEnemy(collision);
-            BounceOnEnemy();
-            ChauveSouris.gameObject.SetActive(true);
-            _canDash = true;
-        }
-    }
-
     IEnumerator BounceTime()
     {
         _hittingDash = true;
@@ -765,7 +736,41 @@ public class PlayerCharacter : MonoBehaviour
         yield return new WaitForSeconds(BouncingTime);
         _hittingDash = false;
     }
+
     #endregion Dash
+
+    #region Damage/Die
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        _enemyCollider = collision;
+
+        //Attack
+        if (collision.CompareTag("AttackZone") && !_hittingDash && !_attack.isAttacking)
+        {
+            _health.TakeDamage(25);
+            Knockback(collision);
+            return;
+        }
+        //Dash sur mob
+        if (collision.CompareTag("Dash") && _isDashing && collision != dashHitbox)
+        {
+            StopDashOnEnemy(collision);
+            BounceOnEnemy();
+            ChauveSouris.gameObject.SetActive(true);
+            _canDash = true;
+            collision.gameObject.SetActive(false);
+
+        }
+        //Dash sur cadavre
+        if (collision.CompareTag("Cadavre") && _isDashing && collision != dashHitbox)
+        {
+            StopDashOnEnemy(collision);
+            BounceOnEnemy();
+            ChauveSouris.gameObject.SetActive(true);
+            _canDash = true;
+        }
+    }
+
     public void Knockback(Collider2D enemy)
     {
         StopDashOnEnemy(enemy);
@@ -790,4 +795,5 @@ public class PlayerCharacter : MonoBehaviour
             _isJumping = false;
         }
     }
+    #endregion Damage/Die
 }
