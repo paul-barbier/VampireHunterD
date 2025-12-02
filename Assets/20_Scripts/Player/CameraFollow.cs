@@ -39,6 +39,8 @@ public class CameraFollow : MonoBehaviour
             if (_camera != null)
             {
                 _camera.TargetOffset = new Vector3(0.0f, 1.0f, 0.0f);
+                _camera.Composition.HardLimits.Size = new Vector2(1f, 0.46f);
+                _camera.Composition.HardLimits.Offset = new Vector2(0f, 0f);
             }
         }
     }
@@ -46,11 +48,12 @@ public class CameraFollow : MonoBehaviour
     public void LockCamOnPlayer()
     {
         _camera.Composition.DeadZone.Size = new Vector2(0.6f, 0f);
+        _camera.Lookahead.IgnoreY = true;
     }
 
     public void UnLockCamOnPlayer()
     {
         _camera.Composition.DeadZone.Size = new Vector2(0.6f, 0.45f);
-
+        _camera.Lookahead.IgnoreY = false;
     }
 }
