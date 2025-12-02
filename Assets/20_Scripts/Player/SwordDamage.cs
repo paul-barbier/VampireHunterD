@@ -4,12 +4,6 @@ using UnityEngine;
 public class SwordDamage : MonoBehaviour
 {
     [SerializeField] private float respawnTime;
-    [SerializeField] private PlayerCharacter _character;
-
-    private void Start()
-    {
-        _character = GetComponent<PlayerCharacter>();
-    }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
