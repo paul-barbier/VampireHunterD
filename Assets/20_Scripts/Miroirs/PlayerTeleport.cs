@@ -75,6 +75,7 @@ public class PlayerTeleport : MonoBehaviour
         if (currentTeleporter != null)
         {
             transform.position = currentTeleporter.GetComponent<Teleporter>().GetDestination().position;
+            AudioSource.PlayClipAtPoint(SoundManager.instance.soundList[(int)SoundType.TP].Sounds[0], transform.position, 1f);
 
             int currentLayer = gameObject.layer;
             if (currentLayer == layerPremier)

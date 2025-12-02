@@ -20,6 +20,7 @@ public enum SoundType
     Dash,
     Jump,
     VampireDeath,
+    TP,
 }
 
 [RequireComponent(typeof(AudioSource)), ExecuteInEditMode]
@@ -49,7 +50,7 @@ public class SoundManager : MonoBehaviour
 
     public static void LoopSound(SoundType sound, float volume = 1)
     {
-       
+        AudioClip[] clips = instance.soundList[(int)sound].Sounds;
     }
 
     private void Start()
