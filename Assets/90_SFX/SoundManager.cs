@@ -21,6 +21,7 @@ public enum SoundType
     Jump,
     VampireDeath,
     TP,
+    BatVFX,
 }
 
 [RequireComponent(typeof(AudioSource)), ExecuteInEditMode]
