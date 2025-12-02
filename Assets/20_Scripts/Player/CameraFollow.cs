@@ -11,6 +11,11 @@ public class CameraFollow : MonoBehaviour
     [SerializeField] private PlayerCharacter _player = null;
     [SerializeField] private float offsetCam = 0.0f;
 
+    [SerializeField] private float horizontalOffset = 4f;
+    [SerializeField] private float smoothSpeed = 5f;
+
+    private float targetOffsetX = 4f;
+    private float currentOffsetX = 10f;
     private void Awake()
     {
         _player = GetComponent<PlayerCharacter>();
@@ -18,36 +23,22 @@ public class CameraFollow : MonoBehaviour
 
     private void Update()
     {
-        if (_player._movementInput >= 1)
-        {
-            if (_camera != null)
-            {
-                _camera.TargetOffset = new Vector3(offsetCam, 1.0f, 0.0f);
-                _camera.Composition.HardLimits.Offset = new Vector2(1f, 0f);
-            }
-        }
-        else if (_player._movementInput <= -1)
-        {
-            if (_camera != null)
-            {
-                _camera.TargetOffset = new Vector3(-offsetCam, 1.0f, 0.0f);
-                _camera.Composition.HardLimits.Offset = new Vector2(-1f, 0f);
-            }
-        }
-        else if (_player._movementInput <= 0.3 || _player._movementInput <= -0.3)
-        {
-            if (_camera != null)
-            {
-                _camera.TargetOffset = new Vector3(0.0f, 1.0f, 0.0f);
-                _camera.Composition.HardLimits.Size = new Vector2(1f, 0.46f);
-                _camera.Composition.HardLimits.Offset = new Vector2(0f, 0f);
-            }
-        }
+        if (_player._movementInput > 0.1f)
+            targetOffsetX = horizontalOffset;
+        else if (_player._movementInput < -0.1f)
+            targetOffsetX = -horizontalOffset;
+        else
+            targetOffsetX = 0f;
+
+        currentOffsetX = Mathf.Lerp(currentOffsetX, targetOffsetX, Time.deltaTime * smoothSpeed);
+
+        _camera.TargetOffset = new Vector3(currentOffsetX, _camera.TargetOffset.y, 0);
     }
 
     public void LockCamOnPlayer()
     {
         _camera.Composition.DeadZone.Size = new Vector2(0.6f, 0f);
+        _camera.Composition.HardLimits.Size = new Vector2(1f, 0.46f);
         _camera.Lookahead.IgnoreY = true;
     }
 

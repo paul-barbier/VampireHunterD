@@ -16,6 +16,10 @@ public class SwordDamage : MonoBehaviour
         MouvementScript enemy = collision.GetComponentInParent<MouvementScript>();
         if (enemy != null && collision.CompareTag("Dash") && CompareTag("Sword"))
         {
+<<<<<<< Updated upstream
+=======
+            SoundManager.PlaySound(SoundType.VampireDeath, 10f);
+>>>>>>> Stashed changes
             enemy.gameObject.SetActive(false);
             StartCoroutine(RespawnEnemy());
         }
