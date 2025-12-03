@@ -77,9 +77,14 @@ public class PlayerTeleport : MonoBehaviour
         if (currentTeleporter != null)
         {
             transform.position = currentTeleporter.GetComponent<Teleporter>().GetDestination().position;
+<<<<<<< HEAD
 
             PlaySound.Invoke();
 
+=======
+            PlaySound.Invoke();
+
+>>>>>>> 447e2ef66087783545e77ec72829650d69551556
             int currentLayer = gameObject.layer;
             if (currentLayer == layerPremier)
             {
