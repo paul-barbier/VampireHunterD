@@ -28,7 +28,7 @@ Transform:
   m_GameObject: {fileID: 321379243702358425}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.2593174, y: -6.290107, z: -10}
+  m_LocalPosition: {x: -6.5157213, y: 3.7189927, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -92,21 +92,21 @@ MonoBehaviour:
   CameraDistance: 10
   DeadZoneDepth: 0
   Composition:
-    ScreenPosition: {x: -0.00000032782555, y: -0.1151389}
+    ScreenPosition: {x: 0, y: 0.15}
     DeadZone:
       Enabled: 1
       Size: {x: 0.6, y: 0}
     HardLimits:
-      Enabled: 1
-      Size: {x: 0.7304167, y: 0.55741453}
+      Enabled: 0
+      Size: {x: 0.7, y: 0.6}
       Offset: {x: -1, y: 0}
   CenterOnActivate: 0
   TargetOffset: {x: 0, y: 1, z: 0}
-  Damping: {x: 0.5, y: 0.5, z: 1}
+  Damping: {x: 1, y: 1, z: 1}
   Lookahead:
     Enabled: 1
     Time: 1
-    Smoothing: 4.9
+    Smoothing: 8
     IgnoreY: 1
 --- !u!81 &723548768040321132
 AudioListener:
@@ -358,8 +358,7 @@ MonoBehaviour:
   - Name: TP
     sounds: []
   - Name: BatVFX
-    sounds:
-    - {fileID: 8300000, guid: b6d20a2d787bc164c87a84d3bce921a1, type: 3}
+    sounds: []
 --- !u!1 &5946286106577519382
 GameObject:
   m_ObjectHideFlags: 0
@@ -421,7 +420,7 @@ Transform:
   m_GameObject: {fileID: 7614178230349327506}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.2593174, y: -6.2901073, z: -10}
+  m_LocalPosition: {x: -6.5157213, y: 3.7189927, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
