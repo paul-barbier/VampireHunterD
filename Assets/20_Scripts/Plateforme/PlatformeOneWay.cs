@@ -8,9 +8,10 @@ public class PlatformeOneWay : MonoBehaviour
     private Coroutine ignoreCoroutine;
 
     [SerializeField] private CapsuleCollider2D playerCollider;
-    [SerializeField] private float ignoreDuration = 0.6f; // durée d'ignorance des collisions
-    [SerializeField] private bool autoIgnoreOnJump = true; // allow passing up when jumping from below
+    [SerializeField] private float ignoreDuration = 0.6f;
+    [SerializeField] private bool autoIgnoreOnJump = true;
     [SerializeField] private bool enableDebug = true;
+    [SerializeField] private bool ignoreAllPlayerColliders = true;
 
     private Rigidbody2D playerRigidbody;
 
@@ -23,6 +24,14 @@ public class PlatformeOneWay : MonoBehaviour
     {
         if (playerCollider != null)
             playerRigidbody = playerCollider.attachedRigidbody;
+        else
+        {
+            var rb = GetComponent<Rigidbody2D>();
+            if (rb != null && playerRigidbody == null)
+            {
+                // nothing to do here by default; keep playerRigidbody null until playerCollider is assigned
+            }
+        }
     }
 
     private void Update()
@@ -74,19 +83,47 @@ public class PlatformeOneWay : MonoBehaviour
     // coroutine qui capture le collider ciblé localement pour pouvoir rétablir la collision même si currentPlatformCollider change
     private IEnumerator DisableCollisionCoroutine(Collider2D platformCollider, float duration)
     {
-        if (platformCollider == null || playerCollider == null)
+        if (platformCollider == null)
             yield break;
 
-        Physics2D.IgnoreCollision(playerCollider, platformCollider, true);
+        // collect player colliders to ignore
+        Collider2D[] playerColliders;
+        if (ignoreAllPlayerColliders && playerRigidbody != null)
+        {
+            playerColliders = playerRigidbody.GetComponents<Collider2D>();
+        }
+        else if (playerCollider != null)
+        {
+            playerColliders = new Collider2D[] { playerCollider };
+        }
+        else
+        {
+            yield break;
+        }
+
+        // set ignore for each player collider
+        foreach (var pc in playerColliders)
+        {
+            if (pc != null)
+            {
+                Physics2D.IgnoreCollision(pc, platformCollider, true);
+                if (enableDebug) Debug.Log($"[PlatformeOneWay] Ignoring collision: {pc.name} <-> {platformCollider.name}");
+            }
+        }
+
         if (enableDebug) Debug.Log($"[PlatformeOneWay] Ignoring collision with {platformCollider.name} for {duration}s");
         yield return new WaitForSeconds(duration);
 
-        // tenter de restaurer la collision, même si currentPlatformCollider a été nulled
-        if (playerCollider != null && platformCollider != null)
+        // restore
+        foreach (var pc in playerColliders)
         {
-            Physics2D.IgnoreCollision(playerCollider, platformCollider, false);
-            if (enableDebug) Debug.Log($"[PlatformeOneWay] Restored collision with {platformCollider.name}");
+            if (pc != null)
+            {
+                Physics2D.IgnoreCollision(pc, platformCollider, false);
+                if (enableDebug) Debug.Log($"[PlatformeOneWay] Restored collision: {pc.name} <-> {platformCollider.name}");
+            }
         }
+
         ignoreCoroutine = null;
     }
 
@@ -108,6 +145,14 @@ public class PlatformeOneWay : MonoBehaviour
         if (platformBelow == null)
         {
             if (enableDebug) Debug.Log("[PlatformeOneWay] Aucune plateforme OneWay détectée sous le joueur");
+            return;
+        }
+
+        if (playerCollider == null)
+        {
+            if (enableDebug) Debug.LogWarning("[PlatformeOneWay] playerCollider non assigné dans l'inspecteur.");
+            // still try to start ignore using currentPlatformCollider fallback
+            StartIgnoreCoroutine(platformBelow, ignoreDuration);
             return;
         }
 
