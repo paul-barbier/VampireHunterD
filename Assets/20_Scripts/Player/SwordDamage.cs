@@ -25,12 +25,6 @@ public class SwordDamage : MonoBehaviour
             PlaySound.Invoke();
             SoundManager.PlaySound(SoundType.VampireDeath, 10f);
             enemy.gameObject.SetActive(false);
-            StartCoroutine(RespawnEnemy());
         }
-    }
-
-    IEnumerator RespawnEnemy()
-    {
-        yield return new WaitForSeconds(respawnTime);
     }
 }
