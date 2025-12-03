@@ -15,7 +15,7 @@ public class PlatformeOneWay : MonoBehaviour
     private Rigidbody2D playerRigidbody;
 
     // Small search sizes
-    private const float aboveSearchHeight = 0.25f;
+    private const float aboveSearchHeight = 15f;
     private const float belowSearchHeight = 0.25f;
     private const float horizontalPadding = 0.95f;
 
@@ -27,7 +27,7 @@ public class PlatformeOneWay : MonoBehaviour
 
     private void Update()
     {
-        // touches de test : S ou Flèche Bas -> traverser vers le bas
+        // traverser vers le bas
         if (Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.DownArrow))
         {
             DownOneWay();
@@ -102,7 +102,6 @@ public class PlatformeOneWay : MonoBehaviour
         ignoreCoroutine = StartCoroutine(DisableCollisionCoroutine(platformCollider, duration));
     }
 
-    // Appelé par une entrée (ex : S / FlècheBas) pour traverser vers le bas
     public void DownOneWay()
     {
         Collider2D platformBelow = FindPlatformBelow();

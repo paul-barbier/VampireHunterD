@@ -38,15 +38,10 @@ public class OneWay : MonoBehaviour
         {
             box.usedByEffector = true;
         }
-        else if (col is PolygonCollider2D poly)
-        {
-            poly.usedByEffector = true;
-        }
         else if (col is CapsuleCollider2D cap)
         {
             cap.usedByEffector = true;
         }
-        // else : d'autres colliders peuvent exister (TilemapCollider2D nécessite configuration dans l'éditeur)
 
         // Récupère ou ajoute PlatformEffector2D
         PlatformEffector2D eff = GetComponent<PlatformEffector2D>();
@@ -55,10 +50,8 @@ public class OneWay : MonoBehaviour
 
         eff.surfaceArc = surfaceArc;
         eff.useOneWay = useOneWay;
-        // Optionnel : empêcher frottement/collision latérale si besoin
         eff.useSideFriction = false;
         eff.useSideBounce = false;
-        // Groupe one-way (utile pour groupes de plateformes)
         eff.useOneWayGrouping = true;
     }
 }
