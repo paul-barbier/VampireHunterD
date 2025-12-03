@@ -93,7 +93,7 @@ public class PlayerCharacter : MonoBehaviour
 
     #region Variables
 
-    //REFERENCES SCRIPTS
+    [Header("Ref Script")]
     public CheckPoints checkpoint;
     [SerializeField] private Attack _attack;
     [SerializeField] private Health _health;
@@ -119,7 +119,7 @@ public class PlayerCharacter : MonoBehaviour
     private float _dashAirTime = 0.0f;
     private bool _isInCoyoteTime = false;
 
-    //Jump
+    [Header("Jump")]
     private Vector2 _currentJumpForce = Vector2.zero;
     [SerializeField] private bool _isJumping = false;
     private float _jumpTime = 0.0f;
@@ -130,7 +130,7 @@ public class PlayerCharacter : MonoBehaviour
     //Event appel� quand on touche ou quitte le sol
     public event Action<PhysicState> OnPhysicStateChanged;
 
-    //Dash
+    [Header("Dash")]
     public Vector2 _currentDashForce = Vector2.zero;
     private Vector2 _dashMovementInput = Vector2.zero;
     [SerializeField] public bool _canDash = true;
