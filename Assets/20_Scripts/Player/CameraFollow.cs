@@ -50,6 +50,6 @@ public class CameraFollow : MonoBehaviour
 
     public void UnLockCamOnPlayer()
     {
-        _camera.Composition.DeadZone.Size = new Vector2(0.6f, 1f);
+        _camera.Composition.DeadZone.Size = new Vector2(0.6f, 0.6f);
     }
 }

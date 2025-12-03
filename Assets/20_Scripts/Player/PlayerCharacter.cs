@@ -157,13 +157,13 @@ public class PlayerCharacter : MonoBehaviour
     public bool _movementDisabled = false;
 
     //COLLIDER
-        //PLAYER
+    //PLAYER
     [SerializeField] private CapsuleCollider2D _capsuleBox;
     private Vector2 _sizeCapsule;
     private Vector2 _offsetCapsule;
-        //ATTACK
+    //ATTACK
     [SerializeField] public BoxCollider2D attackHitbox;
-        //DASH
+    //DASH
     [SerializeField] public BoxCollider2D dashHitbox;
     private Vector2 _sizeDashHitbox;
     private Vector2 _offsetDashHitbox;
@@ -290,7 +290,9 @@ public class PlayerCharacter : MonoBehaviour
             IsGrounded = true;
             //On invoque l'event en passant true pour signifier que le joueur arrive au sol
             OnPhysicStateChanged.Invoke(PhysicState.Ground);
+
             cameraFollow.LockCamOnPlayer();
+
 
         }
         //Si le rigidbody ne touche pas le sol mais on a en m�moire qu'il le touche, on est sur la frame o� il quitte le sol
@@ -301,7 +303,11 @@ public class PlayerCharacter : MonoBehaviour
                 _isInCoyoteTime = true;
             //On invoque l'event en passant false pour signifier que le joueur quitte au sol
             OnPhysicStateChanged.Invoke(PhysicState.Air);
-            cameraFollow.UnLockCamOnPlayer();
+
+            if (!_isDashing)
+            {
+                cameraFollow.UnLockCamOnPlayer();
+            }
         }
     }
 
