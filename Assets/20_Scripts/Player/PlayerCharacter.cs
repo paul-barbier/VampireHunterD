@@ -6,6 +6,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using static PlayerCharacter;
 using static UnityEngine.EventSystems.EventTrigger;
+using UnityEngine.Events;
 
 [RequireComponent(typeof(Rigidbody2D))]
 public class PlayerCharacter : MonoBehaviour
@@ -86,6 +87,8 @@ public class PlayerCharacter : MonoBehaviour
     [SerializeField] public GameObject ChauveSouris;
     public Rigidbody2D _rigidbody = null;
     [SerializeField] public Animator _DAnimation;
+    [SerializeField] private UnityEvent PlaySound;
+    [SerializeField] private UnityEvent PlayMobDeath;
     #endregion EditorVariables
 
     #region Variables
@@ -456,8 +459,7 @@ public class PlayerCharacter : MonoBehaviour
             return;
         }
         _DAnimation.SetBool("IsJumping", true);
-        SoundManager.PlaySound(SoundType.Jump, 1.0f);
-
+        PlaySound.Invoke();
         //_currentJumpForce.y = _jumpParameters.InitValue;
         _currentJumpForce.y = _jumpParameters.ImpulseForce;
         _rigidbody.linearVelocity = new Vector2(_rigidbody.linearVelocity.x, _currentJumpForce.y);
@@ -745,6 +747,8 @@ public class PlayerCharacter : MonoBehaviour
             ChauveSouris.gameObject.SetActive(true);
             _canDash = true;
             collision.gameObject.SetActive(false);
+            PlayMobDeath.Invoke();
+
 
         }
         //Dash sur cadavre

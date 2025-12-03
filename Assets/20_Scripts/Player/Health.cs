@@ -54,26 +54,26 @@ public class Health : MonoBehaviour
         if (ratio > 0.75f)
         {
             state = 0;
-            SoundManager.PlaySound(SoundType.D_Dmg, 10f);
+            SoundManager.PlaySound(SoundType.D_Dmg, 5f);
             StartCoroutine(Hurt());
 
         }
         else if (ratio > 0.50f)
         {
             state = 1;
-            SoundManager.PlaySound(SoundType.D_Dmg, 10f);
+            SoundManager.PlaySound(SoundType.D_Dmg, 5f);
             StartCoroutine(Hurt());
         }
         else if (ratio > 0.25f)
         {
             state = 2;
-            SoundManager.PlaySound(SoundType.D_Dmg, 10f);
+            SoundManager.PlaySound(SoundType.D_Dmg, 5f);
             StartCoroutine(Hurt());
         }
         else
         {
             state = 3;
-            SoundManager.PlaySound(SoundType.D_Dmg, 10f);
+            SoundManager.PlaySound(SoundType.D_Dmg, 5f);
             StartCoroutine(Hurt());
         }
 
