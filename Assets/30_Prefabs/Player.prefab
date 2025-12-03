@@ -267,7 +267,7 @@ GameObject:
   - component: {fileID: 5015562107284513603}
   m_Layer: 6
   m_Name: Zone d'attaque
-  m_TagString: Untagged
+  m_TagString: Sword
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -345,8 +345,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 469ebf7b4ea393a418cdc7fa77101ba1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  respawnTime: 0
-  _character: {fileID: 0}
+  _character: {fileID: 3403784465517668524}
   PlaySound:
     m_PersistentCalls:
       m_Calls: []
@@ -866,7 +865,7 @@ MonoBehaviour:
   HpAnime: {fileID: 0}
   _hurtDisplayTime: 0.2
   _hurtFadeOutTime: 0.2
-  _hurtEffect: {fileID: 0}
+  _hurtEffect: {fileID: -8526736497448788829, guid: 523a8ee6d436a7245932e1ccf85ba279, type: 2}
   _Material: {fileID: 0}
   _maxIntensity: 1
   _vignetteIntensityStat: 0.1
@@ -884,9 +883,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _camera: {fileID: 0}
   _player: {fileID: 3403784465517668524}
-  offsetCam: 4
-  horizontalOffset: 4
-  smoothSpeed: 5
+  offsetCam: 9
+  camLerpSpeed: 20
 --- !u!1 &8433288027733050475
 GameObject:
   m_ObjectHideFlags: 0
