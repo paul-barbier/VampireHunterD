@@ -2630,6 +2630,30 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1539380187053205686, guid: a38c065f7f2b48d42b8647a546721097, type: 3}
+      propertyPath: PlaySound.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1539380187053205686, guid: a38c065f7f2b48d42b8647a546721097, type: 3}
+      propertyPath: PlaySound.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1660510034}
+    - target: {fileID: 1539380187053205686, guid: a38c065f7f2b48d42b8647a546721097, type: 3}
+      propertyPath: PlaySound.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: playSound
+      objectReference: {fileID: 0}
+    - target: {fileID: 1539380187053205686, guid: a38c065f7f2b48d42b8647a546721097, type: 3}
+      propertyPath: PlaySound.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: PlayBank, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 1539380187053205686, guid: a38c065f7f2b48d42b8647a546721097, type: 3}
+      propertyPath: PlaySound.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_StringArgument
+      value: TP
+      objectReference: {fileID: 0}
+    - target: {fileID: 1539380187053205686, guid: a38c065f7f2b48d42b8647a546721097, type: 3}
+      propertyPath: PlaySound.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
     - target: {fileID: 2527351097556045588, guid: a38c065f7f2b48d42b8647a546721097, type: 3}
       propertyPath: _camera
       value: 
@@ -11673,7 +11697,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4677027078307425702, guid: ca4bc2b1749d8954bbfdafa982e39d52, type: 3}
       propertyPath: TargetOffset.x
-      value: -1.1e-44
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4677027078307425702, guid: ca4bc2b1749d8954bbfdafa982e39d52, type: 3}
       propertyPath: Composition.HardLimits.Size.x
