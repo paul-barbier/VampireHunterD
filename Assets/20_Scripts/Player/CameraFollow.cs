@@ -52,4 +52,6 @@ public class CameraFollow : MonoBehaviour
     {
         _camera.Composition.DeadZone.Size = new Vector2(0.6f, 0.6f);
     }
+
+
 }
