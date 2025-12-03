@@ -27,6 +27,7 @@ public class Dialogue : MonoBehaviour
 
     public bool _dialogueActivated;
     public bool _skipCollectible = false;
+    private bool _canSkipCollectible = false;
     private int _step;
 
     [SerializeField] private bool _Cinematic;
@@ -100,9 +101,9 @@ public class Dialogue : MonoBehaviour
             Debug.Log("CinematiqueInput");
             return;
         }
-
-        else if (_collectible._CollectibleUIShowing == true && _dialogueActivated == false)
+        if (_canSkipCollectible == true && _collectible._CollectibleUIShowing == true)
         {
+            Debug.Log("SkipCollectible");
             _skipCollectible = true;
         }
     }
@@ -111,5 +112,12 @@ public class Dialogue : MonoBehaviour
     {
         _playerMovementScript._forceToAdd = Vector2.zero;
         _playerCharacterMovement.SetActive(false);
+    }
+
+    public IEnumerator SkipDelay()
+    {
+        Debug.Log("Attendre 2 secondes");
+        yield return new WaitForSeconds(_collectible._skipDelay);
+        _canSkipCollectible = true;
     }
 }
