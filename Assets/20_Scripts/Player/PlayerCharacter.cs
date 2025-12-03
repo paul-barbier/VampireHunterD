@@ -643,7 +643,7 @@ public class PlayerCharacter : MonoBehaviour
             ChauveSouris.SetActive(false);
             SoundManager.PlaySound(SoundType.Dash, 7.0f);
 
-            cameraFollow.LockCamOnPlayer();
+            //cameraFollow.LockCamOnPlayer();
         }
     }
 
