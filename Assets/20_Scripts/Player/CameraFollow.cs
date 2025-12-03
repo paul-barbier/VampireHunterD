@@ -3,7 +3,7 @@ using Unity.Cinemachine;
 
 public class CameraFollow : MonoBehaviour
 {
-    [SerializeField] private CinemachinePositionComposer _camera;
+    public CinemachinePositionComposer _camera;
     [SerializeField] private PlayerCharacter _player;
 
     [Header("Camera Settings")]
@@ -12,6 +12,9 @@ public class CameraFollow : MonoBehaviour
 
     private Vector3 _targetOffset;
     private Vector2 _targetHardLimit;
+
+    private Vector2 _targetScreenPosition;
+    private Vector2 _targetFallScreenPosition;
 
     private void Awake()
     {
@@ -46,12 +49,27 @@ public class CameraFollow : MonoBehaviour
     public void LockCamOnPlayer()
     {
         _camera.Composition.DeadZone.Size = new Vector2(0.6f, 0f);
+        _camera.Lookahead.IgnoreY = true;
+        _camera.Lookahead.Smoothing = 10;
     }
 
     public void UnLockCamOnPlayer()
     {
         _camera.Composition.DeadZone.Size = new Vector2(0.6f, 0.6f);
+        _camera.Lookahead.IgnoreY = true;
+        _camera.Lookahead.Smoothing = 10;
     }
 
+    public void CamFalling()
+    {
+        _camera.Lookahead.IgnoreY = false;
+        _camera.Lookahead.Smoothing = 7;
+    }
 
+    public void ReadjustingCam()
+    {
+        _targetScreenPosition = new Vector2(0, 0.15f);
+
+        _camera.Composition.ScreenPosition = Vector2.Lerp(_camera.Composition.ScreenPosition, _targetScreenPosition, Time.deltaTime * camLerpSpeed);
+    }
 }
