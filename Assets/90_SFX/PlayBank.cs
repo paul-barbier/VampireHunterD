@@ -30,12 +30,14 @@ public class PlayBank : MonoBehaviour
         if (soundName == "Jump")
         {
             audioSource.volume = 0.3f;
+            audioSource.pitch = Random.Range(randomPitchRange.x, randomPitchRange.y);
         }
         else if (soundName == "MobExplo")
         {
             audioSource.volume = 0.1f;
             audioSource.pitch = Random.Range(randomPitchRange.x, randomPitchRange.y);
         }
+
         
         audioSource.PlayOneShot(clip);
     }

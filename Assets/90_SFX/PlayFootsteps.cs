@@ -6,7 +6,7 @@ public class PlayFootsteps : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     public void PlaySound()
     {
-        RaycastHit2D hit = Physics2D.Raycast(transform.position, new Vector2(0,-1), 2.5f, LayerMask.GetMask("Default"));
+        RaycastHit2D hit = Physics2D.Raycast(transform.position, new Vector2(0,-1), 3f, LayerMask.GetMask("Default"));
         string groundType = hit.collider.gameObject.tag;
 
         if (groundType == null)
@@ -34,7 +34,7 @@ public class PlayFootsteps : MonoBehaviour
 
     private void Update()
     {
-        Debug.DrawRay(transform.position, new Vector2(0, -1) * 2.5f, Color.red);
+        Debug.DrawRay(transform.position, new Vector2(0, -1) * 3f, Color.red);
     }
 
     
