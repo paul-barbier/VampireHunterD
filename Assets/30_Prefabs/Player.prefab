@@ -772,10 +772,34 @@ MonoBehaviour:
   _DAnimation: {fileID: 317578980722878797}
   PlaySound:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1953524558465522855}
+        m_TargetAssemblyTypeName: PlayBank, Assembly-CSharp
+        m_MethodName: playSound
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: Jump
+          m_BoolArgument: 0
+        m_CallState: 2
   PlayMobDeath:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1953524558465522855}
+        m_TargetAssemblyTypeName: PlayBank, Assembly-CSharp
+        m_MethodName: playSound
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: MobExplo
+          m_BoolArgument: 0
+        m_CallState: 2
   checkpoint: {fileID: 0}
   _attack: {fileID: 1720546089308738315}
   _health: {fileID: 7822740381902637360}
