@@ -10,6 +10,7 @@ using UnityEngine.InputSystem;
 public class Dialogue : MonoBehaviour
 {
     private PlayerCharacter _playerMovementScript;
+    private Collectable _collectible;
 
     [SerializeField] private GameObject _playerCharacterMovement;
 
@@ -25,12 +26,15 @@ public class Dialogue : MonoBehaviour
     [SerializeField] private Sprite[] _portrait;
 
     public bool _dialogueActivated;
+    public bool _skipCollectible = false;
     private int _step;
 
     [SerializeField] private bool _Cinematic;
 
     private void Start()
     {
+        _collectible = FindAnyObjectByType<Collectable>();
+
         if (_Cinematic == false)
         {
             _playerMovementScript = FindAnyObjectByType<PlayerCharacter>();
@@ -49,11 +53,6 @@ public class Dialogue : MonoBehaviour
             _dialogueCanva.SetActive(true);
             ShowStep();
         }
-    }
-
-    private void Update()
-    {
-
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -101,6 +100,11 @@ public class Dialogue : MonoBehaviour
             Debug.Log("CinematiqueInput");
             return;
         }
+
+        else if (_collectible._CollectibleUIShowing == true && _dialogueActivated == false)
+        {
+            _skipCollectible = true;
+        }
     }
 
     private void SettingVelocity()
@@ -108,6 +112,4 @@ public class Dialogue : MonoBehaviour
         _playerMovementScript._forceToAdd = Vector2.zero;
         _playerCharacterMovement.SetActive(false);
     }
-
-
 }

@@ -5,16 +5,17 @@ using UnityEngine;
 public class Collectable : MonoBehaviour
 {
     PlayerCharacter character;
+    Dialogue dialogue;
 
     [SerializeField] private float _oscillationAmplitude = 0.0f;
     [SerializeField] private float _oscillationFrequency = 0.0f;
     [SerializeField] private SpriteRenderer _spriteRenderer;
-    [SerializeField] private GameObject CollectibleUI;
+    [SerializeField] private GameObject _CollectibleUI;
     [SerializeField] private GameObject _playerCharacterMovement;
 
     private Vector3 _basePosition = Vector3.zero;
-
-    [SerializeField] private bool _hasBeenCollected;
+    private bool _hasBeenCollected;
+    public bool _CollectibleUIShowing = false;
 
     private void Awake()
     {
@@ -23,7 +24,7 @@ public class Collectable : MonoBehaviour
 
     private void Start()
     {
-        CollectibleUI.SetActive(false);
+        _CollectibleUI.SetActive(false);
         _spriteRenderer = GetComponent<SpriteRenderer>();
         _hasBeenCollected = false;
         _spriteRenderer.enabled = true;
@@ -35,6 +36,10 @@ public class Collectable : MonoBehaviour
         oscillation = (oscillation + 1.0f) / 2.0f;
         oscillation *= _oscillationAmplitude;
         transform.position = _basePosition + new Vector3(0.0f, oscillation, 0.0f);
+        if (dialogue._skipCollectible == true && _CollectibleUIShowing == true)
+        {
+            _CollectibleUI.SetActive(false);
+        }
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -54,6 +59,7 @@ public class Collectable : MonoBehaviour
 
         Debug.Log("IsGrounded Collectible");
         _playerCharacterMovement.SetActive(false);
-        CollectibleUI.SetActive(true);
+        _CollectibleUI.SetActive(true);
+        _CollectibleUIShowing = true;
     }
 }
