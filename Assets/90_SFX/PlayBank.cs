@@ -4,6 +4,7 @@ using UnityEngine;
 public class PlayBank : MonoBehaviour
 {
     [SerializeField] Vector2 randomPitchRange = new Vector2(0.85f, 1.15f);
+    [SerializeField] Vector2 volumeRandom = new Vector2(0.85f, 1.15f);
     private AudioSource audioSource;
     private SoundBank soundBank;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -22,8 +23,20 @@ public class PlayBank : MonoBehaviour
             return;
         }
 
-        audioSource.pitch = UnityEngine.Random.Range(randomPitchRange.x, randomPitchRange.y);
+        //audioSource.pitch = UnityEngine.Random.Range(randomPitchRange.x, randomPitchRange.y);
+        //audioSource.volume = UnityEngine.Random.Range(volume.x, volume.y);
 
+
+        if (soundName == "Jump")
+        {
+            audioSource.volume = 0.3f;
+        }
+        else if (soundName == "MobExplo")
+        {
+            audioSource.volume = 0.1f;
+            audioSource.pitch = Random.Range(randomPitchRange.x, randomPitchRange.y);
+        }
+        
         audioSource.PlayOneShot(clip);
     }
 
