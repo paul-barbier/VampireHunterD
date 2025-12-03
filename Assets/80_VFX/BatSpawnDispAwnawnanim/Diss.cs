@@ -13,8 +13,6 @@ public class Diss : MonoBehaviour
     private SpriteRenderer[] _spriteRenderer;
     private Material[] _materials;
 
-    [SerializeField] UnityEvent OnDissolve;
-
     private int _dissolveAmount = Shader.PropertyToID("_Dissolve");
 
     private void Start()
@@ -33,7 +31,7 @@ public class Diss : MonoBehaviour
         while (elaspedTime < _dissolveSpeed)
         {
             elaspedTime += Time.deltaTime;
-            float dissolveValue = Mathf.Lerp(0f, 1f, elaspedTime / _dissolveSpeed);
+            float dissolveValue = Mathf.Lerp(0f, 1.1f, elaspedTime / _dissolveSpeed);
             for (int i = 0; i < _materials.Length; i++)
             {
                 if (useDiss)
@@ -69,7 +67,6 @@ public class Diss : MonoBehaviour
         {
             StartCoroutine(Vanish(true));
         }
-        OnDissolve.Invoke();
     }
 
 
