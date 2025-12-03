@@ -1,16 +1,23 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
+﻿using UnityEngine;
 using Unity.Cinemachine;
-using UnityEngine;
-using UnityEngine.UIElements;
 
 public class CameraFollow : MonoBehaviour
 {
     [SerializeField] private CinemachinePositionComposer _camera;
-    [SerializeField] private PlayerCharacter _player = null;
-    [SerializeField] private float offsetCam = 0.0f;
+    [SerializeField] private PlayerCharacter _player;
 
+    [Header("Camera Settings")]
+    [SerializeField] private float offsetCam = 3.0f;
+    [SerializeField] private float camLerpSpeed = 5f;
+
+    private Vector3 _targetOffset;
+    private Vector2 _targetHardLimit;
+
+    [SerializeField] private float horizontalOffset = 4f;
+    [SerializeField] private float smoothSpeed = 5f;
+
+    private float targetOffsetX = 4f;
+    private float currentOffsetX = 10f;
     private void Awake()
     {
         _player = GetComponent<PlayerCharacter>();
@@ -18,42 +25,37 @@ public class CameraFollow : MonoBehaviour
 
     private void Update()
     {
-        if (_player._movementInput >= 1)
+        float input = _player._movementInput;
+
+        if (input > 0.3f)
         {
-            if (_camera != null)
-            {
-                _camera.TargetOffset = new Vector3(offsetCam, 1.0f, 0.0f);
-                _camera.Composition.HardLimits.Offset = new Vector2(1f, 0f);
-            }
+            _targetOffset = new Vector3(offsetCam, 1f, 0f);
+            _targetHardLimit = new Vector2(-1f, 0f);
         }
-        else if (_player._movementInput <= -1)
+        else if (input < -0.3f)
         {
-            if (_camera != null)
-            {
-                _camera.TargetOffset = new Vector3(-offsetCam, 1.0f, 0.0f);
-                _camera.Composition.HardLimits.Offset = new Vector2(-1f, 0f);
-            }
+            _targetOffset = new Vector3(-offsetCam, 1f, 0f);
+            _targetHardLimit = new Vector2(1f, 0f);
         }
-        else if (_player._movementInput <= 0.3 || _player._movementInput <= -0.3)
+        else
         {
-            if (_camera != null)
-            {
-                _camera.TargetOffset = new Vector3(0.0f, 1.0f, 0.0f);
-                _camera.Composition.HardLimits.Size = new Vector2(1f, 0.46f);
-                _camera.Composition.HardLimits.Offset = new Vector2(0f, 0f);
-            }
+            _targetOffset = new Vector3(0f, 1f, 0f);
+            _targetHardLimit = Vector2.zero;
         }
+
+        _camera.TargetOffset = Vector3.Lerp(_camera.TargetOffset, _targetOffset, Time.deltaTime * camLerpSpeed);
+
+        _camera.Composition.HardLimits.Offset = Vector2.Lerp(_camera.Composition.HardLimits.Offset,_targetHardLimit,Time.deltaTime * camLerpSpeed);
     }
 
     public void LockCamOnPlayer()
     {
-        _camera.Composition.DeadZone.Size = new Vector2(0.6f, 0f);
-        _camera.Lookahead.IgnoreY = true;
+        _camera.Composition.DeadZone.Size = new Vector2(-0.4f, 0f);
     }
 
     public void UnLockCamOnPlayer()
     {
-        _camera.Composition.DeadZone.Size = new Vector2(0.6f, 0.45f);
-        _camera.Lookahead.IgnoreY = false;
+
+        _camera.Composition.DeadZone.Size = new Vector2(-0.4f, 0.45f);
     }
 }

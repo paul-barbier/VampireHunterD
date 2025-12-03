@@ -347,6 +347,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   respawnTime: 0
   _character: {fileID: 0}
+  PlaySound:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &4634869587052838177
 GameObject:
   m_ObjectHideFlags: 0
@@ -783,7 +786,7 @@ MonoBehaviour:
   enemyBounceForce: {x: 0, y: 8}
   BouncingTime: 0.3
   _lockedRotation: 0
-  MovementDisabled: 0
+  _movementDisabled: 0
   _capsuleBox: {fileID: 1432363591201203488}
   attackHitbox: {fileID: 1030361369149033380}
   dashHitbox: {fileID: 8076329334359803592}
@@ -816,6 +819,8 @@ MonoBehaviour:
   lowAngle: -50
   highAngle: 50
   isAttacking: 0
+  canAttack: 1
+  rotateAttack: 0
   _DAnimation: {fileID: 317578980722878797}
 --- !u!114 &1539380187053205686
 MonoBehaviour:
@@ -829,6 +834,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 67ba69b5229d81f43a2cf39729823180, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  PlaySound:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 0}
+        m_TargetAssemblyTypeName: 
+        m_MethodName: 
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: 
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &7822740381902637360
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -865,6 +885,8 @@ MonoBehaviour:
   _camera: {fileID: 0}
   _player: {fileID: 3403784465517668524}
   offsetCam: 4
+  horizontalOffset: 4
+  smoothSpeed: 5
 --- !u!1 &8433288027733050475
 GameObject:
   m_ObjectHideFlags: 0

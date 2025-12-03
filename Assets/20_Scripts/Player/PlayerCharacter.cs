@@ -287,7 +287,7 @@ public class PlayerCharacter : MonoBehaviour
             IsGrounded = true;
             //On invoque l'event en passant true pour signifier que le joueur arrive au sol
             OnPhysicStateChanged.Invoke(PhysicState.Ground);
-            cameraFollow.LockCamOnPlayer();
+            //cameraFollow.LockCamOnPlayer();
 
         }
         //Si le rigidbody ne touche pas le sol mais on a en m�moire qu'il le touche, on est sur la frame o� il quitte le sol
@@ -298,7 +298,7 @@ public class PlayerCharacter : MonoBehaviour
                 _isInCoyoteTime = true;
             //On invoque l'event en passant false pour signifier que le joueur quitte au sol
             OnPhysicStateChanged.Invoke(PhysicState.Air);
-            cameraFollow.UnLockCamOnPlayer();
+            //cameraFollow.UnLockCamOnPlayer();
         }
     }
 
@@ -643,7 +643,7 @@ public class PlayerCharacter : MonoBehaviour
         {
             _forceToAdd += _currentDashForce;
             dashHitbox.gameObject.SetActive(true);
-            cameraFollow.UnLockCamOnPlayer();
+            //cameraFollow.UnLockCamOnPlayer();
         }
         else
         {
@@ -661,7 +661,7 @@ public class PlayerCharacter : MonoBehaviour
             {
                 StartCoroutine(CdDash());
             }
-            cameraFollow.LockCamOnPlayer();
+            //cameraFollow.LockCamOnPlayer();
 
         }
     }

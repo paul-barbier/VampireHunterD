@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class PlayerTeleport : MonoBehaviour
 {
@@ -8,6 +9,7 @@ public class PlayerTeleport : MonoBehaviour
     private int layerPremier = -1;
     private int layerSecond = -1;
     private Collider2D[] playerColliders;
+    [SerializeField] private UnityEvent PlaySound;
 
     private void Start()
     {
@@ -37,7 +39,7 @@ public class PlayerTeleport : MonoBehaviour
             else if (gameObject.layer == layerSecond)
             {
                 // Si joueur au SecondPlan, ignorer les collisions entre les deux plans
-                SetIgnoreBetweenPlans(true);
+                SetIgnoreBetweenPlans(false);
             }
         }
     }
@@ -75,7 +77,7 @@ public class PlayerTeleport : MonoBehaviour
         if (currentTeleporter != null)
         {
             transform.position = currentTeleporter.GetComponent<Teleporter>().GetDestination().position;
-            AudioSource.PlayClipAtPoint(SoundManager.instance.soundList[(int)SoundType.TP].Sounds[0], transform.position, 1f);
+            PlaySound.Invoke();
 
             int currentLayer = gameObject.layer;
             if (currentLayer == layerPremier)
