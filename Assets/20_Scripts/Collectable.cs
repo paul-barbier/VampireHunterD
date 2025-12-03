@@ -5,13 +5,14 @@ using UnityEngine;
 public class Collectable : MonoBehaviour
 {
     PlayerCharacter character;
-    Dialogue dialogue;
+    [SerializeField] Dialogue dialogue;
 
     [SerializeField] private float _oscillationAmplitude = 0.0f;
     [SerializeField] private float _oscillationFrequency = 0.0f;
     [SerializeField] private SpriteRenderer _spriteRenderer;
-    [SerializeField] private GameObject _CollectibleUI;
+    [SerializeField] private GameObject _collectibleUI;
     [SerializeField] private GameObject _playerCharacterMovement;
+    public float _skipDelay = 0.0f;
 
     private Vector3 _basePosition = Vector3.zero;
     private bool _hasBeenCollected;
@@ -24,7 +25,7 @@ public class Collectable : MonoBehaviour
 
     private void Start()
     {
-        _CollectibleUI.SetActive(false);
+        _collectibleUI.SetActive(false);
         _spriteRenderer = GetComponent<SpriteRenderer>();
         _hasBeenCollected = false;
         _spriteRenderer.enabled = true;
@@ -36,10 +37,7 @@ public class Collectable : MonoBehaviour
         oscillation = (oscillation + 1.0f) / 2.0f;
         oscillation *= _oscillationAmplitude;
         transform.position = _basePosition + new Vector3(0.0f, oscillation, 0.0f);
-        if (dialogue._skipCollectible == true && _CollectibleUIShowing == true)
-        {
-            _CollectibleUI.SetActive(false);
-        }
+        SkipCollectible();
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -59,7 +57,20 @@ public class Collectable : MonoBehaviour
 
         Debug.Log("IsGrounded Collectible");
         _playerCharacterMovement.SetActive(false);
-        _CollectibleUI.SetActive(true);
+        _collectibleUI.SetActive(true);
         _CollectibleUIShowing = true;
+        StartCoroutine(dialogue.SkipDelay());
+    }
+
+    private void SkipCollectible()
+    {
+        if (dialogue._skipCollectible == true && _CollectibleUIShowing == true)
+        {
+            _collectibleUI.SetActive(false);
+            _playerCharacterMovement.SetActive(true);
+            _CollectibleUIShowing = false;
+            _hasBeenCollected = false;
+            dialogue._skipCollectible = false;
+        }
     }
 }

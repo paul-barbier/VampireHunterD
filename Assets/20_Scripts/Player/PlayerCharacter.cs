@@ -118,6 +118,7 @@ public class PlayerCharacter : MonoBehaviour
     private float _airTime = 0.0f;
     private float _dashAirTime = 0.0f;
     private bool _isInCoyoteTime = false;
+    private float _chuteTime = 0.0f;
 
     [Header("Jump")]
     private Vector2 _currentJumpForce = Vector2.zero;
@@ -290,10 +291,7 @@ public class PlayerCharacter : MonoBehaviour
             IsGrounded = true;
             //On invoque l'event en passant true pour signifier que le joueur arrive au sol
             OnPhysicStateChanged.Invoke(PhysicState.Ground);
-
             cameraFollow.LockCamOnPlayer();
-
-
         }
         //Si le rigidbody ne touche pas le sol mais on a en m�moire qu'il le touche, on est sur la frame o� il quitte le sol
         else if (!isTouchingGround && IsGrounded)
@@ -422,6 +420,8 @@ public class PlayerCharacter : MonoBehaviour
         if (IsGrounded || _isJumping || _isDashing || _hittingDash)
             return;
 
+        _chuteTime += Time.deltaTime;
+
         float coyoteTimeRatio = Mathf.Clamp01(_airTime / _gravityParameters.CoyoteTime);
         float coyoteTimeFactor = _isInCoyoteTime ? _gravityParameters.GravityRemapFromCoyoteTime.Evaluate(coyoteTimeRatio) : 1.0f;
         float acceleration = _jumpParameters.Deceleration * coyoteTimeFactor * Time.fixedDeltaTime;
@@ -439,6 +439,11 @@ public class PlayerCharacter : MonoBehaviour
         }
 
         _forceToAdd.y += velocityDelta;
+
+        if (_chuteTime >= 0.5f)
+        {
+
+        }
     }
 
     private void ResetGravity(PhysicState physicState)
@@ -637,6 +642,8 @@ public class PlayerCharacter : MonoBehaviour
             _startDashTime = Time.time;
             ChauveSouris.SetActive(false);
             SoundManager.PlaySound(SoundType.Dash, 7.0f);
+
+            //cameraFollow.LockCamOnPlayer();
         }
     }
 
@@ -651,6 +658,7 @@ public class PlayerCharacter : MonoBehaviour
         {
             _forceToAdd += _currentDashForce;
             dashHitbox.gameObject.SetActive(true);
+            cameraFollow.LockCamOnPlayer();
         }
         else
         {
