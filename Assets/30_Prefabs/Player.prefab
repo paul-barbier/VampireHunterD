@@ -514,6 +514,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 7928058081908613724}
   - {fileID: 5167549000642208514}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -769,6 +770,12 @@ MonoBehaviour:
   ChauveSouris: {fileID: 1893569437254920610}
   _rigidbody: {fileID: 948011244277554858}
   _DAnimation: {fileID: 317578980722878797}
+  PlaySound:
+    m_PersistentCalls:
+      m_Calls: []
+  PlayMobDeath:
+    m_PersistentCalls:
+      m_Calls: []
   checkpoint: {fileID: 0}
   _attack: {fileID: 1720546089308738315}
   _health: {fileID: 7822740381902637360}
@@ -1026,3 +1033,87 @@ Transform:
   - {fileID: 6856741882092291799}
   m_Father: {fileID: 5167549000642208514}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 50}
+--- !u!1001 &1380103394692038340
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 280440432991570405}
+    m_Modifications:
+    - target: {fileID: 1005924730867266251, guid: 020d2e61f61ab90489b5ae83b737a3e0, type: 3}
+      propertyPath: m_Name
+      value: SoundBank
+      objectReference: {fileID: 0}
+    - target: {fileID: 9016490590027521176, guid: 020d2e61f61ab90489b5ae83b737a3e0, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9016490590027521176, guid: 020d2e61f61ab90489b5ae83b737a3e0, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9016490590027521176, guid: 020d2e61f61ab90489b5ae83b737a3e0, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9016490590027521176, guid: 020d2e61f61ab90489b5ae83b737a3e0, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9016490590027521176, guid: 020d2e61f61ab90489b5ae83b737a3e0, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9016490590027521176, guid: 020d2e61f61ab90489b5ae83b737a3e0, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9016490590027521176, guid: 020d2e61f61ab90489b5ae83b737a3e0, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9016490590027521176, guid: 020d2e61f61ab90489b5ae83b737a3e0, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9016490590027521176, guid: 020d2e61f61ab90489b5ae83b737a3e0, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9016490590027521176, guid: 020d2e61f61ab90489b5ae83b737a3e0, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 1005924730867266251, guid: 020d2e61f61ab90489b5ae83b737a3e0, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1953524558465522855}
+  m_SourcePrefab: {fileID: 100100000, guid: 020d2e61f61ab90489b5ae83b737a3e0, type: 3}
+--- !u!1 &2221083372593237007 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1005924730867266251, guid: 020d2e61f61ab90489b5ae83b737a3e0, type: 3}
+  m_PrefabInstance: {fileID: 1380103394692038340}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1953524558465522855
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2221083372593237007}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 77798e8d6efd66a479596b946ae1db26, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  randomPitchRange: {x: 0.85, y: 1.15}
+  volumeRandom: {x: 0.85, y: 1.15}
+--- !u!4 &7928058081908613724 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 9016490590027521176, guid: 020d2e61f61ab90489b5ae83b737a3e0, type: 3}
+  m_PrefabInstance: {fileID: 1380103394692038340}
+  m_PrefabAsset: {fileID: 0}

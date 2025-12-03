@@ -2634,29 +2634,9 @@ PrefabInstance:
       propertyPath: _camera
       value: 
       objectReference: {fileID: 762134597}
-    - target: {fileID: 5015562107284513603, guid: a38c065f7f2b48d42b8647a546721097, type: 3}
-      propertyPath: _character
-      value: 
-      objectReference: {fileID: 336781174}
-    - target: {fileID: 5015562107284513603, guid: a38c065f7f2b48d42b8647a546721097, type: 3}
-      propertyPath: PlaySound.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 1717592409}
-    - target: {fileID: 5015562107284513603, guid: a38c065f7f2b48d42b8647a546721097, type: 3}
-      propertyPath: PlaySound.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: PlaySound2
-      objectReference: {fileID: 0}
-    - target: {fileID: 5015562107284513603, guid: a38c065f7f2b48d42b8647a546721097, type: 3}
-      propertyPath: PlaySound.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: SoundManager, Assembly-CSharp
-      objectReference: {fileID: 0}
     - target: {fileID: 5230953878154645213, guid: a38c065f7f2b48d42b8647a546721097, type: 3}
       propertyPath: m_Name
       value: Player
-      objectReference: {fileID: 0}
-    - target: {fileID: 6432321863687191015, guid: a38c065f7f2b48d42b8647a546721097, type: 3}
-      propertyPath: soundGroundList.Array.size
-      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7822740381902637360, guid: a38c065f7f2b48d42b8647a546721097, type: 3}
       propertyPath: HpAnime
@@ -2672,17 +2652,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 280440432991570405, guid: a38c065f7f2b48d42b8647a546721097, type: 3}
   m_PrefabInstance: {fileID: 336781167}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &336781174 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 3403784465517668524, guid: a38c065f7f2b48d42b8647a546721097, type: 3}
-  m_PrefabInstance: {fileID: 336781167}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bcc241f5d0532cf4a8760c0ed4125cc0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!4 &345466519 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6429468060912397955, guid: 9b17f211218d07b4db8d2f2eb82457f6, type: 3}
@@ -11560,7 +11529,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 674063787974405182, guid: ca4bc2b1749d8954bbfdafa982e39d52, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.21010697
+      value: 4.648993
       objectReference: {fileID: 0}
     - target: {fileID: 674063787974405182, guid: ca4bc2b1749d8954bbfdafa982e39d52, type: 3}
       propertyPath: m_LocalPosition.z
@@ -11664,7 +11633,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7271486392886505334, guid: ca4bc2b1749d8954bbfdafa982e39d52, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.21010697
+      value: 4.648993
       objectReference: {fileID: 0}
     - target: {fileID: 7271486392886505334, guid: ca4bc2b1749d8954bbfdafa982e39d52, type: 3}
       propertyPath: m_LocalPosition.z
@@ -11708,9 +11677,9 @@ MonoBehaviour:
   _oscillationAmplitude: 0.5
   _oscillationFrequency: 3.5
   _spriteRenderer: {fileID: 0}
-  CollectibleUI: {fileID: 0}
+  _CollectibleUI: {fileID: 0}
   _playerCharacterMovement: {fileID: 0}
-  _hasBeenCollected: 0
+  _CollectibleUIShowing: 0
 --- !u!4 &1426645168
 Transform:
   m_ObjectHideFlags: 0
@@ -14300,17 +14269,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b64ca9cf8bfb4524fb30e0e557f8e7da, type: 3}
---- !u!114 &1717592409 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 4564549399772812809, guid: ca4bc2b1749d8954bbfdafa982e39d52, type: 3}
-  m_PrefabInstance: {fileID: 1411155243}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b22f82fdf1bb73f4abe002d2b185831c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &1721381689
 PrefabInstance:
   m_ObjectHideFlags: 0
