@@ -1,10 +1,13 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class SwordDamage : MonoBehaviour
 {
     [SerializeField] private float respawnTime;
     [SerializeField] private PlayerCharacter _character;
+
+    [SerializeField] private UnityEvent PlaySound;
 
     private void Start()
     {
@@ -16,6 +19,7 @@ public class SwordDamage : MonoBehaviour
         MouvementScript enemy = collision.GetComponentInParent<MouvementScript>();
         if (enemy != null && collision.CompareTag("Dash") && CompareTag("Sword"))
         {
+            PlaySound.Invoke();
             SoundManager.PlaySound(SoundType.VampireDeath, 10f);
             enemy.gameObject.SetActive(false);
             StartCoroutine(RespawnEnemy());

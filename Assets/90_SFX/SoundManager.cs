@@ -69,6 +69,11 @@ public class SoundManager : MonoBehaviour
         }
 #endif
     }
+    public void PlaySound2(string name)
+    {
+        
+
+    }
 }
 
 
