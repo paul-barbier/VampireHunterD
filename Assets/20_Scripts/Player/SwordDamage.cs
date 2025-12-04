@@ -16,12 +16,11 @@ public class SwordDamage : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        MouvementScript enemy = collision.GetComponentInParent<MouvementScript>();
-        if (enemy != null && collision.CompareTag("Dash") && CompareTag("Sword"))
+        if (collision != null && collision.CompareTag("Dash") && CompareTag("Sword"))
         {
             PlaySound.Invoke();
-            SoundManager.PlaySound(SoundType.VampireDeath, 10f);
-            enemy.gameObject.SetActive(false);
+            //SoundManager.PlaySound(SoundType.VampireDeath, 10f);
+            _character.KillingEnemy(collision);
         }
     }
 }

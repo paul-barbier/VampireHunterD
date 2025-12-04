@@ -155,6 +155,7 @@ GameObject:
   - component: {fileID: 5627316185133770394}
   - component: {fileID: 5560232284888832371}
   - component: {fileID: 5625239109197816516}
+  - component: {fileID: 838490804841158670}
   m_Layer: 6
   m_Name: ChauveSourisD
   m_TagString: Untagged
@@ -254,6 +255,21 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &838490804841158670
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1893569437254920610}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 29122224b713b9147bab79c0ddbc7100, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _aura: {fileID: 0}
+  _dissolveSpeed: 1
+  _playerCharacter: {fileID: 3403784465517668524}
 --- !u!1 &3634221963745358714
 GameObject:
   m_ObjectHideFlags: 0
@@ -348,7 +364,19 @@ MonoBehaviour:
   _character: {fileID: 3403784465517668524}
   PlaySound:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1953524558465522855}
+        m_TargetAssemblyTypeName: PlayBank, Assembly-CSharp
+        m_MethodName: playSound
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: MobExplo
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &4634869587052838177
 GameObject:
   m_ObjectHideFlags: 0
@@ -595,6 +623,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bcc241f5d0532cf4a8760c0ed4125cc0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  RespawnManager: {fileID: 0}
   _groundPhysic:
     MaxSpeed: 10.5
     Acceleration: 100
@@ -819,6 +848,7 @@ MonoBehaviour:
   BouncingTime: 0.3
   _cadavreCollider: {fileID: 0}
   targetKnockback: {x: 0, y: 0, z: 0}
+  _isKnockBacked: 0
   _lockedRotation: 0
   _movementDisabled: 0
   _capsuleBox: {fileID: 1432363591201203488}
@@ -900,8 +930,8 @@ MonoBehaviour:
   HpAnime: {fileID: 0}
   _hurtDisplayTime: 0.2
   _hurtFadeOutTime: 0.2
-  _hurtEffect: {fileID: -8526736497448788829, guid: 523a8ee6d436a7245932e1ccf85ba279, type: 2}
-  _Material: {fileID: 0}
+  _hurtEffect: {fileID: 2100820236830293440, guid: b7c001ec38ca54343853fe180a31cad8, type: 2}
+  _Material: {fileID: 2100000, guid: 94c32e5f544883d40a858e076e915c11, type: 2}
   _maxIntensity: 1
   _vignetteIntensityStat: 0.1
 --- !u!114 &2527351097556045588

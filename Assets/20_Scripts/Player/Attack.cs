@@ -25,7 +25,7 @@ public class Attack : MonoBehaviour
 
     void Update()
     {
-        if (!isAttacking)
+        if (!isAttacking || _playerCharacter._isDashing)
             return;
 
         _playerCharacter._movementDisabled = true;
@@ -52,7 +52,7 @@ public class Attack : MonoBehaviour
 
     public void AttackZone()
     {
-        if (!canAttack)
+        if (!canAttack || _playerCharacter._isDashing)
             return;
 
         isAttacking = true;
