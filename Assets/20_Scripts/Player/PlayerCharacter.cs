@@ -772,9 +772,12 @@ public class PlayerCharacter : MonoBehaviour
             BounceOnEnemy();
             ChauveSourisD.gameObject.SetActive(true);
             _canDash = true;
-            collision.gameObject.SetActive(false);
             PlayMobDeath.Invoke();
-            RespawnManager.RespawnFonction();
+            RespawnManager rm = collision.transform.root.GetComponentInChildren<RespawnManager>(true);
+            Debug.Log("RespawnManager trouvé = " + (rm != null));
+            collision.gameObject.SetActive(false);
+            if (rm != null)
+                rm.RespawnFonction();
         }
         //Dash sur cadavre
         if (collision.CompareTag("Cadavre") && _isDashing && collision != dashHitbox)
