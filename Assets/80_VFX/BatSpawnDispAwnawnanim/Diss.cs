@@ -61,7 +61,7 @@ public class Diss : MonoBehaviour
 
     private void Update()
     {
-        if (_playerCharacter.ChauveSouris.activeSelf) 
+        if (_playerCharacter.ChauveSourisD.activeSelf) 
         {
             StartCoroutine(Appear(true));
         }
