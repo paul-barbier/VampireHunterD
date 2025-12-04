@@ -6,7 +6,7 @@ public class RespawnManager : MonoBehaviour
     [SerializeField] private GameObject _objectToRespawn;
     [SerializeField] private float _respawnDelay;
 
-    bool _isRespawn = false;
+    public bool _isRespawn = false;
     float _respawnTime = 0;
 
     private void Awake()
@@ -25,7 +25,11 @@ public class RespawnManager : MonoBehaviour
         _respawnTime += Time.deltaTime;
 
         if ( _respawnTime > _respawnDelay )
+        {
             _objectToRespawn.SetActive(true);
+            _respawnTime = 0f; 
+            _isRespawn = false;
+        }
     }
 
     public void RespawnFonction()
