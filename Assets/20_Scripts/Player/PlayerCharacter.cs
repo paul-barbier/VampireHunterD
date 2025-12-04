@@ -446,7 +446,7 @@ public class PlayerCharacter : MonoBehaviour
 
         velocityDelta = Mathf.Clamp(velocityDelta, -_gravityParameters.MaxAcceleration, 0.0f);
 
-        if (!_isDashing)
+        if (!_isDashing || !_isKnockBacked)
         {
             _DAnimation.SetBool("IsFalling", true);
         }
@@ -790,6 +790,8 @@ public class PlayerCharacter : MonoBehaviour
     public void Knockback(Collider2D enemy)
     {
         _isKnockBacked = true;
+        _DAnimation.SetBool("IsKnockbacked", true);
+
         StopDashOnEnemy(enemy);
         _knockbackValues._knockbackDirection.x = (transform.position.x - _enemyCollider.transform.position.x);
         targetKnockback = new Vector3(_knockbackValues._knockbackDirection.x, _knockbackValues._knockbackDirection.y, 0).normalized;
@@ -806,6 +808,8 @@ public class PlayerCharacter : MonoBehaviour
         _currentHorizontalVelocity = Vector2.zero;
         _rigidbody.linearVelocity = Vector2.zero;
         _isKnockBacked = false;
+        _DAnimation.SetBool("IsKnockbacked", false);
+
     }
 
     public void Die()
