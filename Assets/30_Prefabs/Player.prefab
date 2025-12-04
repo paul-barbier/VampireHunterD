@@ -767,7 +767,16 @@ MonoBehaviour:
     DashBufferTime: 0.2
   _knockbackValues:
     _knockbackDirection: {x: 15, y: 15, z: 0}
-    _knockbackForce: 100
+    _knockbackForce: 20
+    _knockbackDeceleration: 0
+    DecelerationFromKnockBack:
+      serializedVersion: 2
+      m_Curve: []
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    durationKnockback: 0
+    tempsKnockback: 0
   _groundContactFilter:
     useTriggers: 0
     useLayerMask: 0
@@ -928,7 +937,7 @@ MonoBehaviour:
   _maxHealth: 100
   _currentHealth: 0
   HpAnime: {fileID: 0}
-  _hurtDisplayTime: 0.2
+  _hurtDisplayTime: 1
   _hurtFadeOutTime: 0.2
   _hurtEffect: {fileID: 2100820236830293440, guid: b7c001ec38ca54343853fe180a31cad8, type: 2}
   _Material: {fileID: 2100000, guid: 94c32e5f544883d40a858e076e915c11, type: 2}
