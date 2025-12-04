@@ -76,7 +76,7 @@ public class Attack : MonoBehaviour
 
     IEnumerator AttackCooldown()
     {
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(0.2f);
         canAttack = true;
     }
 }

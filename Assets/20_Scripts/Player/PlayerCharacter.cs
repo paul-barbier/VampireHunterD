@@ -13,6 +13,9 @@ public class PlayerCharacter : MonoBehaviour
 {
 
     #region DataStructure
+
+    [SerializeField] RespawnManager RespawnManager;
+
     public enum PhysicState
     {
         Ground,
@@ -150,6 +153,7 @@ public class PlayerCharacter : MonoBehaviour
     [Header("Knockback")]
     [SerializeField] private Vector3 targetKnockback = Vector3.zero;
     private Collider2D _enemyCollider;
+    [SerializeField] private bool _isKnockBacked = false;
 
     //Sprite
     private Vector3 _currentMeshRotation = Vector3.zero;
@@ -178,7 +182,6 @@ public class PlayerCharacter : MonoBehaviour
     private void Awake()
     {
         _attack = GetComponent<Attack>();
-
         _rigidbody = GetComponent<Rigidbody2D>();
         _capsuleBox = GetComponent<CapsuleCollider2D>();
         _sizeCapsule = _capsuleBox.size;
@@ -195,6 +198,7 @@ public class PlayerCharacter : MonoBehaviour
         OnPhysicStateChanged += TryDashBuffer;
 
         dashHitbox.gameObject.SetActive(false);
+        _isKnockBacked = false;
     }
 
 #if UNITY_EDITOR
@@ -441,7 +445,7 @@ public class PlayerCharacter : MonoBehaviour
 
         velocityDelta = Mathf.Clamp(velocityDelta, -_gravityParameters.MaxAcceleration, 0.0f);
 
-        if (!_isDashing)
+        if (!_isDashing || !_isKnockBacked)
         {
             _DAnimation.SetBool("IsFalling", true);
         }
@@ -603,7 +607,6 @@ public class PlayerCharacter : MonoBehaviour
          * par l'inverse du déplacement vertical (1 - step) qui donne soit 1 (déplcamenet horizontal strict ou 0,5 déplacement diagonal)*/
         float Mx = step > 0.5f ? 0 : Mathf.Sign(Dashinput.x) * (1 - step);
         _dashMovementInput = (new Vector2(Mx, step * Mathf.Sign(scalaire))).normalized;
-        Debug.Log(_dashMovementInput);
     }
 
     public void StartDash()
@@ -670,7 +673,6 @@ public class PlayerCharacter : MonoBehaviour
         {
             _forceToAdd += _currentDashForce;
             dashHitbox.gameObject.SetActive(true);
-            //cameraFollow.LockCamOnPlayer();
         }
         else
         {
@@ -771,6 +773,7 @@ public class PlayerCharacter : MonoBehaviour
             _canDash = true;
             collision.gameObject.SetActive(false);
             PlayMobDeath.Invoke();
+            RespawnManager.RespawnFonction();
         }
         //Dash sur cadavre
         if (collision.CompareTag("Cadavre") && _isDashing && collision != dashHitbox)
@@ -780,15 +783,17 @@ public class PlayerCharacter : MonoBehaviour
             BounceOnEnemy();
             ChauveSourisD.gameObject.SetActive(true);
             _canDash = true;
-            _cadavreCollider.gameObject.SetActive(false);
         }
     }
 
     public void Knockback(Collider2D enemy)
     {
+        _isKnockBacked = true;
+        _DAnimation.SetBool("IsKnockbacked", true);
+
         StopDashOnEnemy(enemy);
         _knockbackValues._knockbackDirection.x = (transform.position.x - _enemyCollider.transform.position.x);
-        targetKnockback = new Vector3(2, 2, 0).normalized;
+        targetKnockback = new Vector3(_knockbackValues._knockbackDirection.x, _knockbackValues._knockbackDirection.y, 0).normalized;
 
         _rigidbody.AddForce(targetKnockback * _knockbackValues._knockbackForce, ForceMode2D.Impulse);
         StartCoroutine(KnockBackTime());
@@ -799,6 +804,10 @@ public class PlayerCharacter : MonoBehaviour
         _movementDisabled = true;
         yield return new WaitForSeconds(1);
         _movementDisabled = false;
+        _currentHorizontalVelocity = Vector2.zero;
+        _rigidbody.linearVelocity = Vector2.zero;
+        _isKnockBacked = false;
+        _DAnimation.SetBool("IsKnockbacked", false);
 
     }
 
