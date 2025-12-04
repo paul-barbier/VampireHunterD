@@ -84,7 +84,7 @@ public class PlayerCharacter : MonoBehaviour
 
     [Header("Setup")]
     [SerializeField] private Transform _mesh = null;
-    [SerializeField] public GameObject ChauveSouris;
+    [SerializeField] public GameObject ChauveSourisD;
     public Rigidbody2D _rigidbody = null;
     [SerializeField] public Animator _DAnimation;
     [SerializeField] private UnityEvent PlaySound;
@@ -287,7 +287,7 @@ public class PlayerCharacter : MonoBehaviour
             if (!_canDash)
             {
                 _canDash = true;
-                ChauveSouris.gameObject.SetActive(true);
+                ChauveSourisD.gameObject.SetActive(true);
             }
 
             IsGrounded = true;
@@ -654,7 +654,7 @@ public class PlayerCharacter : MonoBehaviour
             _forceToAdd = Vector2.zero;
 
             _startDashTime = Time.time;
-            ChauveSouris.SetActive(false);
+            ChauveSourisD.SetActive(false);
             SoundManager.PlaySound(SoundType.Dash, 7.0f);
         }
     }
@@ -718,7 +718,7 @@ public class PlayerCharacter : MonoBehaviour
     {
         yield return new WaitForSeconds(1.0f);
         _canDash = true;
-        ChauveSouris.gameObject.SetActive(true);
+        ChauveSourisD.gameObject.SetActive(true);
     }
 
     public void BounceOnEnemy()
@@ -767,7 +767,7 @@ public class PlayerCharacter : MonoBehaviour
         {
             StopDashOnEnemy(collision);
             BounceOnEnemy();
-            ChauveSouris.gameObject.SetActive(true);
+            ChauveSourisD.gameObject.SetActive(true);
             _canDash = true;
             collision.gameObject.SetActive(false);
             PlayMobDeath.Invoke();
@@ -778,7 +778,7 @@ public class PlayerCharacter : MonoBehaviour
             _cadavreCollider = collision;
             StopDashOnEnemy(collision);
             BounceOnEnemy();
-            ChauveSouris.gameObject.SetActive(true);
+            ChauveSourisD.gameObject.SetActive(true);
             _canDash = true;
             _cadavreCollider.gameObject.SetActive(false);
         }
