@@ -127,6 +127,7 @@ public class Health : MonoBehaviour
 
             yield return null;
         }
+        Debug.Log("End Hurt");
         _hurtEffect.SetActive(false);
     }
 }
