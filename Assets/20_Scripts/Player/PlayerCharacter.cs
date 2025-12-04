@@ -13,6 +13,9 @@ public class PlayerCharacter : MonoBehaviour
 {
 
     #region DataStructure
+
+    [SerializeField] RespawnManager RespawnManager;
+
     public enum PhysicState
     {
         Ground,
@@ -771,6 +774,7 @@ public class PlayerCharacter : MonoBehaviour
             _canDash = true;
             collision.gameObject.SetActive(false);
             PlayMobDeath.Invoke();
+            RespawnManager.RespawnFonction();
         }
         //Dash sur cadavre
         if (collision.CompareTag("Cadavre") && _isDashing && collision != dashHitbox)
