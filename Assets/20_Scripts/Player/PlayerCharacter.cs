@@ -450,7 +450,6 @@ public class PlayerCharacter : MonoBehaviour
             Debug.Log("JE TOOOOOOOOOOOMBE AAAAAAAAAAAAAAAH ALEEEEED");
             cameraFollow.CamFalling();
             _isFalling = true;
-
         }
 
         _forceToAdd.y += velocityDelta;
