@@ -6,17 +6,35 @@ public class RespawnManager : MonoBehaviour
     [SerializeField] private GameObject _objectToRespawn;
     [SerializeField] private float _respawnDelay;
 
-    public void RespawnFonction()
+    bool _isRespawn = false;
+    float _respawnTime = 0;
+
+    private void Awake()
     {
-        if (!_objectToRespawn.activeInHierarchy)
+        // Si non assigné, cherche automatiquement l’objet "Visual" dans le parent
+        if (_objectToRespawn == null)
         {
-            StartCoroutine(RespawnDelay());
+            _objectToRespawn = transform.parent.Find("Visual").gameObject;
         }
     }
 
-    IEnumerator RespawnDelay()
+    private void Update()
     {
-        yield return new WaitForSeconds(_respawnDelay);
-        _objectToRespawn.SetActive(true);
+        if ( !_isRespawn )
+            return;
+        _respawnTime += Time.deltaTime;
+
+        if ( _respawnTime > _respawnDelay )
+            _objectToRespawn.SetActive(true);
+    }
+
+    public void RespawnFonction()
+    {
+        Debug.Log($"RespawnFonction appelée sur : {gameObject.name}");
+        if (!_objectToRespawn.activeSelf)
+        {
+            Debug.Log("Respawn called on : " + gameObject.name);
+            _isRespawn = true;
+        }
     }
 }

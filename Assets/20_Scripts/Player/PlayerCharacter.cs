@@ -69,6 +69,10 @@ public class PlayerCharacter : MonoBehaviour
     {
         public Vector3 _knockbackDirection;
         public float _knockbackForce;
+        public float _knockbackDeceleration;
+        [Tooltip("Range [0, 1]")] public AnimationCurve DecelerationFromKnockBack;
+        public float durationKnockback;
+        public float tempsKnockback;
     }
 
     #endregion DataStructure
@@ -771,9 +775,8 @@ public class PlayerCharacter : MonoBehaviour
             BounceOnEnemy();
             ChauveSourisD.gameObject.SetActive(true);
             _canDash = true;
-            collision.gameObject.SetActive(false);
             PlayMobDeath.Invoke();
-            RespawnManager.RespawnFonction();
+            KillingEnemy(collision);
         }
         //Dash sur cadavre
         if (collision.CompareTag("Cadavre") && _isDashing && collision != dashHitbox)
@@ -792,8 +795,15 @@ public class PlayerCharacter : MonoBehaviour
         _DAnimation.SetBool("IsKnockbacked", true);
 
         StopDashOnEnemy(enemy);
-        _knockbackValues._knockbackDirection.x = (transform.position.x - _enemyCollider.transform.position.x);
         targetKnockback = new Vector3(_knockbackValues._knockbackDirection.x, _knockbackValues._knockbackDirection.y, 0).normalized;
+
+        //float ratio = _knockbackValues.tempsKnockback / _knockbackValues.durationKnockabc;
+
+        //float curveValue = _knockbackValues.DecelerationFromKnockBack.Evaluate(ratio);
+
+        //float deceleration = _knockbackValues._knockbackDeceleration * _jumpParameters.DecelerationFromAirTime.Evaluate(targetKnockback) * Time.fixedDeltaTime;
+
+        //targetKnockback = Vector2.MoveTowards(targetKnockback, Vector2.zero, deceleration);
 
         _rigidbody.AddForce(targetKnockback * _knockbackValues._knockbackForce, ForceMode2D.Impulse);
         StartCoroutine(KnockBackTime());
@@ -823,5 +833,15 @@ public class PlayerCharacter : MonoBehaviour
             _isJumping = false;
         }
     }
+
+    public void KillingEnemy(Collider2D collision)
+    {
+        RespawnManager rm = collision.transform.root.GetComponentInChildren<RespawnManager>(true);
+        Debug.Log("RespawnManager trouvé = " + (rm != null));
+        collision.gameObject.SetActive(false);
+        if (rm != null)
+            rm.RespawnFonction();
+    }
+
     #endregion Damage/Die
 }
