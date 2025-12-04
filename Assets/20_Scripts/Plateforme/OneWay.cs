@@ -29,11 +29,10 @@ public class OneWay : MonoBehaviour
         Collider2D col = GetComponent<Collider2D>();
         if (col == null)
         {
-            // Si aucune collision, on ajoute un BoxCollider2D par défaut
+            // Si aucune collision, on ajoute un BoxCollider2D
             col = gameObject.AddComponent<BoxCollider2D>();
         }
 
-        // Active "Used By Effector" si possible (nécessaire pour PlatformEffector2D)
         if (col is BoxCollider2D box)
         {
             box.usedByEffector = true;

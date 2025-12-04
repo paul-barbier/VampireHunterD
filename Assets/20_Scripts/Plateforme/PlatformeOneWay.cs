@@ -193,7 +193,7 @@ public class PlatformeOneWay : MonoBehaviour
         return null;
     }
 
-    // Cherche une plateforme directement sous les pieds du joueur (pour drop)
+    // Cherche une plateforme sous le joueur (pour drop)
     private Collider2D FindPlatformBelow()
     {
         if (playerCollider == null) return null;
@@ -221,7 +221,7 @@ public class PlatformeOneWay : MonoBehaviour
         return null;
     }
 
-    // Visual debug dans la scène pour voir la plateforme courante et les zones de recherche
+    // Visual debug
     private void OnDrawGizmos()
     {
         if (!enableDebug || playerCollider == null) return;
