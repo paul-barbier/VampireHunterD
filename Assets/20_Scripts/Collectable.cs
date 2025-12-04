@@ -9,10 +9,11 @@ public class Collectable : MonoBehaviour
 
     [SerializeField] private float _oscillationAmplitude = 0.0f;
     [SerializeField] private float _oscillationFrequency = 0.0f;
-    [SerializeField] private SpriteRenderer _spriteRenderer;
+    private SpriteRenderer _spriteRenderer;
     [SerializeField] private GameObject _collectibleUI;
     [SerializeField] private GameObject _playerCharacterMovement;
     public float _skipDelay = 0.0f;
+    private Collider2D _collider;
 
     private Vector3 _basePosition = Vector3.zero;
     private bool _hasBeenCollected;
@@ -26,6 +27,7 @@ public class Collectable : MonoBehaviour
     private void Start()
     {
         _collectibleUI.SetActive(false);
+        _collider = GetComponent<Collider2D>();
         _spriteRenderer = GetComponent<SpriteRenderer>();
         _hasBeenCollected = false;
         _spriteRenderer.enabled = true;
@@ -47,6 +49,7 @@ public class Collectable : MonoBehaviour
         Debug.Log("Collectible pris");
         _hasBeenCollected = true;
         _spriteRenderer.enabled = false;
+        _collider.enabled = false;
         StartCoroutine(WaitForGrounded());
     }
 
@@ -64,7 +67,7 @@ public class Collectable : MonoBehaviour
 
     private void SkipCollectible()
     {
-        if (dialogue._skipCollectible == true && _CollectibleUIShowing == true)
+        if (dialogue._skipCollectible == true && _CollectibleUIShowing == true && _hasBeenCollected == true)
         {
             _collectibleUI.SetActive(false);
             _playerCharacterMovement.SetActive(true);
