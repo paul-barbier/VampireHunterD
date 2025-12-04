@@ -6,9 +6,8 @@ using UnityEngine.Events;
 
 public class Diss : MonoBehaviour
 {
-
+    [SerializeField] private ParticleSystem _aura;
     [SerializeField] private float _dissolveSpeed = 1f;
-    [SerializeField] private float _dissolveDelay = 0f;
     [SerializeField] private PlayerCharacter _playerCharacter;
     private SpriteRenderer[] _spriteRenderer;
     private Material[] _materials;
@@ -17,6 +16,8 @@ public class Diss : MonoBehaviour
 
     private void Start()
     {
+         _aura.Play();
+        _aura.Stop();
         _spriteRenderer = GetComponentsInChildren<SpriteRenderer>();
         _materials = new Material[_spriteRenderer.Length];
         for (int i = 0; i < _spriteRenderer.Length; i++)
@@ -53,6 +54,7 @@ public class Diss : MonoBehaviour
                 if (useDiss)
                     _materials[i].SetFloat(_dissolveAmount, dissolveValue);
             }
+            _aura.Play();
             yield return null;
         }
     }

@@ -20,7 +20,7 @@ public class SwordDamage : MonoBehaviour
         if (enemy != null && collision.CompareTag("Dash") && CompareTag("Sword"))
         {
             PlaySound.Invoke();
-            SoundManager.PlaySound(SoundType.VampireDeath, 10f);
+            //SoundManager.PlaySound(SoundType.VampireDeath, 10f);
             enemy.gameObject.SetActive(false);
         }
     }
