@@ -108,26 +108,27 @@ public class Health : MonoBehaviour
     private IEnumerator Hurt()
     {
         _hurtEffect.SetActive(true);
-        _Material.SetFloat(_vignetteIntensity, VIGNETTE_BASE_INTENSITY);
-        _Material.SetFloat(_voronoiIntensity, VORONOI_BASE_INTENSITY);
+        yield return new WaitForSeconds(0.5f);
+        //_Material.SetFloat(_vignetteIntensity, VIGNETTE_BASE_INTENSITY);
+        //_Material.SetFloat(_voronoiIntensity, VORONOI_BASE_INTENSITY);
 
-        yield return new WaitForSeconds(_hurtDisplayTime);
+        //yield return new WaitForSeconds(_hurtDisplayTime);
 
-        float elapsedTime = 0.0f;
-        while (elapsedTime < _hurtFadeOutTime)
-        {
-            elapsedTime += Time.deltaTime;
+        //float elapsedTime = 0.0f;
+        //while (elapsedTime < _hurtFadeOutTime)
+        //{
+        //    elapsedTime += Time.deltaTime;
 
 
-            float vignetteIntensity = Mathf.Lerp(VIGNETTE_BASE_INTENSITY, 0f, elapsedTime / _hurtFadeOutTime);
-            float voronoiIntensity = Mathf.Lerp(VORONOI_BASE_INTENSITY, 0f,elapsedTime/_hurtFadeOutTime);
+        //    float vignetteIntensity = Mathf.Lerp(VIGNETTE_BASE_INTENSITY, 0f, elapsedTime / _hurtFadeOutTime);
+        //    float voronoiIntensity = Mathf.Lerp(VORONOI_BASE_INTENSITY, 0f,elapsedTime/_hurtFadeOutTime);
 
-            _Material.SetFloat(_vignetteIntensity, vignetteIntensity);
-            _Material.SetFloat(_voronoiIntensity, voronoiIntensity);
+        //    _Material.SetFloat(_vignetteIntensity, vignetteIntensity);
+        //    _Material.SetFloat(_voronoiIntensity, voronoiIntensity);
 
-            yield return null;
-        }
+        //    yield return null;
+        //}
         Debug.Log("End Hurt");
-        _hurtEffect.SetActive(false);
+            _hurtEffect.SetActive(false);
     }
 }

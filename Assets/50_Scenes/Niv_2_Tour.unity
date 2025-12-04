@@ -2662,34 +2662,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 1539380187053205686, guid: a38c065f7f2b48d42b8647a546721097, type: 3}
-      propertyPath: PlaySound.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 1539380187053205686, guid: a38c065f7f2b48d42b8647a546721097, type: 3}
-      propertyPath: PlaySound.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 1660510034}
-    - target: {fileID: 1539380187053205686, guid: a38c065f7f2b48d42b8647a546721097, type: 3}
-      propertyPath: PlaySound.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: playSound
-      objectReference: {fileID: 0}
-    - target: {fileID: 1539380187053205686, guid: a38c065f7f2b48d42b8647a546721097, type: 3}
-      propertyPath: PlaySound.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: PlayBank, Assembly-CSharp
-      objectReference: {fileID: 0}
-    - target: {fileID: 1539380187053205686, guid: a38c065f7f2b48d42b8647a546721097, type: 3}
-      propertyPath: PlaySound.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_StringArgument
-      value: TP
-      objectReference: {fileID: 0}
-    - target: {fileID: 1539380187053205686, guid: a38c065f7f2b48d42b8647a546721097, type: 3}
-      propertyPath: PlaySound.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
-      value: UnityEngine.Object, UnityEngine
-      objectReference: {fileID: 0}
     - target: {fileID: 2527351097556045588, guid: a38c065f7f2b48d42b8647a546721097, type: 3}
       propertyPath: _camera
       value: 
       objectReference: {fileID: 762134597}
+    - target: {fileID: 3403784465517668524, guid: a38c065f7f2b48d42b8647a546721097, type: 3}
+      propertyPath: _knockbackValues._knockbackForce
+      value: 20
+      objectReference: {fileID: 0}
     - target: {fileID: 5230953878154645213, guid: a38c065f7f2b48d42b8647a546721097, type: 3}
       propertyPath: m_Name
       value: Player
@@ -2701,11 +2681,15 @@ PrefabInstance:
     - target: {fileID: 7822740381902637360, guid: a38c065f7f2b48d42b8647a546721097, type: 3}
       propertyPath: _Material
       value: 
-      objectReference: {fileID: 2100000, guid: 17e7eb3012d0a9446b1f60ab12bd1fbd, type: 2}
+      objectReference: {fileID: 2100000, guid: 94c32e5f544883d40a858e076e915c11, type: 2}
     - target: {fileID: 7822740381902637360, guid: a38c065f7f2b48d42b8647a546721097, type: 3}
       propertyPath: _hurtEffect
       value: 
       objectReference: {fileID: 2100820236830293440, guid: b7c001ec38ca54343853fe180a31cad8, type: 2}
+    - target: {fileID: 7822740381902637360, guid: a38c065f7f2b48d42b8647a546721097, type: 3}
+      propertyPath: _hurtDisplayTime
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -14581,17 +14565,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 284883241}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1660510034 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 1953524558465522855, guid: a38c065f7f2b48d42b8647a546721097, type: 3}
-  m_PrefabInstance: {fileID: 336781167}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 77798e8d6efd66a479596b946ae1db26, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &1663501994
 PrefabInstance:
   m_ObjectHideFlags: 0
