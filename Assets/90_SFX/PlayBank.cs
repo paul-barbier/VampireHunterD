@@ -37,9 +37,14 @@ public class PlayBank : MonoBehaviour
             audioSource.volume = 0.1f;
             audioSource.pitch = Random.Range(randomPitchRange.x, randomPitchRange.y);
         }
+        else if (soundName == "TP")
+        {
+            audioSource.volume = 0.6f;
+            audioSource.pitch = Random.Range(randomPitchRange.x, randomPitchRange.y);
+        }
 
-        
-        audioSource.PlayOneShot(clip);
+
+            audioSource.PlayOneShot(clip);
     }
 
     public void PlayFootStep()
