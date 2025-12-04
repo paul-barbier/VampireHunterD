@@ -84,7 +84,7 @@ public class PlayerCharacter : MonoBehaviour
 
     [Header("Setup")]
     [SerializeField] private Transform _mesh = null;
-    [SerializeField] public GameObject ChauveSouris;
+    [SerializeField] public GameObject ChauveSourisD;
     public Rigidbody2D _rigidbody = null;
     [SerializeField] public Animator _DAnimation;
     [SerializeField] private UnityEvent PlaySound;
@@ -142,13 +142,14 @@ public class PlayerCharacter : MonoBehaviour
     [SerializeField] public bool _hittingDash = false;
     private float _dashAnimTime;
 
-    //Bounce
+    [Header("Bounce")]
     [SerializeField] private Vector2 enemyBounceForce;
     [SerializeField] private float BouncingTime;
+    [SerializeField] private Collider2D _cadavreCollider;
 
-    //KnockBack
+    [Header("Knockback")]
+    [SerializeField] private Vector3 targetKnockback = Vector3.zero;
     private Collider2D _enemyCollider;
-    private Vector3 targetKnockback = Vector3.zero;
 
     //Sprite
     private Vector3 _currentMeshRotation = Vector3.zero;
@@ -286,7 +287,7 @@ public class PlayerCharacter : MonoBehaviour
             if (!_canDash)
             {
                 _canDash = true;
-                ChauveSouris.gameObject.SetActive(true);
+                ChauveSourisD.gameObject.SetActive(true);
             }
 
             IsGrounded = true;
@@ -447,7 +448,6 @@ public class PlayerCharacter : MonoBehaviour
 
         if (_chuteTime >= 0.3f && !_isDashing)
         {
-            Debug.Log("JE TOOOOOOOOOOOMBE AAAAAAAAAAAAAAAH ALEEEEED");
             cameraFollow.CamFalling();
             _isFalling = true;
         }
@@ -654,7 +654,7 @@ public class PlayerCharacter : MonoBehaviour
             _forceToAdd = Vector2.zero;
 
             _startDashTime = Time.time;
-            ChauveSouris.SetActive(false);
+            ChauveSourisD.SetActive(false);
             SoundManager.PlaySound(SoundType.Dash, 7.0f);
         }
     }
@@ -718,7 +718,7 @@ public class PlayerCharacter : MonoBehaviour
     {
         yield return new WaitForSeconds(1.0f);
         _canDash = true;
-        ChauveSouris.gameObject.SetActive(true);
+        ChauveSourisD.gameObject.SetActive(true);
     }
 
     public void BounceOnEnemy()
@@ -767,7 +767,7 @@ public class PlayerCharacter : MonoBehaviour
         {
             StopDashOnEnemy(collision);
             BounceOnEnemy();
-            ChauveSouris.gameObject.SetActive(true);
+            ChauveSourisD.gameObject.SetActive(true);
             _canDash = true;
             collision.gameObject.SetActive(false);
             PlayMobDeath.Invoke();
@@ -775,10 +775,12 @@ public class PlayerCharacter : MonoBehaviour
         //Dash sur cadavre
         if (collision.CompareTag("Cadavre") && _isDashing && collision != dashHitbox)
         {
+            _cadavreCollider = collision;
             StopDashOnEnemy(collision);
             BounceOnEnemy();
-            ChauveSouris.gameObject.SetActive(true);
+            ChauveSourisD.gameObject.SetActive(true);
             _canDash = true;
+            _cadavreCollider.gameObject.SetActive(false);
         }
     }
 
@@ -787,9 +789,7 @@ public class PlayerCharacter : MonoBehaviour
         StopDashOnEnemy(enemy);
         _knockbackValues._knockbackDirection.x = (transform.position.x - _enemyCollider.transform.position.x);
         _knockbackValues._knockbackDirection.y = (transform.position.y - _enemyCollider.transform.position.y);
-        targetKnockback = new Vector3(Mathf.Ceil(_knockbackValues._knockbackDirection.x), Mathf.Ceil(_knockbackValues._knockbackDirection.y), 0).normalized;
-
-        Debug.Log(_knockbackValues._knockbackDirection.x);
+        targetKnockback = new Vector3(_knockbackValues._knockbackDirection.x, _knockbackValues._knockbackDirection.y, 0).normalized;
 
         _rigidbody.AddForce(targetKnockback * _knockbackValues._knockbackForce, ForceMode2D.Impulse);
     }
