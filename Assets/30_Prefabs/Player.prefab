@@ -156,7 +156,7 @@ GameObject:
   - component: {fileID: 5560232284888832371}
   - component: {fileID: 5625239109197816516}
   m_Layer: 6
-  m_Name: ChauveSouris
+  m_Name: ChauveSourisD
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -737,7 +737,7 @@ MonoBehaviour:
     DashBufferTime: 0.2
   _knockbackValues:
     _knockbackDirection: {x: 15, y: 15, z: 0}
-    _knockbackForce: 8
+    _knockbackForce: 100
   _groundContactFilter:
     useTriggers: 0
     useLayerMask: 0
@@ -767,7 +767,7 @@ MonoBehaviour:
     minNormalAngle: 45
     maxNormalAngle: 135
   _mesh: {fileID: 5167549000642208514}
-  ChauveSouris: {fileID: 1893569437254920610}
+  ChauveSourisD: {fileID: 1893569437254920610}
   _rigidbody: {fileID: 948011244277554858}
   _DAnimation: {fileID: 317578980722878797}
   PlaySound:
@@ -808,6 +808,7 @@ MonoBehaviour:
   _currentHorizontalVelocity: {x: 0, y: 0}
   _movementInput: 0
   IsGrounded: 1
+  _isFalling: 0
   _isJumping: 0
   _currentDashForce: {x: 0, y: 0}
   _canDash: 1
@@ -815,6 +816,8 @@ MonoBehaviour:
   _hittingDash: 0
   enemyBounceForce: {x: 0, y: 8}
   BouncingTime: 0.3
+  _cadavreCollider: {fileID: 0}
+  targetKnockback: {x: 0, y: 0, z: 0}
   _lockedRotation: 0
   _movementDisabled: 0
   _capsuleBox: {fileID: 1432363591201203488}

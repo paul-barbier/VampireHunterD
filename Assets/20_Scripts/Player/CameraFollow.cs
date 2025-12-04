@@ -65,11 +65,4 @@ public class CameraFollow : MonoBehaviour
         _camera.Lookahead.IgnoreY = false;
         _camera.Lookahead.Smoothing = 7;
     }
-
-    public void ReadjustingCam()
-    {
-        _targetScreenPosition = new Vector2(0, 0.15f);
-
-        _camera.Composition.ScreenPosition = Vector2.Lerp(_camera.Composition.ScreenPosition, _targetScreenPosition, Time.deltaTime * camLerpSpeed);
-    }
 }

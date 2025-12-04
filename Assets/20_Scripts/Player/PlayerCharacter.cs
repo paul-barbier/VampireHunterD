@@ -788,10 +788,18 @@ public class PlayerCharacter : MonoBehaviour
     {
         StopDashOnEnemy(enemy);
         _knockbackValues._knockbackDirection.x = (transform.position.x - _enemyCollider.transform.position.x);
-        _knockbackValues._knockbackDirection.y = (transform.position.y - _enemyCollider.transform.position.y);
-        targetKnockback = new Vector3(_knockbackValues._knockbackDirection.x, _knockbackValues._knockbackDirection.y, 0).normalized;
+        targetKnockback = new Vector3(2, 2, 0).normalized;
 
         _rigidbody.AddForce(targetKnockback * _knockbackValues._knockbackForce, ForceMode2D.Impulse);
+        StartCoroutine(KnockBackTime());
+    }
+
+    IEnumerator KnockBackTime()
+    {
+        _movementDisabled = true;
+        yield return new WaitForSeconds(1);
+        _movementDisabled = false;
+
     }
 
     public void Die()
