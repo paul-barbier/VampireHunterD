@@ -177,7 +177,6 @@ public class PlayerCharacter : MonoBehaviour
     private void Awake()
     {
         _attack = GetComponent<Attack>();
-
         _rigidbody = GetComponent<Rigidbody2D>();
         _capsuleBox = GetComponent<CapsuleCollider2D>();
         _sizeCapsule = _capsuleBox.size;
