@@ -17,7 +17,6 @@ public class Collectable : MonoBehaviour
 
     private Vector3 _basePosition = Vector3.zero;
     private bool _hasBeenCollected;
-    public bool _CollectibleUIShowing = false;
 
     bool _waitingGround = false;
 
@@ -68,6 +67,7 @@ public class Collectable : MonoBehaviour
         _collectibleUI.SetActive(true);
         dialogue._CollectibleUIShowing = true;
         dialogue.SkipDelay();
+        Time.timeScale = 0.0f;
     }
 
     private void SkipCollectible()
@@ -80,6 +80,7 @@ public class Collectable : MonoBehaviour
             _hasBeenCollected = false;
             dialogue._skipCollectible = false;
             dialogue._canSkipCollectible = false;
+            Time.timeScale = 1.0f;
         }
     }
 }

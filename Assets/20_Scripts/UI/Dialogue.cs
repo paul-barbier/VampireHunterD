@@ -135,7 +135,7 @@ public class Dialogue : MonoBehaviour
         if (!isSkipDelaywaiting)
             return;
 
-        timer += Time.deltaTime;
+        timer += Time.unscaledDeltaTime;
         if (timer > _collectible._skipDelay) 
         {
             _canSkipCollectible = true;
