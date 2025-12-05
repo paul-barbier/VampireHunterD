@@ -10,7 +10,7 @@ public class SwordDamage : MonoBehaviour
 
     private void Start()
     {
-        _character = GetComponent<PlayerCharacter>();
+        _character = GetComponentInParent<PlayerCharacter>();
     }
 
 
@@ -18,9 +18,9 @@ public class SwordDamage : MonoBehaviour
     {
         if (collision != null && collision.CompareTag("Dash") && CompareTag("Sword"))
         {
+            _character.KillingEnemy(collision);
             PlaySound.Invoke();
             //SoundManager.PlaySound(SoundType.VampireDeath, 10f);
-            _character.KillingEnemy(collision);
         }
     }
 }

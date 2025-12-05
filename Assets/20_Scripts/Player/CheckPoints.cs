@@ -11,9 +11,7 @@ public class CheckPoints : MonoBehaviour
 
             playerHealth.GetHeal(playerHealth.GetMaxHealth());
 
-            PlayerCharacter character = collision.GetComponent<PlayerCharacter>();
-
-            character.checkpoint = this;
+            playerHealth.checkpoint = this;
         }
     }
 }
