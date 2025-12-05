@@ -28,7 +28,7 @@ Transform:
   m_GameObject: {fileID: 321379243702358425}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -6.4735823, y: 70.54899, z: -10}
+  m_LocalPosition: {x: 25.959, y: -67.74211, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -92,7 +92,7 @@ MonoBehaviour:
   CameraDistance: 10
   DeadZoneDepth: 0
   Composition:
-    ScreenPosition: {x: 0, y: 0.15}
+    ScreenPosition: {x: 0.008188978, y: 0.06318089}
     DeadZone:
       Enabled: 1
       Size: {x: 0.6, y: 0}
@@ -303,29 +303,16 @@ MonoBehaviour:
     - {fileID: 8300000, guid: ddd44701972532c479afbc45ea1cbd4b, type: 3}
   - Name: CataFootsteps
     sounds:
+    - {fileID: 8300000, guid: 071306e65de5c1c498b7d038e39266f7, type: 3}
     - {fileID: 8300000, guid: a92ae1fde79f3da428fbaa66c83c573e, type: 3}
     - {fileID: 8300000, guid: bbc867dbde3e6914595901ffd59f3477, type: 3}
     - {fileID: 8300000, guid: 50cde69f1862aaa4e8f05e005c079f8d, type: 3}
-    - {fileID: 8300000, guid: 1c0db1ad19868d445953ae643c05dc78, type: 3}
+    - {fileID: 8300000, guid: 3d0c5d115ce1bb94390e290d64e300db, type: 3}
     - {fileID: 8300000, guid: 943a1496e89c99f42a589834fcdd5083, type: 3}
+    - {fileID: 8300000, guid: b7b83cdf0c8e81544a040347d89b4437, type: 3}
     - {fileID: 8300000, guid: fdc58e71a7c6a5043aa951c3d529730f, type: 3}
-    - {fileID: 8300000, guid: b479bf76d2315a14189cb39d6ce68684, type: 3}
-    - {fileID: 8300000, guid: 374c58ab3c5e3bd42a721255c89d9288, type: 3}
-    - {fileID: 8300000, guid: ddd44701972532c479afbc45ea1cbd4b, type: 3}
   - Name: MobFootsteps
-    sounds:
-    - {fileID: 8300000, guid: 5f2b392323a9e1744929e98890b4fa81, type: 3}
-    - {fileID: 8300000, guid: b9893ca38ed1ede449934f2c19182cd1, type: 3}
-    - {fileID: 8300000, guid: 116edafb70c6e5b4a963fbf6c6eb6d84, type: 3}
-    - {fileID: 8300000, guid: 899677f0ff1f4484fa5487b9a413f281, type: 3}
-    - {fileID: 8300000, guid: d618ee1c9a48e4246a0e242d8f3c10ad, type: 3}
-    - {fileID: 8300000, guid: 3e67ad7b4c64c9240862813f26dfea7c, type: 3}
-    - {fileID: 8300000, guid: 9399326709c9c4347ba6c8b1cc2331d9, type: 3}
-    - {fileID: 8300000, guid: 634c1e8fdb64abc47a53b1329af9e004, type: 3}
-    - {fileID: 8300000, guid: e42539e9d402bb14faae608c5c5594fb, type: 3}
-    - {fileID: 8300000, guid: 9e8db34c394857c43a7af81588d678d0, type: 3}
-    - {fileID: 8300000, guid: 065f8505c31642043aebc8c558f1be4b, type: 3}
-    - {fileID: 8300000, guid: 3d75218cd12d41549aa22c15aa5a51b7, type: 3}
+    sounds: []
   - Name: Attack
     sounds:
     - {fileID: 8300000, guid: 9ff2005fd11cf7e4a8dfe11c6b708fd8, type: 3}
@@ -359,6 +346,21 @@ MonoBehaviour:
     sounds: []
   - Name: BatVFX
     sounds: []
+  - Name: CataWater
+    sounds:
+    - {fileID: 8300000, guid: b73fcf9809b84184ca6ab06a7ad85746, type: 3}
+    - {fileID: 8300000, guid: 57a08528d43d208408b053ae252d2114, type: 3}
+    - {fileID: 8300000, guid: 02c5e54aa89a2264897e53e687f039af, type: 3}
+    - {fileID: 8300000, guid: 2cf6969f3c2b9164ebd8d3bba8190b85, type: 3}
+    - {fileID: 8300000, guid: c971b9d8f82b7a7448704a24c5c041bb, type: 3}
+    - {fileID: 8300000, guid: 33820024a65063b419e6c33dfc8f65e9, type: 3}
+    - {fileID: 8300000, guid: 8123e1b8d729da6418bb7ff3a13f5e51, type: 3}
+    - {fileID: 8300000, guid: 3d00d1e20b93eec49a5a751f93d15104, type: 3}
+  - Name: StepsVillageois
+    sounds:
+    - {fileID: 8300000, guid: 5f49e57af273e5348b972cdb0160b91c, type: 3}
+    - {fileID: 8300000, guid: 5f49e57af273e5348b972cdb0160b91c, type: 3}
+    - {fileID: 8300000, guid: 5f49e57af273e5348b972cdb0160b91c, type: 3}
 --- !u!1 &5946286106577519382
 GameObject:
   m_ObjectHideFlags: 0
@@ -420,7 +422,7 @@ Transform:
   m_GameObject: {fileID: 7614178230349327506}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -6.4735823, y: 70.54899, z: -10}
+  m_LocalPosition: {x: 25.959, y: -67.74211, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
