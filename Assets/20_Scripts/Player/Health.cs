@@ -9,7 +9,7 @@ public class Health : MonoBehaviour
     [SerializeField] private int _currentHealth;
     [SerializeField] private PlayerCharacter _character;
     public bool _isInvincible;
-    private bool _isDying;
+    public bool _isDying;
     public CheckPoints checkpoint;
 
     //Visuel
@@ -131,16 +131,20 @@ public class Health : MonoBehaviour
 
     public void Die()
     {
-        _character._rigidbody.linearVelocity = Vector3.zero;
         _character._movementDisabled = true;
+        _character._currentDashForce = Vector2.zero;
+        _character._currentHorizontalVelocity = Vector2.zero;
+        _character._rigidbody.linearVelocity = Vector2.zero;
+        _character._forceToAdd = Vector2.zero;
+
         StartCoroutine(Dying());
     }
 
     IEnumerator Dying()
     {
         _isDying = false;
-        _character._DAnimation.SetBool("IsDying", true);
 
+        _character._DAnimation.SetBool("IsDying", true);
         yield return new WaitForSeconds(4.0f);
         _isDying = true;
         Respawn();

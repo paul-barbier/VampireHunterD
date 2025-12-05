@@ -48,14 +48,14 @@ public class CameraFollow : MonoBehaviour
 
     public void LockCamOnPlayer()
     {
-        _camera.Composition.DeadZone.Size = new Vector2(0.6f, 0f);
+        _camera.Composition.DeadZone.Size = new Vector2(0.7f, 0f);
         _camera.Lookahead.IgnoreY = true;
         _camera.Lookahead.Smoothing = 10;
     }
 
     public void UnLockCamOnPlayer()
     {
-        _camera.Composition.DeadZone.Size = new Vector2(0.6f, 0.6f);
+        _camera.Composition.DeadZone.Size = new Vector2(0.7f, 0.6f);
         _camera.Lookahead.IgnoreY = true;
         _camera.Lookahead.Smoothing = 10;
     }
