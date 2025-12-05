@@ -17,7 +17,8 @@ public class Collectable : MonoBehaviour
 
     private Vector3 _basePosition = Vector3.zero;
     private bool _hasBeenCollected;
-    public bool _CollectibleUIShowing = false;
+
+    bool _waitingGround = false;
 
     private void Awake()
     {
@@ -40,6 +41,8 @@ public class Collectable : MonoBehaviour
         oscillation *= _oscillationAmplitude;
         transform.position = _basePosition + new Vector3(0.0f, oscillation, 0.0f);
         SkipCollectible();
+
+        WaitForGrounded();
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -50,30 +53,34 @@ public class Collectable : MonoBehaviour
         _hasBeenCollected = true;
         _spriteRenderer.enabled = false;
         _collider.enabled = false;
-        StartCoroutine(WaitForGrounded());
+        _waitingGround = true;
     }
 
-    private IEnumerator WaitForGrounded()
+    private void WaitForGrounded()
     {
-        // Tant que le joueur n'est pas au sol, on attend
-        yield return new WaitUntil(() => character.IsGrounded);
+        if (!_waitingGround || !character.IsGrounded) 
+            return;
+        _waitingGround = false;
 
         Debug.Log("IsGrounded Collectible");
         _playerCharacterMovement.SetActive(false);
         _collectibleUI.SetActive(true);
-        _CollectibleUIShowing = true;
-        StartCoroutine(dialogue.SkipDelay());
+        dialogue._CollectibleUIShowing = true;
+        dialogue.SkipDelay();
+        Time.timeScale = 0.0f;
     }
 
     private void SkipCollectible()
     {
-        if (dialogue._skipCollectible == true && _CollectibleUIShowing == true && _hasBeenCollected == true)
+        if (dialogue._skipCollectible == true && dialogue._CollectibleUIShowing == true && _hasBeenCollected == true)
         {
             _collectibleUI.SetActive(false);
             _playerCharacterMovement.SetActive(true);
-            _CollectibleUIShowing = false;
+            dialogue._CollectibleUIShowing = false;
             _hasBeenCollected = false;
             dialogue._skipCollectible = false;
+            dialogue._canSkipCollectible = false;
+            Time.timeScale = 1.0f;
         }
     }
 }
