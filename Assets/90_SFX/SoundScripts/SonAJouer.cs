@@ -3,7 +3,7 @@ using UnityEngine.Rendering;
 using UnityEngine.Events;
 public class SonAJouer : MonoBehaviour
 {
-    [SerializeField] private UnityEvent PlaySoundEvent;
+    //[SerializeField] private UnityEvent PlaySoundEvent;
     public void PlayMobFoot()
     {
         //PlaySoundEvent.Invoke();

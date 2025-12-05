@@ -22,6 +22,9 @@ public enum SoundType
     VampireDeath,
     TP,
     BatVFX,
+    CataWater,
+    StepsVillageois,
+
 }
 
 [RequireComponent(typeof(AudioSource)), ExecuteInEditMode]

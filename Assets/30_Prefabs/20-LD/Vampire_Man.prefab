@@ -126,8 +126,8 @@ GameObject:
   - component: {fileID: 6003190069189573690}
   - component: {fileID: 388191357800866749}
   - component: {fileID: 2095497109500190640}
-  - component: {fileID: 6624041068979406730}
   - component: {fileID: 1634183648588915812}
+  - component: {fileID: 4404524989819273514}
   m_Layer: 0
   m_Name: Visual
   m_TagString: Dash
@@ -296,21 +296,6 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 5.82232, y: 10.386124}
   m_EdgeRadius: 0
---- !u!114 &6624041068979406730
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4802843982968747686}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2e3ad0a76e0ec2149b781c458747ef3d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  PlaySoundEvent:
-    m_PersistentCalls:
-      m_Calls: []
 --- !u!82 &1634183648588915812
 AudioSource:
   m_ObjectHideFlags: 0
@@ -408,6 +393,18 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &4404524989819273514
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4802843982968747686}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 17da0e732bc1be14abaed59cc5639a57, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &6174635550038552426
 GameObject:
   m_ObjectHideFlags: 0

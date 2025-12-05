@@ -6,7 +6,7 @@ public class PlayFootsteps : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     public void PlaySound()
     {
-        RaycastHit2D hit = Physics2D.Raycast(transform.position, new Vector2(0,-1), 3f, LayerMask.GetMask("PremierPlan", "SecondPlan"));
+        RaycastHit2D hit = Physics2D.Raycast(transform.position, new Vector2(0,-1), 2.5f, LayerMask.GetMask("PremierPlan", "SecondPlan"));
         string groundType = hit.collider.gameObject.tag;
 
         if (groundType == null)
@@ -25,16 +25,21 @@ public class PlayFootsteps : MonoBehaviour
         }
         else if (groundType == "Catacombes")
         {
-            SoundManager.PlaySound(SoundType.CataFootsteps, 0.4f);
+            SoundManager.PlaySound(SoundType.CataFootsteps, 1f);
             SoundManager.PlaySound(SoundType.JacketSound, 1f);
         }
+        else if (groundType == "CataWater")
+        {
+            SoundManager.PlaySound(SoundType.CataWater, 1f);
+            SoundManager.PlaySound(SoundType.JacketSound, 1f);
+        }   
     }
 
    
 
     private void Update()
     {
-        Debug.DrawRay(transform.position, new Vector2(0, -1) * 3f, Color.red);
+        Debug.DrawRay(transform.position, new Vector2(0, -1) * 2.5f, Color.red);
     }
 
     
