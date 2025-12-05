@@ -1,56 +1,85 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-[ExecuteAlways]
 public class OneWay : MonoBehaviour
 {
-    [Tooltip("Arc de surface (en degrés) que la plateforme considère comme 'au-dessus'")]
-    [SerializeField] private float surfaceArc = 180f;
+    [Tooltip("Collider2D du cube à désactiver pour laisser passer (le cube au-dessus).")]
+    public Collider2D targetCollider;
 
-    [Tooltip("Active le comportement one-way (collision seulement depuis le dessus)")]
-    [SerializeField] private bool useOneWay = true;
+    [Tooltip("Tag du joueur (ou de l'entité autorisée à traverser).")]
+    public string playerTag = "Player";
 
-    private void Awake()
+    [Tooltip("Si vrai, on n'autorise le passage que si l'entrée se fait depuis le dessous.")]
+    public bool requireFromBelow = true;
+
+    [Tooltip("Délai (s) avant de réactiver le collider après la sortie.")]
+    public float reEnableDelay = 0.15f;
+
+    // Si tu préfères désactiver l'objet entier, active et assigne cet option au lieu de targetCollider.
+    public bool disableGameObjectInstead = false;
+
+    Coroutine reenableCoroutine;
+
+    void Reset()
     {
-        Setup();
+        // Tentative de découverte automatique si non assigné
+        if (targetCollider == null)
+        {
+            var parent = transform.parent;
+            if (parent != null)
+            {
+                foreach (var c in parent.GetComponentsInChildren<Collider2D>())
+                {
+                    if (c != GetComponent<Collider2D>())
+                    {
+                        targetCollider = c;
+                        break;
+                    }
+                }
+            }
+        }
     }
 
-#if UNITY_EDITOR
-    private void OnValidate()
+    void OnTriggerEnter2D(Collider2D other)
     {
-        Setup();
+        if (!other.CompareTag(playerTag)) return;
+
+        if (requireFromBelow)
+        {
+            // Autorise passage uniquement si le centre du joueur est en dessous du centre du trigger
+            if (!(other.transform.position.y < transform.position.y)) return;
+        }
+
+        SetTargetEnabled(false);
+        if (reenableCoroutine != null) StopCoroutine(reenableCoroutine);
     }
-#endif
 
-    private void Setup()
+    void OnTriggerExit2D(Collider2D other)
     {
-        // Récupère ou ajoute un collider 2D
-        Collider2D col = GetComponent<Collider2D>();
-        if (col == null)
+        if (!other.CompareTag(playerTag)) return;
+
+        if (reenableCoroutine != null) StopCoroutine(reenableCoroutine);
+        reenableCoroutine = StartCoroutine(ReEnableAfterDelay(reEnableDelay));
+    }
+
+    IEnumerator ReEnableAfterDelay(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        SetTargetEnabled(true);
+        reenableCoroutine = null;
+    }
+
+    void SetTargetEnabled(bool enabled)
+    {
+        if (targetCollider == null)
         {
-            // Si aucune collision, on ajoute un BoxCollider2D
-            col = gameObject.AddComponent<BoxCollider2D>();
+            Debug.LogWarning($"OneWay: targetCollider non assigné sur {name}");
+            return;
         }
 
-        if (col is BoxCollider2D box)
-        {
-            box.usedByEffector = true;
-        }
-        else if (col is CapsuleCollider2D cap)
-        {
-            cap.usedByEffector = true;
-        }
-
-        // Récupère ou ajoute PlatformEffector2D
-        PlatformEffector2D eff = GetComponent<PlatformEffector2D>();
-        if (eff == null)
-            eff = gameObject.AddComponent<PlatformEffector2D>();
-
-        eff.surfaceArc = surfaceArc;
-        eff.useOneWay = useOneWay;
-        eff.useSideFriction = false;
-        eff.useSideBounce = false;
-        eff.useOneWayGrouping = true;
+        if (disableGameObjectInstead)
+            targetCollider.gameObject.SetActive(enabled);
+        else
+            targetCollider.enabled = enabled;
     }
 }

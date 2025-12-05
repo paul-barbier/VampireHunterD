@@ -9,5 +9,6 @@ public class TransitionTour : MonoBehaviour
     {
         Destroy(_plafond);
         Destroy(_murQuiBloque);
+        Object.FindFirstObjectByType<CaveDarkness3D>().RestoreLight();
     }
 }

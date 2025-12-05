@@ -247,6 +247,7 @@ public class PlayerCharacter : MonoBehaviour
     #region Update
     private void FixedUpdate()
     {
+
         //On reset la force � ajouter cette boucle de fixed update
         _forceToAdd = Vector2.zero;
         _prePhysicPosition = _rigidbody.position;
