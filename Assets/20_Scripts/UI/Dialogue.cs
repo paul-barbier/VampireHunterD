@@ -11,6 +11,8 @@ public class Dialogue : MonoBehaviour
 {
     private PlayerCharacter _playerMovementScript;
     private Collectable _collectible;
+    public bool _CollectibleUIShowing = false;
+
 
     [SerializeField] private GameObject _playerCharacterMovement;
 
@@ -27,7 +29,7 @@ public class Dialogue : MonoBehaviour
 
     public bool _dialogueActivated;
     public bool _skipCollectible = false;
-    private bool _canSkipCollectible = false;
+    public bool _canSkipCollectible = false;
     private int _step;
 
     [SerializeField] private bool _Cinematic;
@@ -101,7 +103,7 @@ public class Dialogue : MonoBehaviour
             Debug.Log("CinematiqueInput");
             return;
         }
-        if (_canSkipCollectible == true && _collectible._CollectibleUIShowing == true)
+        if (_canSkipCollectible == true && _CollectibleUIShowing == true)
         {
             Debug.Log("SkipCollectible");
             _skipCollectible = true;
@@ -114,10 +116,32 @@ public class Dialogue : MonoBehaviour
         _playerCharacterMovement.SetActive(false);
     }
 
-    public IEnumerator SkipDelay()
+    private void Update()
     {
-        Debug.Log("Attendre 2 secondes");
-        yield return new WaitForSeconds(_collectible._skipDelay);
-        _canSkipCollectible = true;
+        SkipDelaywaiting();
+    }
+
+    bool isSkipDelaywaiting = false;
+    float timer = 0f;
+
+    public void SkipDelay()
+    {
+        Debug.Log("Attendre " + _collectible._skipDelay + " secondes");
+        isSkipDelaywaiting = true;
+    }
+
+    private void SkipDelaywaiting()
+    {
+        if (!isSkipDelaywaiting)
+            return;
+
+        timer += Time.deltaTime;
+        if (timer > _collectible._skipDelay) 
+        {
+            _canSkipCollectible = true;
+            timer = 0f;
+            isSkipDelaywaiting = false;
+
+        }
     }
 }
