@@ -7,7 +7,10 @@ public class Health : MonoBehaviour
 {
     [SerializeField] private int _maxHealth;
     [SerializeField] private int _currentHealth;
-    PlayerCharacter _character;
+    [SerializeField] private PlayerCharacter _character;
+    public bool _isInvincible;
+    private bool _isDying;
+    public CheckPoints checkpoint;
 
     //Visuel
     [SerializeField] private Animator HpAnime;
@@ -40,49 +43,41 @@ public class Health : MonoBehaviour
 
     public void TakeDamage(int damages)
     {
+        if (_isInvincible)
+            return;
         _currentHealth -= damages;
-        if (_currentHealth <= 0)
-            _character.Die();
         UpdateBar();
+
+        if (_currentHealth <= 0)
+            Die();
     }
 
     public void UpdateBar()
     {
         float ratio = (float)_currentHealth / _maxHealth;
 
+        StartCoroutine(Hurt());
+        SoundManager.PlaySound(SoundType.D_Dmg, 5f);
+
         int state = 0;
         if (ratio > 0.75f)
         {
             state = 0;
-            SoundManager.PlaySound(SoundType.D_Dmg, 5f);
-            StartCoroutine(Hurt());
-
         }
         else if (ratio > 0.50f)
         {
             state = 1;
-            SoundManager.PlaySound(SoundType.D_Dmg, 5f);
-            StartCoroutine(Hurt());
         }
         else if (ratio > 0.25f)
         {
             state = 2;
-            SoundManager.PlaySound(SoundType.D_Dmg, 5f);
-            StartCoroutine(Hurt());
         }
         else
         {
             state = 3;
-            SoundManager.PlaySound(SoundType.D_Dmg, 5f);
-            StartCoroutine(Hurt());
         }
 
         HpAnime.SetInteger("HealthState", state);
-    }
-
-    public IEnumerator CdDmg()
-    {
-        yield return new WaitForSeconds(5.0f);
     }
 
     public void GetHeal(int heal)
@@ -108,7 +103,8 @@ public class Health : MonoBehaviour
     private IEnumerator Hurt()
     {
         _hurtEffect.SetActive(true);
-        yield return new WaitForSeconds(0.5f);
+        _isInvincible = true;
+        yield return new WaitForSeconds(1.5f);
         //_Material.SetFloat(_vignetteIntensity, VIGNETTE_BASE_INTENSITY);
         //_Material.SetFloat(_voronoiIntensity, VORONOI_BASE_INTENSITY);
 
@@ -121,7 +117,7 @@ public class Health : MonoBehaviour
 
 
         //    float vignetteIntensity = Mathf.Lerp(VIGNETTE_BASE_INTENSITY, 0f, elapsedTime / _hurtFadeOutTime);
-        //    float voronoiIntensity = Mathf.Lerp(VORONOI_BASE_INTENSITY, 0f,elapsedTime/_hurtFadeOutTime);
+        //    float voronoiIntensity = Mathf.Lerp(VORONOI_BASE_INTENSITY, 0f, elapsedTime / _hurtFadeOutTime);
 
         //    _Material.SetFloat(_vignetteIntensity, vignetteIntensity);
         //    _Material.SetFloat(_voronoiIntensity, voronoiIntensity);
@@ -129,6 +125,38 @@ public class Health : MonoBehaviour
         //    yield return null;
         //}
         Debug.Log("End Hurt");
-            _hurtEffect.SetActive(false);
+        _isInvincible = false;
+        _hurtEffect.SetActive(false);
+    }
+
+    public void Die()
+    {
+        _character._rigidbody.linearVelocity = Vector3.zero;
+        _character._movementDisabled = true;
+        StartCoroutine(Dying());
+    }
+
+    IEnumerator Dying()
+    {
+        _isDying = false;
+        _character._DAnimation.SetBool("IsDying", true);
+
+        yield return new WaitForSeconds(4.0f);
+        _isDying = true;
+        Respawn();
+    }
+
+    private void Respawn()
+    {
+        if (checkpoint)
+        {
+            transform.position = checkpoint.transform.position;
+            GetHeal(GetMaxHealth());
+            UpdateBar();
+            _character._isDashing = false;
+            _character._isJumping = false;
+            _character._movementDisabled = false;
+            _character._DAnimation.SetBool("IsDying", false);
+        }
     }
 }

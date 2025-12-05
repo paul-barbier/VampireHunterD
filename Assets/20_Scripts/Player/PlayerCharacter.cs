@@ -100,7 +100,6 @@ public class PlayerCharacter : MonoBehaviour
     #region Variables
 
     [Header("Ref Script")]
-    public CheckPoints checkpoint;
     [SerializeField] private Attack _attack;
     [SerializeField] private Health _health;
     [SerializeField] private CameraFollow cameraFollow;
@@ -129,7 +128,7 @@ public class PlayerCharacter : MonoBehaviour
 
     [Header("Jump")]
     private Vector2 _currentJumpForce = Vector2.zero;
-    [SerializeField] private bool _isJumping = false;
+    public bool _isJumping = false;
     private float _jumpTime = 0.0f;
     private float _startJumpTime = 0.0f;
     private bool _bufferJump = false;
@@ -625,9 +624,9 @@ public class PlayerCharacter : MonoBehaviour
         {
             _isDashing = true;
             _canDash = false;
+            cameraFollow._camera.Lookahead.IgnoreY = true;
 
             _chuteTime = 0.0f;
-            cameraFollow._camera.Lookahead.IgnoreY = true;
 
 
             if (_dashMovementInput.y == 1)
@@ -760,9 +759,12 @@ public class PlayerCharacter : MonoBehaviour
     {
         _enemyCollider = collision;
 
-        //Attack
+        //Attack ennemi
         if (collision.CompareTag("AttackZone") && !_hittingDash && !_attack.isAttacking)
         {
+            if (_health._isInvincible)
+                return;
+
             _health.TakeDamage(25);
             Knockback(collision);
             return;
@@ -776,6 +778,7 @@ public class PlayerCharacter : MonoBehaviour
             _canDash = true;
             PlayMobDeath.Invoke();
             KillingEnemy(collision);
+            return;
         }
         //Dash sur cadavre
         if (collision.CompareTag("Cadavre") && _isDashing && collision != dashHitbox)
@@ -785,6 +788,7 @@ public class PlayerCharacter : MonoBehaviour
             BounceOnEnemy();
             ChauveSourisD.gameObject.SetActive(true);
             _canDash = true;
+            return;
         }
     }
 
@@ -831,22 +835,11 @@ public class PlayerCharacter : MonoBehaviour
 
             yield return null;
         }
+
         _movementDisabled = false;
+
         _isKnockBacked = false;
         _DAnimation.SetBool("IsKnockbacked", false);
-    }
-
-    public void Die()
-    {
-        if (checkpoint)
-        {
-            transform.position = checkpoint.transform.position;
-            _rigidbody.linearVelocity = Vector3.zero;
-            _health.GetHeal(_health.GetMaxHealth());
-            _health.UpdateBar();
-            _isDashing = false;
-            _isJumping = false;
-        }
     }
 
     public void KillingEnemy(Collider2D collision)
