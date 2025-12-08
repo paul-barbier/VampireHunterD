@@ -15,4 +15,14 @@ public class SceneChanger : MonoBehaviour
             SceneManager.LoadScene(_wantedScene);
         }
     }
+
+    public void Awake()
+    {
+        GameObject[] gameObj = GameObject.FindGameObjectsWithTag("Music");
+        if (gameObj.Length > 1)
+        {
+            Destroy(this.gameObject);
+        }
+        DontDestroyOnLoad(this.gameObject);
+    }
 }
