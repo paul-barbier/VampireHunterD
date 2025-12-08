@@ -797,8 +797,16 @@ public class PlayerCharacter : MonoBehaviour
             BounceOnEnemy();
             ChauveSourisD.gameObject.SetActive(true);
             _canDash = true;
+            collision.enabled = false;
+            StartCoroutine(CadavreHitboxCD(collision));
             return;
         }
+    }
+
+    IEnumerator CadavreHitboxCD(Collider2D collision)
+    {
+        yield return new WaitForSeconds(1);
+        collision.enabled = true;
     }
 
     public void Knockback(Collider2D enemy)
