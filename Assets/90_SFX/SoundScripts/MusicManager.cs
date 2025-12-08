@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class MusicManager : MonoBehaviour
 {
@@ -7,10 +8,23 @@ public class MusicManager : MonoBehaviour
     [SerializeField] private AudioClip CataMusic;
     [SerializeField] private AudioClip HorlogeMusic;
     [SerializeField] private AudioClip BossMusic;
+    [SerializeField]private Slider volumeSlider;
 
     private AudioSource audioSource;
-
     public static MusicManager instance;
+
+    public float Volume
+    {
+        get => audioSource != null ? audioSource.volume : 1f;
+        set
+        {
+            if (audioSource != null)
+            {
+                audioSource.volume = value;
+                PlayerPrefs.SetFloat("MusicVolume", value);
+            }
+        }
+    }
 
     private void Awake()
     {
@@ -19,6 +33,8 @@ public class MusicManager : MonoBehaviour
             instance = this;
             DontDestroyOnLoad(gameObject);
             audioSource = gameObject.AddComponent<AudioSource>();
+            float savedVolume = PlayerPrefs.GetFloat("MusicVolume", 1f);
+            audioSource.volume = savedVolume;
         }
         else
         {
