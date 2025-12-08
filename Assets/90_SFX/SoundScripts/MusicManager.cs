@@ -13,18 +13,18 @@ public class MusicManager : MonoBehaviour
     private AudioSource audioSource;
     public static MusicManager instance;
 
-    public float Volume
-    {
-        get => audioSource != null ? audioSource.volume : 1f;
-        set
-        {
-            if (audioSource != null)
-            {
-                audioSource.volume = value;
-                PlayerPrefs.SetFloat("MusicVolume", value);
-            }
-        }
-    }
+    //public float Volume
+    //{
+    //    get => audioSource != null ? audioSource.volume : 1f;
+    //    set
+    //    {
+    //        if (audioSource != null)
+    //        {
+    //            audioSource.volume = value;
+    //            PlayerPrefs.SetFloat("MusicVolume", value);
+    //        }
+    //    }
+    //}
 
     private void Awake()
     {
@@ -33,8 +33,8 @@ public class MusicManager : MonoBehaviour
             instance = this;
             DontDestroyOnLoad(gameObject);
             audioSource = gameObject.AddComponent<AudioSource>();
-            float savedVolume = PlayerPrefs.GetFloat("MusicVolume", 1f);
-            audioSource.volume = savedVolume;
+            //float savedVolume = PlayerPrefs.GetFloat("MusicVolume", 1f);
+            //audioSource.volume = savedVolume;
         }
         else
         {
