@@ -41,6 +41,12 @@ public class Health : MonoBehaviour
         _hurtEffect.SetActive(false);
     }
 
+    private void Update()
+    {
+        if (_isDying)
+            _character.DisableAllMovement();
+    }
+
     public void TakeDamage(int damages)
     {
         if (_isInvincible)
@@ -105,10 +111,10 @@ public class Health : MonoBehaviour
         _hurtEffect.SetActive(true);
         _isInvincible = true;
         yield return new WaitForSeconds(1.5f);
-        //_Material.SetFloat(_vignetteIntensity, VIGNETTE_BASE_INTENSITY);
-        //_Material.SetFloat(_voronoiIntensity, VORONOI_BASE_INTENSITY);
+        _Material.SetFloat(_vignetteIntensity, VIGNETTE_BASE_INTENSITY);
+        _Material.SetFloat(_voronoiIntensity, VORONOI_BASE_INTENSITY);
 
-        //yield return new WaitForSeconds(_hurtDisplayTime);
+        yield return new WaitForSeconds(_hurtDisplayTime);
 
         //float elapsedTime = 0.0f;
         //while (elapsedTime < _hurtFadeOutTime)
@@ -131,22 +137,15 @@ public class Health : MonoBehaviour
 
     public void Die()
     {
-        _character._movementDisabled = true;
-        _character._currentDashForce = Vector2.zero;
-        _character._currentHorizontalVelocity = Vector2.zero;
-        _character._rigidbody.linearVelocity = Vector2.zero;
-        _character._forceToAdd = Vector2.zero;
-
+        _isDying = true;
         StartCoroutine(Dying());
     }
 
     IEnumerator Dying()
     {
-        _isDying = false;
-
         _character._DAnimation.SetBool("IsDying", true);
         yield return new WaitForSeconds(4.0f);
-        _isDying = true;
+        _isDying = false;
         Respawn();
     }
 

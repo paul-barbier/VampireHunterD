@@ -9,7 +9,6 @@ public class Attack : MonoBehaviour
     [SerializeField] private float highAngle;
     public bool isAttacking = false;
     public bool canAttack = true;
-    public bool rotateAttack = false;
 
     [SerializeField] private Animator _DAnimation;
     private PlayerCharacter _playerCharacter;
@@ -20,7 +19,7 @@ public class Attack : MonoBehaviour
         _playerCharacter = GetComponent<PlayerCharacter>();
         attackPivot.gameObject.SetActive(false);
         canAttack = true;
-        rotateAttack = false;
+        _playerCharacter._rotatePlayer = true;
     }
 
     void Update()
@@ -68,9 +67,9 @@ public class Attack : MonoBehaviour
     IEnumerator AttackTime()
     {
         _playerCharacter._movementDisabled = true;
-        rotateAttack = true;
+        _playerCharacter._rotatePlayer = false;
         yield return new WaitForSeconds(0.5f);
-        rotateAttack = false;
+        _playerCharacter._rotatePlayer = true;
         _playerCharacter._movementDisabled = false;
     }
 
