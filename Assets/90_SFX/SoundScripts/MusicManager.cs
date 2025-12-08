@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using System.Collections;
 
 public class MusicManager : MonoBehaviour
 {
@@ -8,23 +9,13 @@ public class MusicManager : MonoBehaviour
     [SerializeField] private AudioClip CataMusic;
     [SerializeField] private AudioClip HorlogeMusic;
     [SerializeField] private AudioClip BossMusic;
-    [SerializeField]private Slider volumeSlider;
+    [SerializeField] private Slider volumeSlider;
 
     private AudioSource audioSource;
     public static MusicManager instance;
 
-    //public float Volume
-    //{
-    //    get => audioSource != null ? audioSource.volume : 1f;
-    //    set
-    //    {
-    //        if (audioSource != null)
-    //        {
-    //            audioSource.volume = value;
-    //            PlayerPrefs.SetFloat("MusicVolume", value);
-    //        }
-    //    }
-    //}
+    private Coroutine fadeCoroutine;
+    private float fadeDuration = 1.5f; // Durée du fade en secondes
 
     private void Awake()
     {
@@ -33,8 +24,6 @@ public class MusicManager : MonoBehaviour
             instance = this;
             DontDestroyOnLoad(gameObject);
             audioSource = gameObject.AddComponent<AudioSource>();
-            //float savedVolume = PlayerPrefs.GetFloat("MusicVolume", 1f);
-            //audioSource.volume = savedVolume;
         }
         else
         {
@@ -61,33 +50,48 @@ public class MusicManager : MonoBehaviour
 
     private void PlayMusicForScene(string sceneName)
     {
-        audioSource.Stop();
+        AudioClip clipToPlay = null;
 
         if (sceneName == "Niv_HUB")
-        {
-            audioSource.clip = HubMusic;
-        }
+            clipToPlay = HubMusic;
         else if (sceneName == "Niv_3_Crypte 1")
-        {
-            audioSource.clip = CataMusic;
-        }
+            clipToPlay = CataMusic;
         else if (sceneName == "Salle3")
-        {
-            audioSource.clip = HorlogeMusic;
-        }
+            clipToPlay = HorlogeMusic;
         else if (sceneName == "Salle4")
-        {
-            audioSource.clip = BossMusic;
-        }
-        else
-        {
-            audioSource.clip = null;
-        }
+            clipToPlay = BossMusic;
+
         audioSource.loop = true;
 
-        if (audioSource.clip != null)
+        if (fadeCoroutine != null)
+            StopCoroutine(fadeCoroutine);
+
+        fadeCoroutine = StartCoroutine(FadeMusicCoroutine(clipToPlay, fadeDuration));
+    }
+
+    private IEnumerator FadeMusicCoroutine(AudioClip newClip, float duration)
+    {
+        float startVolume = audioSource.volume;
+        for (float t = 0; t < duration; t += Time.unscaledDeltaTime)
+        {
+            audioSource.volume = Mathf.Lerp(startVolume, 0f, t / duration);
+            yield return null;
+        }
+        audioSource.volume = 0f;
+        audioSource.Stop();
+
+        audioSource.clip = newClip;
+
+        if (newClip != null)
         {
             audioSource.Play();
+
+            for (float t = 0; t < duration; t += Time.unscaledDeltaTime)
+            {
+                audioSource.volume = Mathf.Lerp(0f, startVolume, t / duration);
+                yield return null;
+            }
+            audioSource.volume = startVolume;
         }
     }
 }
