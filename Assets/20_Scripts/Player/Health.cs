@@ -144,7 +144,6 @@ public class Health : MonoBehaviour
     IEnumerator Dying()
     {
         _character._DAnimation.SetBool("IsDying", true);
-        _character._DAnimation.SetBool("IsFalling", false);
         yield return new WaitForSeconds(4.0f);
         _isDying = false;
         Respawn();
@@ -161,9 +160,6 @@ public class Health : MonoBehaviour
             _character._isJumping = false;
             _character._movementDisabled = false;
             _character._DAnimation.SetBool("IsDying", false);
-            _character._DAnimation.SetBool("IsFalling", false);
-            _character._DAnimation.SetBool("IsJumping", false);
-            _character._DAnimation.SetBool("IsAttacking", false);
         }
     }
 }
