@@ -782,8 +782,8 @@ public class PlayerCharacter : MonoBehaviour
         //Dash sur mob
         if (collision.CompareTag("Dash") && _isDashing && collision != dashHitbox)
         {
-            StopDashOnEnemy(collision);
-            BounceOnEnemy();
+            //StopDashOnEnemy(collision);
+            //BounceOnEnemy();
             ChauveSourisD.gameObject.SetActive(true);
             _canDash = true;
             PlayMobDeath.Invoke();
@@ -793,12 +793,20 @@ public class PlayerCharacter : MonoBehaviour
         //Dash sur cadavre
         if (collision.CompareTag("Cadavre") && _isDashing && collision != dashHitbox)
         {
-            StopDashOnEnemy(collision);
-            BounceOnEnemy();
+            //StopDashOnEnemy(collision);
+            //BounceOnEnemy();
             ChauveSourisD.gameObject.SetActive(true);
             _canDash = true;
+            collision.enabled = false;
+            StartCoroutine(CadavreHitboxCD(collision));
             return;
         }
+    }
+
+    IEnumerator CadavreHitboxCD(Collider2D collision)
+    {
+        yield return new WaitForSeconds(1);
+        collision.enabled = true;
     }
 
     public void Knockback(Collider2D enemy)
