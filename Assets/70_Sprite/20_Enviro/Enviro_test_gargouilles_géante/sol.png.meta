@@ -1,16 +1,22 @@
 fileFormatVersion: 2
-guid: 141eb1bec6609cc4c973ac8b77d94309
+guid: ae44a8148ddd7fc40ba742a4ab439a71
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -8258844853618045498
-    second: parquet__normal_0
+      213: 70364811865627504
+    second: sol_0
+  - first:
+      213: -2872465841063830333
+    second: sol_1
+  - first:
+      213: -7035237701151069759
+    second: sol_2
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
     mipMapMode: 0
-    enableMipMap: 1
-    sRGBTexture: 0
+    enableMipMap: 0
+    sRGBTexture: 1
     linearTexture: 0
     fadeOut: 0
     borderMipMap: 0
@@ -55,9 +61,9 @@ TextureImporter:
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
-  alphaIsTransparency: 0
+  alphaIsTransparency: 1
   spriteTessellationDetail: -1
-  textureType: 1
+  textureType: 8
   textureShape: 1
   singleChannelComponent: 0
   flipbookRows: 1
@@ -100,13 +106,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: parquet__normal_0
+      name: sol_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 2048
-        height: 2048
+        width: 3840
+        height: 366
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -115,8 +121,52 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 6cd8805ec50b26d80800000000000000
-      internalID: -8258844853618045498
+      spriteID: 07b10ff6c6cf9f000800000000000000
+      internalID: 70364811865627504
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sol_1
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 288
+        width: 10
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3cc52f95983f228d0800000000000000
+      internalID: -2872465841063830333
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sol_2
+      rect:
+        serializedVersion: 2
+        x: 828
+        y: 285
+        width: 17
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1c96478c590dd5e90800000000000000
+      internalID: -7035237701151069759
       vertices: []
       indices: 
       edges: []
@@ -135,7 +185,9 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      parquet__normal_0: -8258844853618045498
+      sol_0: 70364811865627504
+      sol_1: -2872465841063830333
+      sol_2: -7035237701151069759
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
