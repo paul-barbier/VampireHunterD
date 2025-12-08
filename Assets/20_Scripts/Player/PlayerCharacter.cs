@@ -145,12 +145,10 @@ public class PlayerCharacter : MonoBehaviour
     private float _startDashTime = 0.0f;
     private bool _bufferDash = false;
     [SerializeField] public bool _hittingDash = false;
-    private float _dashAnimTime;
 
     [Header("Bounce")]
     [SerializeField] private Vector2 enemyBounceForce;
     [SerializeField] private float BouncingTime;
-    [SerializeField] private Collider2D _cadavreCollider;
 
     [Header("Knockback")]
     [SerializeField] private Vector3 targetKnockback = Vector3.zero;
@@ -160,7 +158,7 @@ public class PlayerCharacter : MonoBehaviour
     //Sprite
     private Vector3 _currentMeshRotation = Vector3.zero;
     private float rotationSpeed = 8000f;
-    [SerializeField] private bool _lockedRotation = false;
+    [SerializeField] public bool _rotatePlayer = false;
 
     //Disable movement
     public bool _movementDisabled = false;
@@ -232,7 +230,7 @@ public class PlayerCharacter : MonoBehaviour
 
     private void RotateMesh()
     {
-        if (_attack.rotateAttack || _isDashing)
+        if (!_rotatePlayer || _isDashing)
             return;
 
         float targetRotation = _movementInput >= 0.01 ? 0f : _movementInput <= -0.01 ? 180f : _currentMeshRotation.y;
@@ -247,7 +245,6 @@ public class PlayerCharacter : MonoBehaviour
     #region Update
     private void FixedUpdate()
     {
-
         //On reset la force � ajouter cette boucle de fixed update
         _forceToAdd = Vector2.zero;
         _prePhysicPosition = _rigidbody.position;
@@ -358,7 +355,7 @@ public class PlayerCharacter : MonoBehaviour
 
     private void Movement()
     {
-        if (_movementDisabled || _isDashing)
+        if (_movementDisabled || _isDashing || _health._isDying)
             return;
 
         //Vector2 maxSpeed = new Vector2(_horizontalPhysic.MaxSpeed * _movementInput, 0.0f);
@@ -425,6 +422,18 @@ public class PlayerCharacter : MonoBehaviour
 
         return _horizontalPhysic.MaxSpeed * force;
     }
+    public void DisableAllMovement()
+    {
+        _movementDisabled = true;
+        _isDashing = false;
+        _isJumping = false;
+        _rotatePlayer = false;
+        _currentDashForce = Vector2.zero;
+        _currentJumpForce = Vector2.zero;
+        _rigidbody.linearVelocity = Vector2.zero;
+        _forceToAdd = Vector2.zero;
+    }
+
 
     #endregion HorizontalMovement
 
@@ -505,7 +514,7 @@ public class PlayerCharacter : MonoBehaviour
 
     private void JumpForce()
     {
-        if (!_isJumping)
+        if (!_isJumping || _health._isDying)
             return;
         _capsuleBox.offset = new Vector2(0, 1.5f);
 
@@ -621,7 +630,7 @@ public class PlayerCharacter : MonoBehaviour
             return;
         }
 
-        if (_canDash)
+        if (_canDash || _health._isDying)
         {
             _isDashing = true;
             _canDash = false;
@@ -636,7 +645,7 @@ public class PlayerCharacter : MonoBehaviour
             }
             else if (_dashMovementInput.y != 0 && _dashMovementInput.x != 0)
             {
-                _lockedRotation = true;
+                _rotatePlayer = false;
 
                 float angle = Mathf.Atan2(_dashMovementInput.y, _dashMovementInput.x) * Mathf.Rad2Deg;
 
@@ -687,7 +696,7 @@ public class PlayerCharacter : MonoBehaviour
             _DAnimation.SetBool("IsDashingUp", false);
             _DAnimation.SetBool("IsDashingDown", false);
 
-            _lockedRotation = false;
+            _rotatePlayer = true;
 
             if (IsGrounded && !_canDash)
             {
@@ -784,7 +793,6 @@ public class PlayerCharacter : MonoBehaviour
         //Dash sur cadavre
         if (collision.CompareTag("Cadavre") && _isDashing && collision != dashHitbox)
         {
-            _cadavreCollider = collision;
             StopDashOnEnemy(collision);
             BounceOnEnemy();
             ChauveSourisD.gameObject.SetActive(true);
@@ -851,6 +859,5 @@ public class PlayerCharacter : MonoBehaviour
         if (rm != null)
             rm.RespawnFonction();
     }
-
     #endregion Damage/Die
 }
