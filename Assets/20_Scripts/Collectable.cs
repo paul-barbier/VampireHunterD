@@ -47,13 +47,15 @@ public class Collectable : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        character = collision.GetComponent<PlayerCharacter>();
+        if (collision.CompareTag("Player"))
+        {
+            Debug.Log("Collectible pris");
+            _hasBeenCollected = true;
+            _spriteRenderer.enabled = false;
+            _collider.enabled = false;
+            _waitingGround = true;
+        }
 
-        Debug.Log("Collectible pris");
-        _hasBeenCollected = true;
-        _spriteRenderer.enabled = false;
-        _collider.enabled = false;
-        _waitingGround = true;
     }
 
     private void WaitForGrounded()
