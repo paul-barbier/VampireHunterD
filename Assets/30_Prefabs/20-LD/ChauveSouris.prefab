@@ -209,7 +209,7 @@ MonoBehaviour:
     _targetPoints: 0
     _speed: 2
     _waitingTime: 1
-  _isMoving: 0
+  _isMoving: 1
   _MobAnimation: {fileID: 4092265232822091935}
 --- !u!61 &7361657565176877220
 BoxCollider2D:
@@ -288,7 +288,7 @@ AudioSource:
   m_GameObject: {fileID: 7986974201297128261}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: 24300002, guid: 952217d2521946e4e8b36d143506bd8d, type: 2}
   m_audioClip: {fileID: 0}
   m_Resource: {fileID: 0}
   m_PlayOnAwake: 1
@@ -498,5 +498,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1c8e99e8bea157242b308e1a1a95e0fc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _objectToRespawn: {fileID: 0}
-  _respawnDelay: 1
+  _objectToRespawn: {fileID: 1585994386150156102}
+  _respawnDelay: 2
+  _isRespawn: 0

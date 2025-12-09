@@ -110,8 +110,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1c8e99e8bea157242b308e1a1a95e0fc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _objectToRespawn: {fileID: 0}
+  _objectToRespawn: {fileID: 939764794048795039}
   _respawnDelay: 1
+  _isRespawn: 0
 --- !u!1 &5495699772358951581
 GameObject:
   m_ObjectHideFlags: 0
@@ -332,7 +333,7 @@ MonoBehaviour:
     _targetPoints: 0
     _speed: 2
     _waitingTime: 1
-  _isMoving: 0
+  _isMoving: 1
   _MobAnimation: {fileID: 3885686051633645237}
 --- !u!95 &3885686051633645237
 Animator:
