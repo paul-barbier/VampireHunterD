@@ -5,17 +5,22 @@ using System.Collections;
 
 public class MusicManager : MonoBehaviour
 {
+    [Header("Music Clips")]
     [SerializeField] private AudioClip HubMusic;
     [SerializeField] private AudioClip CataMusic;
     [SerializeField] private AudioClip HorlogeMusic;
     [SerializeField] private AudioClip BossMusic;
+
+    [Header("Volume")]
+    [SerializeField] private float MusiqueVolume = 0.5f;
+
     [SerializeField] private Slider volumeSlider;
 
     private AudioSource audioSource;
     public static MusicManager instance;
 
     private Coroutine fadeCoroutine;
-    private float fadeDuration = 1.5f; // Durée du fade en secondes
+    [SerializeField] private float fadeDuration = 1.5f; // Durée du fade en secondes
 
     private void Awake()
     {
@@ -36,11 +41,22 @@ public class MusicManager : MonoBehaviour
     private void OnDestroy()
     {
         SceneManager.sceneLoaded -= OnSceneLoaded;
+
+    }
+    private void SetVolume(float value)
+    {
+        audioSource.volume = value;
     }
 
     private void Start()
     {
         PlayMusicForScene(SceneManager.GetActiveScene().name);
+        if (volumeSlider != null)
+        {
+            volumeSlider.value = audioSource.volume;
+            volumeSlider.onValueChanged.AddListener(SetVolume);
+        }
+        audioSource.volume = MusiqueVolume; // Valeur par défaut du volume
     }
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
@@ -71,7 +87,7 @@ public class MusicManager : MonoBehaviour
 
     private IEnumerator FadeMusicCoroutine(AudioClip newClip, float duration)
     {
-        float startVolume = audioSource.volume;
+        float startVolume = MusiqueVolume;
         for (float t = 0; t < duration; t += Time.unscaledDeltaTime)
         {
             audioSource.volume = Mathf.Lerp(startVolume, 0f, t / duration);
