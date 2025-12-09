@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class RespawnManager : MonoBehaviour
 {
-    [SerializeField] private GameObject _objectToRespawn;
+    [SerializeField] private SpriteRenderer _objectToRespawn;
     [SerializeField] private float _respawnDelay;
 
     public bool _isRespawn = false;
@@ -14,7 +14,7 @@ public class RespawnManager : MonoBehaviour
         // Si non assigné, cherche automatiquement l’objet "Visual" dans le parent
         if (_objectToRespawn == null)
         {
-            _objectToRespawn = transform.parent.Find("Visual").gameObject;
+            _objectToRespawn = GetComponent<SpriteRenderer>();
         }
     }
 
@@ -26,7 +26,7 @@ public class RespawnManager : MonoBehaviour
 
         if ( _respawnTime > _respawnDelay )
         {
-            _objectToRespawn.SetActive(true);
+            _objectToRespawn.enabled = true;
             _respawnTime = 0f; 
             _isRespawn = false;
         }
@@ -35,7 +35,7 @@ public class RespawnManager : MonoBehaviour
     public void RespawnFonction()
     {
         Debug.Log($"RespawnFonction appelée sur : {gameObject.name}");
-        if (!_objectToRespawn.activeSelf)
+        if (_objectToRespawn.enabled == false)
         {
             Debug.Log("Respawn called on : " + gameObject.name);
             _isRespawn = true;

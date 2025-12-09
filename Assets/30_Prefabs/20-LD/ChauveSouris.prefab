@@ -209,7 +209,7 @@ MonoBehaviour:
     _targetPoints: 0
     _speed: 2
     _waitingTime: 1
-  _isMoving: 0
+  _isMoving: 1
   _MobAnimation: {fileID: 4092265232822091935}
 --- !u!61 &7361657565176877220
 BoxCollider2D:
@@ -498,5 +498,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1c8e99e8bea157242b308e1a1a95e0fc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _objectToRespawn: {fileID: 0}
-  _respawnDelay: 1
+  _objectToRespawn: {fileID: 1585994386150156102}
+  _respawnDelay: 2
+  _isRespawn: 0
