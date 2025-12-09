@@ -1,0 +1,994 @@
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using Unity.VisualScripting;
+using UnityEngine;
+using UnityEngine.InputSystem;
+using static PlayerTest;
+using static UnityEngine.EventSystems.EventTrigger;
+using UnityEngine.Events;
+
+[RequireComponent(typeof(Rigidbody2D))]
+public class PlayerTest : MonoBehaviour
+{
+
+    #region DataStructure
+
+    [SerializeField] RespawnManager RespawnManager;
+
+    public enum PhysicState
+    {
+        Ground,
+        Air
+    }
+
+    [Serializable]
+    private struct MovementValues
+    {
+        public float MaxSpeed;
+        public float Acceleration;
+        public float MaxAcceleration;
+        [Tooltip("Range [-1, 1]")] public AnimationCurve AccelerationRemapFromVelocityDot;
+    }
+
+    [Serializable]
+    private struct GravityValues
+    {
+        public float MaxForce;
+        public float Acceleration;
+        public float MaxAcceleration;
+        public float CoyoteTime;
+        [Tooltip("Range [0, 1]")] public AnimationCurve GravityRemapFromCoyoteTime;
+    }
+
+    [Serializable]
+    private struct JumpValues
+    {
+        public float ImpulseForce;
+        public float Deceleration;
+        public float MaxDeceleration;
+        [Tooltip("Range [0, 1]")] public AnimationCurve DecelerationFromAirTime;
+        public float Height;
+        public float Length;
+        public float BufferTime;
+        public float Bounciness;
+        [HideInInspector] public float InitValue;
+        [HideInInspector] public float GravityValue;
+    }
+
+    [Serializable]
+    private struct DashValues
+    {
+        public float DashImpulseForce;
+        public float DashDuration;
+        public float DashBufferTime;
+    }
+
+    [Serializable]
+    private struct KnockBackValues
+    {
+        public Vector3 _knockbackDirection;
+        public float _knockbackForce;
+        public float _knockbackDeceleration;
+        [Tooltip("Range [0, 1]")] public AnimationCurve DecelerationFromKnockBack;
+        public float durationKnockback;
+    }
+
+    #endregion DataStructure
+
+    #region EditorVariables
+
+    [Header("Gameplay")]
+    [SerializeField] private MovementValues _groundPhysic = new MovementValues();
+    [SerializeField] private MovementValues _airPhysic = new MovementValues();
+    [SerializeField] private GravityValues _gravityParameters = new GravityValues();
+    [SerializeField] private JumpValues _jumpParameters = new JumpValues();
+    [SerializeField] private DashValues _dashParameters = new DashValues();
+    [SerializeField] private KnockBackValues _knockbackValues = new KnockBackValues();
+    [SerializeField] private ContactFilter2D _groundContactFilter = new ContactFilter2D();
+    [SerializeField] private ContactFilter2D _ceilingContactFilter = new ContactFilter2D();
+
+    [Header("Setup")]
+    [SerializeField] private Transform _mesh = null;
+    [SerializeField] public GameObject ChauveSourisD;
+    public Rigidbody2D _rigidbody = null;
+    [SerializeField] public Animator _DAnimation;
+    [SerializeField] private UnityEvent PlaySound;
+    [SerializeField] private UnityEvent PlayMobDeath;
+
+    [Header("Dash Hit Stop")]
+    [Tooltip("If true the game time will be slowed on dash-hit, otherwise the player will be stopped for the duration.")]
+    [SerializeField] private bool _useSlowMotionOnDashHit = false;
+    [Tooltip("Duration in seconds (real time) of the stop/slowdown when hitting an enemy with dash.")]
+    [SerializeField] private float _dashHitStopDuration = 0.5f;
+    [Tooltip("Time.timeScale value used when slowmotion is enabled (0..1).")]
+    [SerializeField] private float _slowMotionScale = 0.2f;
+
+    [Header("Dash Cursor (assign a small sprite GameObject)")]
+    [SerializeField] private GameObject _dashCursor = null;
+    [SerializeField] private float _cursorDistance = 1.5f;
+    [SerializeField] private float _cursorDeadzone = 0.2f;
+
+    #endregion EditorVariables
+
+    #region Variables
+
+    [Header("Ref Script")]
+    [SerializeField] private Attack _attack;
+    [SerializeField] private Health _health;
+    [SerializeField] private CameraFollow cameraFollow;
+
+    //Force
+    public Vector2 _forceToAdd = Vector2.zero;
+    private Vector2 _prePhysicPosition = Vector2.zero;
+
+    //Horizontal movement
+    public Vector2 _currentHorizontalVelocity = Vector2.zero;
+    public float _movementInput = 0.0f;
+    private MovementValues _horizontalPhysic = new MovementValues();
+
+    //Gravity
+    private float _currentGravity = 0.0f;
+
+    //Ground
+    public bool IsGrounded = true;
+
+    //Air
+    private float _airTime = 0.0f;
+    private float _dashAirTime = 0.0f;
+    private bool _isInCoyoteTime = false;
+    private float _chuteTime = 0.0f;
+    [SerializeField] private bool _isFalling = false;
+
+    [Header("Jump")]
+    private Vector2 _currentJumpForce = Vector2.zero;
+    public bool _isJumping = false;
+    private float _jumpTime = 0.0f;
+    private float _startJumpTime = 0.0f;
+    private bool _bufferJump = false;
+    private bool _hasBounce = false;
+
+    //Event appelé quand on touche ou quitte le sol
+    public event Action<PhysicState> OnPhysicStateChanged;
+
+    [Header("Dash")]
+    public Vector2 _currentDashForce = Vector2.zero;
+    private Vector2 _dashMovementInput = Vector2.zero;
+    [SerializeField] public bool _canDash = true;
+    public bool _isDashing = false;
+    private float _startDashTime = 0.0f;
+    private bool _bufferDash = false;
+    [SerializeField] public bool _hittingDash = false;
+    private float _dashAnimTime;
+
+    [Header("Bounce")]
+    [SerializeField] private Vector2 enemyBounceForce;
+    [SerializeField] private float BouncingTime;
+    [SerializeField] private Collider2D _cadavreCollider;
+
+    [Header("Knockback")]
+    [SerializeField] private Vector3 targetKnockback = Vector3.zero;
+    private Collider2D _enemyCollider;
+    [SerializeField] private bool _isKnockBacked = false;
+
+    //Sprite
+    private Vector3 _currentMeshRotation = Vector3.zero;
+    private float rotationSpeed = 8000f;
+    [SerializeField] private bool _lockedRotation = false;
+
+    //Disable movement
+    public bool _movementDisabled = false;
+
+    //COLLIDER
+    //PLAYER
+    [SerializeField] private CapsuleCollider2D _capsuleBox;
+    private Vector2 _sizeCapsule;
+    private Vector2 _offsetCapsule;
+    //ATTACK
+    [SerializeField] public BoxCollider2D attackHitbox;
+    //DASH
+    [SerializeField] public BoxCollider2D dashHitbox;
+    private Vector2 _sizeDashHitbox;
+    private Vector2 _offsetDashHitbox;
+
+    // Time management
+    private float _originalFixedDeltaTime;
+    private bool _isHitStopped = false;
+
+    #endregion Variables
+
+    #region Initialization
+
+    private void Awake()
+    {
+        _attack = GetComponent<Attack>();
+        _rigidbody = GetComponent<Rigidbody2D>();
+        _capsuleBox = GetComponent<CapsuleCollider2D>();
+        _sizeCapsule = _capsuleBox.size;
+        _offsetCapsule = _capsuleBox.offset;
+
+        _horizontalPhysic = _groundPhysic;
+        CalculateJumpTime();
+
+        //On enregistre le changement de physic à l'event qui detecte le changement d'état du sol
+        OnPhysicStateChanged += ChangePhysic;
+        OnPhysicStateChanged += ResetGravity;
+        OnPhysicStateChanged += CancelJump;
+        OnPhysicStateChanged += TryJumpBuffer;
+        OnPhysicStateChanged += TryDashBuffer;
+
+        dashHitbox.gameObject.SetActive(false);
+        _isKnockBacked = false;
+
+        // Save original fixed delta time for slowmotion restore
+        _originalFixedDeltaTime = Time.fixedDeltaTime;
+
+        // Hide cursor initially
+        if (_dashCursor != null)
+            _dashCursor.SetActive(false);
+    }
+
+#if UNITY_EDITOR
+    private void OnValidate()
+    {
+        CalculateJumpTime();
+    }
+#endif
+
+    private void CalculateJumpTime()
+    {
+        _jumpTime = _jumpParameters.Height / _jumpParameters.ImpulseForce;
+
+        //_maxJumpParameters.InitValue = InitSpeed(_groundPhysic.MaxSpeed, _maxJumpParameters.Height, _maxJumpParameters.Length);
+        //_maxJumpParameters.GravityValue = GravityValue(_groundPhysic.MaxSpeed, _maxJumpParameters.Height, _maxJumpParameters.Length);
+
+        //_jumpParameters.InitValue = InitSpeed(_groundPhysic.MaxSpeed, _jumpParameters.Height, _jumpParameters.Length);
+        //_jumpParameters.GravityValue = GravityValue(_groundPhysic.MaxSpeed, _jumpParameters.Height, _maxJumpParameters.Length);
+    }
+
+    #endregion Initialization
+
+    #region Visual
+
+    private void Update()
+    {
+        UpdateDashCursor();
+        RotateMesh();
+    }
+
+    private void RotateMesh()
+    {
+        if (_attack.rotateAttack || _isDashing)
+            return;
+
+        float targetRotation = _movementInput >= 0.01 ? 0f : _movementInput <= -0.01 ? 180f : _currentMeshRotation.y;
+
+        _currentMeshRotation.y = Mathf.MoveTowards(_currentMeshRotation.y, targetRotation, rotationSpeed * Time.deltaTime);
+
+        _mesh.rotation = Quaternion.Euler(0, _currentMeshRotation.y, 0);
+    }
+
+    private void UpdateDashCursor()
+    {
+        if (_dashCursor == null)
+            return;
+
+        // Hide cursor if dash not available or currently dashing
+        if (!_canDash || _isDashing)
+        {
+            if (_dashCursor.activeSelf) _dashCursor.SetActive(false);
+            return;
+        }
+
+        Vector2 dir = _dashMovementInput;
+        if (dir.magnitude < _cursorDeadzone)
+        {
+            if (_dashCursor.activeSelf) _dashCursor.SetActive(false);
+            return;
+        }
+
+        // Show and position cursor
+        if (!_dashCursor.activeSelf) _dashCursor.SetActive(true);
+
+        Vector3 targetPos = transform.position + (Vector3)(dir.normalized * _cursorDistance);
+        _dashCursor.transform.position = targetPos;
+
+        // Rotate cursor sprite so it points to the dash direction.
+        // Adjust -90 if your sprite's up is different.
+        float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
+        _dashCursor.transform.rotation = Quaternion.Euler(0, 0, angle - 90f);
+    }
+
+    #endregion Visual
+
+    #region Update
+    private void FixedUpdate()
+    {
+
+        //On reset la force à ajouter cette boucle de fixed update
+        _forceToAdd = Vector2.zero;
+        _prePhysicPosition = _rigidbody.position;
+
+        //Fonction qui détecte si on touche le sol ou non
+        //Et appelle les events associés
+        GroundDetection();
+        ManageAirTime();
+        ManageCoyoteTime();
+
+        //On effectue tous les calculs physiques
+        Movement();
+
+        Gravity();
+        JumpForce();
+        Dash();
+
+
+        //On ajoute la force au rigidbody
+        _rigidbody.linearVelocity += _forceToAdd;
+    }
+
+    private void LateUpdate()
+    {
+        if (_prePhysicPosition == _rigidbody.position && _forceToAdd != Vector2.zero)
+        {
+            _rigidbody.linearVelocity = new Vector2(0.0f, _rigidbody.linearVelocity.y);
+            _currentHorizontalVelocity.x = 0.0f;
+        }
+    }
+    #endregion Update
+
+    #region PhysicState
+
+    private void GroundDetection()
+    {
+        //On utilise le filtre qui contient l'inclinaison du sol pour savoir si le rigidbody touche le sol ou non
+        ContactFilter2D filter = _groundContactFilter;
+        bool isTouchingGround = _rigidbody.IsTouching(filter);
+
+        //Si le rigidbody touche le sol mais on a en mémoire qu'il ne le touche pas, on est sur la frame où il touche le sol
+        if (isTouchingGround && !IsGrounded)
+        {
+            if (!_canDash)
+            {
+                _canDash = true;
+                ChauveSourisD.gameObject.SetActive(true);
+            }
+
+            IsGrounded = true;
+            _isFalling = false;
+
+            //On invoque l'event en passant true pour signifier que le joueur arrive au sol
+            OnPhysicStateChanged.Invoke(PhysicState.Ground);
+            cameraFollow.LockCamOnPlayer();
+            //cameraFollow.ReadjustingCam();
+        }
+        //Si le rigidbody ne touche pas le sol mais on a en mémoire qu'il le touche, on est sur la frame où il quitte le sol
+        else if (!isTouchingGround && IsGrounded)
+        {
+            IsGrounded = false;
+            if (!_isJumping || !_isDashing)
+                _isInCoyoteTime = true;
+            //On invoque l'event en passant false pour signifier que le joueur quitte au sol
+            OnPhysicStateChanged.Invoke(PhysicState.Air);
+
+            if (!_isDashing || !_isFalling)
+            {
+                cameraFollow.UnLockCamOnPlayer();
+            }
+        }
+    }
+
+    private void ManageAirTime()
+    {
+        if (!IsGrounded)
+        {
+            _airTime += Time.fixedDeltaTime;
+        }
+
+        if (_isDashing)
+            _dashAirTime += Time.fixedDeltaTime;
+    }
+
+    private void ManageCoyoteTime()
+    {
+        if (_airTime > _gravityParameters.CoyoteTime)
+            _isInCoyoteTime = false;
+    }
+
+    private void ChangePhysic(PhysicState groundState)
+    {
+        //On change la physique en fonction de si le joueur est au sol ou non
+        if (groundState == PhysicState.Ground)
+            _horizontalPhysic = _groundPhysic;
+        else if (groundState == PhysicState.Air)
+            _horizontalPhysic = _airPhysic;
+    }
+
+    #endregion PhysicState
+
+    #region HorizontalMovement
+
+    public void GetMovementInput(float input)
+    {
+        _movementInput = input;
+    }
+
+    private void Movement()
+    {
+        if (_movementDisabled || _isDashing)
+            return;
+
+        //Vector2 maxSpeed = new Vector2(_horizontalPhysic.MaxSpeed * _movementInput, 0.0f);
+        Vector2 maxSpeed = SnapToGround(_movementInput);
+        float velocityDot = Mathf.Clamp(Vector2.Dot(_rigidbody.linearVelocity, maxSpeed), -1.0f, 1.0f);
+        velocityDot = _horizontalPhysic.AccelerationRemapFromVelocityDot.Evaluate(velocityDot);
+        float acceleration = _horizontalPhysic.Acceleration * velocityDot * Time.fixedDeltaTime;
+
+        //On fait avancer notre vitesse actuelle vers la max speed en fonction de l'acceleration
+        _currentHorizontalVelocity = Vector2.MoveTowards(_currentHorizontalVelocity, maxSpeed, acceleration);
+
+        //On calcul l'écart entre la velocité actuelle du rigidbody et la vélocité cible
+        Vector2 velocityDelta = _currentHorizontalVelocity - _rigidbody.linearVelocity;
+        if (_currentHorizontalVelocity.y == 0.0f)
+            velocityDelta.y = 0.0f;
+
+        //On clamp le delta de velocite avec l'acceleration maximum en negatif et positif pour eviter des bugs dans la physic
+        velocityDelta = Vector2.ClampMagnitude(velocityDelta, _horizontalPhysic.MaxAcceleration);
+
+        //On a ajoute le delta de vélocité à la force à donner ce tour de boucle au rigidbody
+        _forceToAdd += velocityDelta;
+
+        if (_movementInput >= 0.01 && IsGrounded)
+        {
+            _DAnimation.SetBool("IsRunning", true);
+            _capsuleBox.offset = new Vector2(1, 0.3f);
+        }
+        else if (_movementInput <= -0.01 && IsGrounded)
+        {
+            _DAnimation.SetBool("IsRunning", true);
+            _capsuleBox.offset = new Vector2(-1, 0.3f);
+
+        }
+        else if (_movementInput == 0 && IsGrounded || _movementInput != 0 && !IsGrounded)
+        {
+            _DAnimation.SetBool("IsRunning", false);
+            _capsuleBox.offset = _offsetCapsule;
+        }
+    }
+
+    private Vector2 SnapToGround(float input)
+    {
+        //Fix : on passait ici la première frame du saut, ce qui appliquait la force vers le bas pour snap à la pente
+        if (!IsGrounded || _isJumping)
+            return new Vector2(input * _horizontalPhysic.MaxSpeed, 0.0f);
+
+        //Fix : Filtrer les points de contacts avec le sol uniquement
+        ContactPoint2D[] contactPointArray = new ContactPoint2D[1];
+        ContactFilter2D filter = _groundContactFilter;
+        _rigidbody.GetContacts(filter, contactPointArray);
+        Vector2 normal = contactPointArray.Length > 0 ? contactPointArray[0].normal : Vector2.zero;
+
+        //Si on est en l'air ou sur un sol plat, on revoit la force normalement
+        if (normal == Vector2.zero || (normal == Vector2.up) || (normal == Vector2.down) || input == 0.0f)
+            return new Vector2(input * _horizontalPhysic.MaxSpeed, 0.0f);
+
+        Vector3 force = Vector3.zero;
+
+        //On effectue un cross product avec la normal et la 3ème dimension pour obtenir une force parall�le au sol
+        if (input > 0.0f)
+            force = Vector3.Cross(normal, Vector3.forward);
+        else
+            force = Vector3.Cross(normal, Vector3.back);
+
+        return _horizontalPhysic.MaxSpeed * force;
+    }
+
+    #endregion HorizontalMovement
+
+    #region Gravity
+
+    private void Gravity()
+    {
+        if (IsGrounded || _isJumping || _isDashing || _hittingDash)
+            return;
+
+        _chuteTime += Time.deltaTime;
+
+        float coyoteTimeRatio = Mathf.Clamp01(_airTime / _gravityParameters.CoyoteTime);
+        float coyoteTimeFactor = _isInCoyoteTime ? _gravityParameters.GravityRemapFromCoyoteTime.Evaluate(coyoteTimeRatio) : 1.0f;
+        float acceleration = _jumpParameters.Deceleration * coyoteTimeFactor * Time.fixedDeltaTime;
+
+        float maxGravityForce = _gravityParameters.MaxForce;
+        _currentGravity = Mathf.MoveTowards(_currentGravity, maxGravityForce, acceleration);
+
+        float velocityDelta = _currentGravity - _rigidbody.linearVelocity.y;
+
+        velocityDelta = Mathf.Clamp(velocityDelta, -_gravityParameters.MaxAcceleration, 0.0f);
+
+        if (!_isDashing || !_isKnockBacked)
+        {
+            _DAnimation.SetBool("IsFalling", true);
+        }
+
+        if (_chuteTime >= 0.3f && !_isDashing)
+        {
+            cameraFollow.CamFalling();
+            _isFalling = true;
+        }
+
+        _forceToAdd.y += velocityDelta;
+    }
+
+    private void ResetGravity(PhysicState physicState)
+    {
+        if (physicState != PhysicState.Air)
+        {
+            _currentGravity = 0.0f;
+            _rigidbody.linearVelocity = new Vector2(_rigidbody.linearVelocity.x, 0.0f);
+            _airTime = 0.0f;
+            _dashAirTime = 0.0f;
+            _chuteTime = 0.0f;
+        }
+    }
+
+    #endregion Gravity
+
+    #region Jump
+
+    public void StartJump()
+    {
+        if ((!IsGrounded && !_isInCoyoteTime) || _isJumping)
+        {
+            _bufferJump = true;
+            Invoke(nameof(StopJumpBuffer), _jumpParameters.BufferTime);
+            return;
+        }
+        _DAnimation.SetBool("IsJumping", true);
+        PlaySound.Invoke();
+        //_currentJumpForce.y = _jumpParameters.InitValue;
+        _currentJumpForce.y = _jumpParameters.ImpulseForce;
+        _rigidbody.linearVelocity = new Vector2(_rigidbody.linearVelocity.x, _currentJumpForce.y);
+        _currentHorizontalVelocity.y = 0.0f;
+        _isJumping = true;
+        _isInCoyoteTime = false;
+        _startJumpTime = _airTime;
+        _hasBounce = false;
+    }
+
+    private void StopJumpBuffer()
+    {
+        _bufferJump = false;
+    }
+
+    private void JumpForce()
+    {
+        if (!_isJumping)
+            return;
+        _capsuleBox.offset = new Vector2(0, 1.5f);
+
+        ContactPoint2D[] contactPointArray = new ContactPoint2D[1];
+        ContactFilter2D filter = _ceilingContactFilter;
+        _rigidbody.GetContacts(filter, contactPointArray);
+        Vector2 normal = contactPointArray.Length > 0 ? contactPointArray[0].normal : Vector2.zero;
+
+        _currentJumpForce = GetBounceForce(_currentJumpForce, normal, _jumpParameters.Bounciness, ref _hasBounce);
+
+        float jumpTimeRatio = Mathf.Clamp01((_airTime - _startJumpTime) / _jumpTime);
+        float deceleration = _jumpParameters.Deceleration * _jumpParameters.DecelerationFromAirTime.Evaluate(jumpTimeRatio) * Time.fixedDeltaTime;
+        //float deceleration = _jumpParameters.GravityValue * Time.fixedDeltaTime;
+
+        _currentJumpForce = Vector2.MoveTowards(_currentJumpForce, Vector2.zero, deceleration);
+        //_currentJumpForce += Vector2.down * _jumpParameters.GravityValue * Time.fixedDeltaTime;
+
+        Vector2 velocityDelta = _currentJumpForce - _rigidbody.linearVelocity;
+        if (_currentJumpForce.x == 0.0f)
+            velocityDelta.x = 0.0f;
+        velocityDelta = Vector2.ClampMagnitude(velocityDelta, _jumpParameters.MaxDeceleration);
+
+        _forceToAdd += velocityDelta;
+
+        if (jumpTimeRatio >= 1.0f)
+        {
+            _isJumping = false;
+            _DAnimation.SetBool("IsJumping", false);
+
+            _capsuleBox.offset = _offsetCapsule;
+
+            _currentJumpForce = Vector2.zero;
+        }
+        if (jumpTimeRatio <= 1.0f && _isDashing)
+        {
+            _isJumping = false;
+            _DAnimation.SetBool("IsJumping", false);
+
+            _capsuleBox.offset = _offsetCapsule;
+
+            _currentJumpForce = _currentDashForce;
+        }
+    }
+
+    private Vector2 GetBounceForce(Vector2 initialForce, Vector2 normal, float bouciness, ref bool hasBounce)
+    {
+        if (!hasBounce && normal != Vector2.zero && normal.y < 0)
+        {
+            float dot = Vector2.Dot(initialForce, normal);
+            Vector2 projectedVector = -2 * dot * normal;
+            Vector2 bounceForce = bouciness * (projectedVector + initialForce);
+            hasBounce = true;
+            return bounceForce;
+        }
+        return initialForce;
+    }
+
+    private void CancelJump(PhysicState state)
+    {
+        if (state != PhysicState.Air)
+        {
+            _isJumping = false;
+            _currentJumpForce = Vector2.zero;
+            _DAnimation.SetBool("IsJumping", false);
+            _DAnimation.SetBool("IsFalling", false);
+        }
+    }
+
+    private void TryJumpBuffer(PhysicState state)
+    {
+        if (state != PhysicState.Air && _bufferJump)
+        {
+            StartJump();
+            _bufferJump = false;
+            CancelInvoke(nameof(StopJumpBuffer));
+        }
+    }
+
+    //public float GravityValue(float baseWalkSpeed, float maxHeight, float maxLength) // v0 = -2 * h / t_h^2 || -2 * h * v^2 / L_h^2
+    //{
+
+    //    return -2 * maxHeight * baseWalkSpeed * baseWalkSpeed / ((maxLength * 0.5f) * (maxLength * 0.5f));
+    //}
+
+    //public float InitSpeed(float baseWalkSpeed, float maxHeight, float maxLength) // v0 = 2 * h / t_h || 2 * h * v / L_h
+    //{
+    //    return 2 * maxHeight * baseWalkSpeed / ((maxLength * 0.5f));
+    //}
+
+    #endregion Jump
+
+    #region Dash
+    public void GetDashInput(Vector2 Dashinput)
+    {
+        float scalaire = Vector2.Dot(Vector2.up, Dashinput);
+        /*On multiplie un ensemble de valeur par le nombre de marche,
+         * qu'on arrondis à l'inferieur ensuite,
+         * puis on redivise par le nombre de marche pour obtenir un ensemble restreint de valeur (0, 0,5, 1),
+         * Cet ensemble a un décalage arbitraire de 0,25 (marche de manoeuvre joystick)*/
+        float step = Mathf.Floor((MathF.Abs(scalaire) + 0.25f) * 2) / 2f;
+        /* Déplacement horizontal si le step > 0,5 dans ce cas déplacement vertical strict, donc pas horizontal, sinon on * le signe du déplacement (-1 ou 1),
+         * par l'inverse du déplacement vertical (1 - step) qui donne soit 1 (déplcamenet horizontal strict ou 0,5 déplacement diagonal)*/
+        float Mx = step > 0.5f ? 0 : Mathf.Sign(Dashinput.x) * (1 - step);
+        _dashMovementInput = (new Vector2(Mx, step * Mathf.Sign(scalaire))).normalized;
+
+        // Mettre à jour le curseur immédiatement quand l'input change
+        UpdateDashCursor();
+    }
+
+    public void StartDash()
+    {
+        // Ne pas démarrer de dash pendant un hit-stop : bufferiser ou ignorer l'input
+        if (_isHitStopped)
+        {
+            // buffer pour le prochain dash après hit-stop si besoin
+            _bufferDash = true;
+            Invoke(nameof(StopDashBuffer), _dashParameters.DashBufferTime);
+            return;
+        }
+
+        if ((!_isInCoyoteTime && _isDashing) || !_canDash)
+        {
+            _bufferDash = true;
+            Invoke(nameof(StopDashBuffer), _dashParameters.DashBufferTime);
+            return;
+        }
+
+        if (_canDash)
+        {
+            _isDashing = true;
+            _canDash = false;
+            cameraFollow._camera.Lookahead.IgnoreY = true;
+
+            _chuteTime = 0.0f;
+
+
+            if (_dashMovementInput.y == 1)
+            {
+                _DAnimation.SetBool("IsDashingUp", true);
+            }
+            else if (_dashMovementInput.y != 0 && _dashMovementInput.x != 0)
+            {
+                _lockedRotation = true;
+
+                float angle = Mathf.Atan2(_dashMovementInput.y, _dashMovementInput.x) * Mathf.Rad2Deg;
+
+                _mesh.rotation = Quaternion.Euler(0, 0, angle);
+
+                _DAnimation.SetBool("IsDashing", true);
+            }
+            else if (_dashMovementInput.x != 0)
+            {
+                _DAnimation.SetBool("IsDashing", true);
+            }
+            else if (_dashMovementInput.y == -1)
+            {
+                _DAnimation.SetBool("IsDashingDown", true);
+            }
+
+            _currentDashForce = _dashMovementInput.normalized * _dashParameters.DashImpulseForce;
+
+            _rigidbody.linearVelocity = Vector2.zero;
+            _currentJumpForce = Vector2.zero;
+            _forceToAdd = Vector2.zero;
+
+            _startDashTime = Time.time;
+            ChauveSourisD.SetActive(false);
+            SoundManager.PlaySound(SoundType.Dash, 7.0f);
+
+            // masquer le curseur pendant le dash
+            if (_dashCursor != null && _dashCursor.activeSelf)
+                _dashCursor.SetActive(false);
+        }
+    }
+
+    public void Dash()
+    {
+        if (!_isDashing && !_canDash)
+            return;
+
+        float elapsed = Time.time - _startDashTime;
+
+        if (elapsed < _dashParameters.DashDuration)
+        {
+            _forceToAdd += _currentDashForce;
+            dashHitbox.gameObject.SetActive(true);
+        }
+        else
+        {
+            dashHitbox.gameObject.SetActive(false);
+
+            _isDashing = false;
+            _currentDashForce = Vector2.zero;
+            _DAnimation.SetBool("IsDashing", false);
+            _DAnimation.SetBool("IsDashingUp", false);
+            _DAnimation.SetBool("IsDashingDown", false);
+
+            _lockedRotation = false;
+
+            // Réactiver le curseur si le dash est disponible
+            if (IsGrounded && !_canDash)
+            {
+                StartCoroutine(CdDash());
+            }
+
+            // si dash terminé et _canDash true, UpdateDashCursor() le montrera automatiquement via Update()
+        }
+    }
+    private void StopDashBuffer()
+    {
+        _bufferDash = false;
+    }
+
+    private void TryDashBuffer(PhysicState state)
+    {
+        if (_bufferDash)
+        {
+            StartDash();
+            _bufferDash = false;
+            CancelInvoke(nameof(StopDashBuffer));
+        }
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        _isDashing = false;
+        _currentJumpForce = Vector2.zero;
+        _DAnimation.SetBool("IsDashing", false);
+        _DAnimation.SetBool("IsDashingUp", false);
+        _DAnimation.SetBool("IsDashingDown", false);
+    }
+
+    IEnumerator CdDash()
+    {
+        yield return new WaitForSeconds(1.0f);
+        _canDash = true;
+        ChauveSourisD.gameObject.SetActive(true);
+    }
+
+    public void BounceOnEnemy()
+    {
+        StartCoroutine(BounceTime());
+    }
+
+    public void StopDashOnEnemy(Collider2D enemy)
+    {
+        // Zéro immédiatement les vitesses/forces pour la réaction instantanée
+        _currentDashForce = Vector2.zero;
+        _currentHorizontalVelocity = Vector2.zero;
+        _rigidbody.linearVelocity = Vector2.zero;
+        _forceToAdd = Vector2.zero;
+        _currentGravity = 0.0f;
+        _DAnimation.SetBool("IsDashing", false);
+        _DAnimation.SetBool("IsDashingUp", false);
+        _DAnimation.SetBool("IsDashingDown", false);
+
+        // Annule un éventuel buffer d'entrée pour éviter un dash "automatique" après hit-stop
+        _bufferDash = false;
+        CancelInvoke(nameof(StopDashBuffer));
+
+        // Lance le hit-stop (ralenti ou immobilisation)
+        StartCoroutine(HandleDashHitStop());
+    }
+
+    IEnumerator BounceTime()
+    {
+        _hittingDash = true;
+        _rigidbody.AddForce(enemyBounceForce, ForceMode2D.Impulse);
+        _isJumping = false;
+        _currentGravity = 0f;
+        yield return new WaitForSeconds(BouncingTime);
+        _hittingDash = false;
+    }
+
+    /// <summary>
+    /// Temporarily stop player or slow the whole game when hitting an enemy with dash.
+    /// Uses WaitForSecondsRealtime so duration is in real seconds regardless of Time.timeScale.
+    /// </summary>
+    private IEnumerator HandleDashHitStop()
+    {
+        if (_isHitStopped)
+            yield break;
+
+        _isHitStopped = true;
+
+        // Backup movement state
+        bool prevMovementDisabled = _movementDisabled;
+        bool prevIsDashing = _isDashing;
+
+        // Immobilisation immédiate
+        _movementDisabled = true;
+        _isDashing = false;
+        _currentDashForce = Vector2.zero;
+        _currentHorizontalVelocity = Vector2.zero;
+        _rigidbody.velocity = Vector2.zero;
+        _forceToAdd = Vector2.zero;
+        _currentGravity = 0f;
+
+        // masquer le curseur pendant le hit-stop
+        if (_dashCursor != null && _dashCursor.activeSelf)
+            _dashCursor.SetActive(false);
+
+        if (_useSlowMotionOnDashHit)
+        {
+            Time.timeScale = Mathf.Clamp01(_slowMotionScale);
+            Time.fixedDeltaTime = _originalFixedDeltaTime * Time.timeScale;
+        }
+
+        // Durée en temps réel (indépendante du timeScale)
+        yield return new WaitForSecondsRealtime(_dashHitStopDuration);
+
+        // Restauration du timeScale si modifié
+        if (_useSlowMotionOnDashHit)
+        {
+            Time.timeScale = 1f;
+            Time.fixedDeltaTime = _originalFixedDeltaTime;
+        }
+
+        // Nettoyage et restauration d'état
+        _currentDashForce = Vector2.zero;    // éviter toute réapplication de force
+        _startDashTime = 0f;
+        _bufferDash = false;
+
+        _movementDisabled = prevMovementDisabled;
+        _isDashing = false; // s'assurer que le dash est bien terminé
+        _isHitStopped = false;
+    }
+
+    #endregion Dash
+
+    #region Damage/Die
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        _enemyCollider = collision;
+
+        //Attack ennemi
+        if (collision.CompareTag("AttackZone") && !_hittingDash && !_attack.isAttacking)
+        {
+            if (_health._isInvincible)
+                return;
+
+            _health.TakeDamage(25);
+            Knockback(collision);
+            return;
+        }
+        //Dash sur mob
+        if (collision.CompareTag("Dash") && _isDashing && collision != dashHitbox)
+        {
+            StopDashOnEnemy(collision);
+            BounceOnEnemy();
+            ChauveSourisD.gameObject.SetActive(true);
+            _canDash = true;
+            PlayMobDeath.Invoke();
+            KillingEnemy(collision);
+            return;
+        }
+        //Dash sur cadavre
+        if (collision.CompareTag("Cadavre") && _isDashing && collision != dashHitbox)
+        {
+            _cadavreCollider = collision;
+            StopDashOnEnemy(collision);
+            BounceOnEnemy();
+            ChauveSourisD.gameObject.SetActive(true);
+            _canDash = true;
+            return;
+        }
+    }
+
+    public void Knockback(Collider2D enemy)
+    {
+        _isKnockBacked = true;
+        _DAnimation.SetBool("IsKnockbacked", true);
+
+        StopDashOnEnemy(enemy);
+        _movementDisabled = true;
+
+        float sign = transform.position.x < enemy.transform.position.x ? -1f : 1f;
+
+        if (_mesh.localEulerAngles.y < 90)
+            sign = -Mathf.Abs(sign);
+        else
+            sign = Mathf.Abs(sign);
+
+        targetKnockback = new Vector2(_knockbackValues._knockbackDirection.x * sign, _knockbackValues._knockbackDirection.y).normalized;
+
+        StartCoroutine(KnockBackTime());
+    }
+
+    IEnumerator KnockBackTime()
+    {
+        float t = 0f;
+        float duration = _knockbackValues.durationKnockback;
+
+        _currentHorizontalVelocity = Vector2.zero;
+        _rigidbody.linearVelocity = Vector2.zero;
+
+        while (t < duration)
+        {
+            t += Time.deltaTime;
+            float ratio = t / duration;
+
+            float curveValue = _knockbackValues.DecelerationFromKnockBack.Evaluate(ratio);
+
+            float deceleration = _knockbackValues._knockbackDeceleration * _jumpParameters.DecelerationFromAirTime.Evaluate(ratio) * Time.fixedDeltaTime;
+
+            targetKnockback = Vector2.MoveTowards(targetKnockback, Vector2.zero, deceleration);
+
+            _rigidbody.AddForce(targetKnockback * _knockbackValues._knockbackForce, ForceMode2D.Impulse);
+
+            yield return null;
+        }
+
+        _movementDisabled = false;
+
+        _isKnockBacked = false;
+        _DAnimation.SetBool("IsKnockbacked", false);
+    }
+
+    public void KillingEnemy(Collider2D collision)
+    {
+        RespawnManager rm = collision.transform.root.GetComponentInChildren<RespawnManager>(true);
+        Debug.Log("RespawnManager trouvé = " + (rm != null));
+        collision.gameObject.SetActive(false);
+        if (rm != null)
+            rm.RespawnFonction();
+    }
+
+    #endregion Damage/Die
+}
