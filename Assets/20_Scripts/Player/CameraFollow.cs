@@ -4,7 +4,9 @@ using Unity.Cinemachine;
 public class CameraFollow : MonoBehaviour
 {
     public CinemachinePositionComposer _camera;
+    public CinemachineCamera _cinemachine;
     [SerializeField] private PlayerCharacter _player;
+
 
     [Header("Camera Settings")]
     [SerializeField] private float offsetCam = 6.0f;
@@ -19,6 +21,7 @@ public class CameraFollow : MonoBehaviour
     private void Awake()
     {
         _player = GetComponent<PlayerCharacter>();
+        //_changer = GetComponent<CameraChanger>();
     }
 
     private void Update()
@@ -41,6 +44,15 @@ public class CameraFollow : MonoBehaviour
             _targetHardLimit = Vector2.zero;
         }
 
+        if (_player._isDashing && !_player.IsGrounded)
+        {
+            _camera.Lookahead.Time = 0f;
+        }
+        else if (!_player._isDashing && _player.IsGrounded)
+        {
+            _camera.Lookahead.Time = 1f;
+        }
+
         _camera.TargetOffset = Vector3.Lerp(_camera.TargetOffset, _targetOffset, Time.deltaTime * camLerpSpeed);
 
         _camera.Composition.HardLimits.Offset = Vector2.Lerp(_camera.Composition.HardLimits.Offset, _targetHardLimit, Time.deltaTime * camLerpSpeed);
@@ -50,14 +62,14 @@ public class CameraFollow : MonoBehaviour
     {
         _camera.Composition.DeadZone.Size = new Vector2(0.6f, 0f);
         _camera.Lookahead.IgnoreY = true;
-        _camera.Lookahead.Smoothing = 10;
+        _camera.Lookahead.Smoothing = 6;
     }
 
     public void UnLockCamOnPlayer()
     {
         _camera.Composition.DeadZone.Size = new Vector2(0.6f, 0.6f);
         _camera.Lookahead.IgnoreY = true;
-        _camera.Lookahead.Smoothing = 10;
+        _camera.Lookahead.Smoothing = 6;
     }
 
     public void CamFalling()

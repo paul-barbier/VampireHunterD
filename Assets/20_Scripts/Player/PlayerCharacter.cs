@@ -15,6 +15,7 @@ public class PlayerCharacter : MonoBehaviour
     #region DataStructure
 
     [SerializeField] RespawnManager RespawnManager;
+    [SerializeField] SpriteRenderer _sprite;
 
     public enum PhysicState
     {
@@ -124,7 +125,7 @@ public class PlayerCharacter : MonoBehaviour
     private float _dashAirTime = 0.0f;
     private bool _isInCoyoteTime = false;
     private float _chuteTime = 0.0f;
-    [SerializeField] private bool _isFalling = false;
+    public bool _isFalling = false;
 
     [Header("Jump")]
     private Vector2 _currentJumpForce = Vector2.zero;
@@ -300,7 +301,6 @@ public class PlayerCharacter : MonoBehaviour
             //On invoque l'event en passant true pour signifier que le joueur arrive au sol
             OnPhysicStateChanged.Invoke(PhysicState.Ground);
             cameraFollow.LockCamOnPlayer();
-            //cameraFollow.ReadjustingCam();
         }
         //Si le rigidbody ne touche pas le sol mais on a en m�moire qu'il le touche, on est sur la frame o� il quitte le sol
         else if (!isTouchingGround && IsGrounded)
@@ -495,6 +495,7 @@ public class PlayerCharacter : MonoBehaviour
             Invoke(nameof(StopJumpBuffer), _jumpParameters.BufferTime);
             return;
         }
+        cameraFollow.LockCamOnPlayer();
         _DAnimation.SetBool("IsJumping", true);
         PlaySound.Invoke();
         //_currentJumpForce.y = _jumpParameters.InitValue;
@@ -632,9 +633,12 @@ public class PlayerCharacter : MonoBehaviour
 
         if (_canDash || _health._isDying)
         {
+            //Time.timeScale = 1f;
+
             _isDashing = true;
             _canDash = false;
             cameraFollow._camera.Lookahead.IgnoreY = true;
+            cameraFollow.LockCamOnPlayer();
 
             _chuteTime = 0.0f;
 
@@ -795,6 +799,7 @@ public class PlayerCharacter : MonoBehaviour
         {
             StopDashOnEnemy(collision);
             BounceOnEnemy();
+            //Time.timeScale = 0.2f;
             ChauveSourisD.gameObject.SetActive(true);
             _canDash = true;
             collision.enabled = false;
@@ -862,8 +867,9 @@ public class PlayerCharacter : MonoBehaviour
     public void KillingEnemy(Collider2D collision)
     {
         RespawnManager rm = collision.transform.root.GetComponentInChildren<RespawnManager>(true);
+        SpriteRenderer sprite = collision.GetComponent<SpriteRenderer>();
         Debug.Log("RespawnManager trouvé = " + (rm != null));
-        collision.gameObject.SetActive(false);
+        sprite.enabled = false;
         if (rm != null)
             rm.RespawnFonction();
     }
