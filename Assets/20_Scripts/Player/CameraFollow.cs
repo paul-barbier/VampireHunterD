@@ -12,11 +12,11 @@ public class CameraFollow : MonoBehaviour
     [SerializeField] private float offsetCam = 6.0f;
     [SerializeField] private float camLerpSpeed = 6f;
 
+    [SerializeField] private float PremierPlanCamZ = 10f;
+    [SerializeField] private float SecondPlanCamZ = 15f;
+
     private Vector3 _targetOffset;
     private Vector2 _targetHardLimit;
-
-    private Vector2 _targetScreenPosition;
-    private Vector2 _targetFallScreenPosition;
 
     private void Awake()
     {
@@ -51,6 +51,15 @@ public class CameraFollow : MonoBehaviour
         else if (!_player._isDashing && _player.IsGrounded)
         {
             _camera.Lookahead.Time = 1f;
+        }
+
+        if (_player.transform.position.z == 0)
+        {
+            _camera.CameraDistance = 10f;
+        }
+        if (_player.transform.position.z == 10)
+        {
+            _camera.CameraDistance = 15f;
         }
 
         _camera.TargetOffset = Vector3.Lerp(_camera.TargetOffset, _targetOffset, Time.deltaTime * camLerpSpeed);
