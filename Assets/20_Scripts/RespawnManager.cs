@@ -17,14 +17,19 @@ public class RespawnManager : MonoBehaviour
             _objectToRespawn = GetComponent<SpriteRenderer>();
         }
     }
+    private void Start()
+    {
+        _objectToRespawn.enabled = true;
+    }
 
     private void Update()
     {
+        _respawnTime += Time.deltaTime;
         if ( !_isRespawn )
             return;
-        _respawnTime += Time.deltaTime;
 
-        if ( _respawnTime > _respawnDelay )
+
+        else if (_objectToRespawn.enabled == false && _respawnTime >= _respawnDelay )
         {
             _objectToRespawn.enabled = true;
             _respawnTime = 0f; 
@@ -39,6 +44,7 @@ public class RespawnManager : MonoBehaviour
         {
             Debug.Log("Respawn called on : " + gameObject.name);
             _isRespawn = true;
+            _respawnTime = 0f;
         }
     }
 }

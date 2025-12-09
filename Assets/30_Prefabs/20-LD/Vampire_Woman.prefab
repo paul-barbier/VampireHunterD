@@ -159,6 +159,7 @@ GameObject:
   - component: {fileID: 7327761873260487373}
   - component: {fileID: 4650955764493522164}
   - component: {fileID: 5057068590727668538}
+  - component: {fileID: 5666656986826785789}
   m_Layer: 0
   m_Name: Visual
   m_TagString: Dash
@@ -436,6 +437,20 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &5666656986826785789
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7876728317800266028}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 77798e8d6efd66a479596b946ae1db26, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  randomPitchRange: {x: 0.85, y: 1.15}
+  volumeRandom: {x: 0.85, y: 1.15}
 --- !u!1 &8810607547684924949
 GameObject:
   m_ObjectHideFlags: 0

@@ -43,7 +43,6 @@ public class PlayBank : MonoBehaviour
             audioSource.pitch = Random.Range(randomPitchRange.x, randomPitchRange.y);
         }
 
-
             audioSource.PlayOneShot(clip);
     }
 
