@@ -870,6 +870,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _objectToRespawn: {fileID: 321073138}
   _respawnDelay: 1
+  _dashEnnemiHitbox: {fileID: 0}
+  _ennemiAttackHitbox: {fileID: 0}
   _isRespawn: 0
 --- !u!1 &119370037
 GameObject:
@@ -1865,6 +1867,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _objectToRespawn: {fileID: 0}
   _respawnDelay: 1
+  _dashEnnemiHitbox: {fileID: 0}
+  _ennemiAttackHitbox: {fileID: 0}
   _isRespawn: 0
 --- !u!1 &206566243
 GameObject:
@@ -4272,7 +4276,8 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 571801845577881827, guid: 20dfb68ea6115ba49a906136619434a2, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 20dfb68ea6115ba49a906136619434a2, type: 3}
@@ -6020,6 +6025,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _objectToRespawn: {fileID: 0}
   _respawnDelay: 2
+  _dashEnnemiHitbox: {fileID: 0}
+  _ennemiAttackHitbox: {fileID: 0}
   _isRespawn: 0
 --- !u!1 &511494200
 GameObject:
@@ -6596,6 +6603,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _objectToRespawn: {fileID: 270760808}
   _respawnDelay: 1
+  _dashEnnemiHitbox: {fileID: 0}
+  _ennemiAttackHitbox: {fileID: 0}
   _isRespawn: 0
 --- !u!1 &563871825
 GameObject:
@@ -7154,6 +7163,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _objectToRespawn: {fileID: 151338273}
   _respawnDelay: 1
+  _dashEnnemiHitbox: {fileID: 0}
+  _ennemiAttackHitbox: {fileID: 0}
   _isRespawn: 0
 --- !u!1 &611871371
 GameObject:
@@ -7615,10 +7626,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 8328503500434729035, guid: 518590172e56ebb4ab131171224459b7, type: 3}
-      propertyPath: m_Name
-      value: Vampire_Man 1
-      objectReference: {fileID: 0}
     - target: {fileID: 6073516357651623326, guid: 518590172e56ebb4ab131171224459b7, type: 3}
       propertyPath: m_LocalPosition.x
       value: 398.4
@@ -7658,6 +7665,10 @@ PrefabInstance:
     - target: {fileID: 6073516357651623326, guid: 518590172e56ebb4ab131171224459b7, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8328503500434729035, guid: 518590172e56ebb4ab131171224459b7, type: 3}
+      propertyPath: m_Name
+      value: Vampire_Man 1
       objectReference: {fileID: 0}
     - target: {fileID: 6003190069189573690, guid: b2b94e5f51bbb3b418a47559558a6a1c, type: 3}
       propertyPath: _isMoving
@@ -9392,10 +9403,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 8328503500434729035, guid: 518590172e56ebb4ab131171224459b7, type: 3}
-      propertyPath: m_Name
-      value: Vampire_Man 1 (3)
-      objectReference: {fileID: 0}
     - target: {fileID: 6073516357651623326, guid: 518590172e56ebb4ab131171224459b7, type: 3}
       propertyPath: m_LocalPosition.x
       value: 105.93947
@@ -9435,6 +9442,10 @@ PrefabInstance:
     - target: {fileID: 6073516357651623326, guid: 518590172e56ebb4ab131171224459b7, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8328503500434729035, guid: 518590172e56ebb4ab131171224459b7, type: 3}
+      propertyPath: m_Name
+      value: Vampire_Man 1 (3)
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -9748,6 +9759,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _objectToRespawn: {fileID: 303217004}
   _respawnDelay: 1
+  _dashEnnemiHitbox: {fileID: 0}
+  _ennemiAttackHitbox: {fileID: 0}
   _isRespawn: 0
 --- !u!1 &928048517
 GameObject:
@@ -12380,10 +12393,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 8328503500434729035, guid: 518590172e56ebb4ab131171224459b7, type: 3}
-      propertyPath: m_Name
-      value: Vampire_Man 1 (2)
-      objectReference: {fileID: 0}
     - target: {fileID: 6073516357651623326, guid: 518590172e56ebb4ab131171224459b7, type: 3}
       propertyPath: m_LocalPosition.x
       value: 220.97
@@ -12423,6 +12432,10 @@ PrefabInstance:
     - target: {fileID: 6073516357651623326, guid: 518590172e56ebb4ab131171224459b7, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8328503500434729035, guid: 518590172e56ebb4ab131171224459b7, type: 3}
+      propertyPath: m_Name
+      value: Vampire_Man 1 (2)
       objectReference: {fileID: 0}
     - target: {fileID: 6003190069189573690, guid: b2b94e5f51bbb3b418a47559558a6a1c, type: 3}
       propertyPath: _isMoving
@@ -13612,6 +13625,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _objectToRespawn: {fileID: 367796898}
   _respawnDelay: 1
+  _dashEnnemiHitbox: {fileID: 0}
+  _ennemiAttackHitbox: {fileID: 0}
   _isRespawn: 0
 --- !u!1 &1291550167
 GameObject:
@@ -13792,6 +13807,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _objectToRespawn: {fileID: 0}
   _respawnDelay: 2
+  _dashEnnemiHitbox: {fileID: 0}
+  _ennemiAttackHitbox: {fileID: 0}
   _isRespawn: 0
 --- !u!1 &1339843212
 GameObject:
@@ -14372,6 +14389,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _objectToRespawn: {fileID: 0}
   _respawnDelay: 1
+  _dashEnnemiHitbox: {fileID: 0}
+  _ennemiAttackHitbox: {fileID: 0}
   _isRespawn: 0
 --- !u!1 &1451437498
 GameObject:
@@ -14785,7 +14804,8 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 571801845577881827, guid: 20dfb68ea6115ba49a906136619434a2, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 20dfb68ea6115ba49a906136619434a2, type: 3}
@@ -16222,6 +16242,7 @@ MonoBehaviour:
   BouncingTime: 0.3
   targetKnockback: {x: -0.70710677, y: 0.70710677, z: 0}
   _isKnockBacked: 0
+  _currentMeshRotation: {x: 0, y: 0, z: 0}
   _rotatePlayer: 1
   _movementDisabled: 0
   _capsuleBox: {fileID: 1572029188}
@@ -18334,6 +18355,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _objectToRespawn: {fileID: 0}
   _respawnDelay: 1
+  _dashEnnemiHitbox: {fileID: 0}
+  _ennemiAttackHitbox: {fileID: 0}
   _isRespawn: 0
 --- !u!1 &1889992272
 GameObject:
@@ -18381,6 +18404,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _objectToRespawn: {fileID: 0}
   _respawnDelay: 1
+  _dashEnnemiHitbox: {fileID: 0}
+  _ennemiAttackHitbox: {fileID: 0}
   _isRespawn: 0
 --- !u!1 &1902988383
 GameObject:
@@ -18432,10 +18457,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 8328503500434729035, guid: 518590172e56ebb4ab131171224459b7, type: 3}
-      propertyPath: m_Name
-      value: Vampire_Man 1 (1)
-      objectReference: {fileID: 0}
     - target: {fileID: 6073516357651623326, guid: 518590172e56ebb4ab131171224459b7, type: 3}
       propertyPath: m_LocalPosition.x
       value: 494.44
@@ -18475,6 +18496,10 @@ PrefabInstance:
     - target: {fileID: 6073516357651623326, guid: 518590172e56ebb4ab131171224459b7, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8328503500434729035, guid: 518590172e56ebb4ab131171224459b7, type: 3}
+      propertyPath: m_Name
+      value: Vampire_Man 1 (1)
       objectReference: {fileID: 0}
     - target: {fileID: 6003190069189573690, guid: b2b94e5f51bbb3b418a47559558a6a1c, type: 3}
       propertyPath: _isMoving
@@ -18707,6 +18732,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _objectToRespawn: {fileID: 0}
   _respawnDelay: 1
+  _dashEnnemiHitbox: {fileID: 0}
+  _ennemiAttackHitbox: {fileID: 0}
   _isRespawn: 0
 --- !u!1001 &1938217711
 PrefabInstance:
