@@ -90,7 +90,7 @@ public class PlayerCharacter : MonoBehaviour
     [SerializeField] private ContactFilter2D _ceilingContactFilter = new ContactFilter2D();
 
     [Header("Setup")]
-    [SerializeField] private Transform _mesh = null;
+    public Transform _mesh = null;
     [SerializeField] public GameObject ChauveSourisD;
     public Rigidbody2D _rigidbody = null;
     [SerializeField] public Animator _DAnimation;
@@ -170,7 +170,7 @@ public class PlayerCharacter : MonoBehaviour
     [SerializeField] private bool _isKnockBacked = false;
 
     //Sprite
-    private Vector3 _currentMeshRotation = Vector3.zero;
+    public Vector3 _currentMeshRotation = Vector3.zero;
     private float rotationSpeed = 8000f;
     [SerializeField] public bool _rotatePlayer = false;
 
@@ -254,7 +254,7 @@ public class PlayerCharacter : MonoBehaviour
 
     private void Update()
     {
-        UpdateDashCursor(); // curseur visuel : mise à jour fluide
+        UpdateDashCursor();
         RotateMesh();
     }
 
@@ -275,7 +275,7 @@ public class PlayerCharacter : MonoBehaviour
         if (_dashCursor == null)
             return;
 
-        // Toujours visible — purement visuel
+        // Toujours visible 
         if (!_dashCursor.activeSelf)
             _dashCursor.SetActive(true);
 
@@ -685,7 +685,7 @@ public class PlayerCharacter : MonoBehaviour
 
     public void StartDash()
     {
-        if (!_isInCoyoteTime && _isDashing || !_canDash)
+        if (!_isInCoyoteTime && _isDashing || !_canDash || _health._isDying)
         {
             _bufferDash = true;
             Invoke(nameof(StopDashBuffer), _dashParameters.DashBufferTime);

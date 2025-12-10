@@ -139,6 +139,7 @@ public class Health : MonoBehaviour
     public void Die()
     {
         _isDying = true;
+        _character._mesh.rotation = Quaternion.Euler(0, _character._currentMeshRotation.y, 0);
         StartCoroutine(Dying());
     }
 

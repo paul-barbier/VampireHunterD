@@ -54,15 +54,16 @@ public class CameraFollow : MonoBehaviour
             _camera.Lookahead.Time = 1f;
         }
 
-        //if (_player.transform.position.z == 0)
-        //{
-
-        //    _camera.CameraDistance = Mathf.Lerp(10, 15, Time.deltaTime * camLerpSpeed);
-        //}
-        //if (_player.transform.position.z == 10)
-        //{
-        //    _camera.CameraDistance = Mathf.Lerp(15, 10, Time.deltaTime * camLerpSpeed);
-        //}
+        if (_player.transform.position.z == 0)
+        {
+            _camera.CameraDistance = 10f;
+            //_camera.CameraDistance = Mathf.Lerp(10, 15, Time.deltaTime * camLerpSpeed);
+        }
+        if (_player.transform.position.z == 10)
+        {
+            _camera.CameraDistance = 15f;
+            //_camera.CameraDistance = Mathf.Lerp(15, 10, Time.deltaTime * camLerpSpeed);
+        }
 
         _camera.TargetOffset = Vector3.Lerp(_camera.TargetOffset, _targetOffset, Time.deltaTime * camLerpSpeed);
 
