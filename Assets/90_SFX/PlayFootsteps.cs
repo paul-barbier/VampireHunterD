@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class PlayFootsteps : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+
     public void PlaySound()
     {
         RaycastHit2D hit = Physics2D.Raycast(transform.position, new Vector2(0,-1), 2.5f, LayerMask.GetMask("PremierPlan", "SecondPlan"));
@@ -16,6 +16,7 @@ public class PlayFootsteps : MonoBehaviour
         {
             SoundManager.PlaySound(SoundType.WoodFootsteps, 0.4f);
             SoundManager.PlaySound(SoundType.JacketSound, 3f);
+
             //Debug.Log("kebrezegerh");
         }
         else if (groundType == "Tile")

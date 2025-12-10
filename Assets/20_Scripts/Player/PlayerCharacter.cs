@@ -103,6 +103,7 @@ public class PlayerCharacter : MonoBehaviour
     [SerializeField] private float _cursorDeadzone = 0.2f;
     [SerializeField] private float _cursorRotationOffset = -90f; // ajustable pour orienter correctement votre sprite flèche
     [SerializeField] private float _cursorLerpSpeed = 12f; // vitesse d'interpolation (ajustable)
+    [SerializeField] private ParticleSystem Land;
 
     #endregion EditorVariables
 
@@ -361,6 +362,8 @@ public class PlayerCharacter : MonoBehaviour
         //Si le rigidbody touche le sol mais on a en m�moire qu'il ne le touche pas, on est sur la frame o� il touche le sol
         if (isTouchingGround && !IsGrounded)
         {
+
+            Land.Play();
             if (!_canDash)
             {
                 _canDash = true;
