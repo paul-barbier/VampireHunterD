@@ -32,6 +32,9 @@ public class Collectable : MonoBehaviour
         _spriteRenderer = GetComponent<SpriteRenderer>();
         _hasBeenCollected = false;
         _spriteRenderer.enabled = true;
+
+        character = FindFirstObjectByType<PlayerCharacter>();
+
     }
 
     private void Update()
