@@ -5,7 +5,6 @@ public class CheckPoints : MonoBehaviour
     [SerializeField] private Animator animator;
     public Transform respawnPoint;
 
-
     private void Start()
     {
         animator = GetComponentInChildren<Animator>();
@@ -20,7 +19,8 @@ public class CheckPoints : MonoBehaviour
 
             playerHealth.GetHeal(playerHealth.GetMaxHealth());
 
-            playerHealth.checkpoint = respawnPoint.transform.position;
+            playerHealth.checkpoint = this;
+
         }
     }
 }

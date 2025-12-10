@@ -12,6 +12,7 @@ public class Health : MonoBehaviour
     public CheckPoints checkpoint;
     public bool _isInvincible;
     public bool _isDying;
+    public Transform respawnPoint;
 
     //Visuel
     [SerializeField] private Animator HpAnime;
@@ -153,9 +154,9 @@ public class Health : MonoBehaviour
 
     private void Respawn()
     {
-        if (checkpoint && CompareTag("Player"))
+        if (checkpoint)
         {
-            _character.transform.position = checkpoint.transform.position;
+            _character.transform.position = checkpoint.respawnPoint.position;
 
             GetHeal(GetMaxHealth());
             UpdateBar();
