@@ -24,7 +24,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 145253672019508859}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -125.1373, y: -68.23931, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -481,7 +481,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _objectToRespawn: {fileID: 4435215635542726733}
-  _respawnDelay: 1
+  _respawnDelay: 6
+  _dashEnnemiHitbox: {fileID: 0}
+  _ennemiAttackHitbox: {fileID: 0}
   _isRespawn: 0
 --- !u!1 &4058981761294987417
 GameObject:
