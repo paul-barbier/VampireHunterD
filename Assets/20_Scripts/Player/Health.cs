@@ -12,7 +12,6 @@ public class Health : MonoBehaviour
     public bool _isInvincible;
     public bool _isDying;
     public CheckPoints checkpoint;
-    private CinemachinePositionComposer _camera;
 
     //Visuel
     [SerializeField] private Animator HpAnime;
@@ -140,7 +139,6 @@ public class Health : MonoBehaviour
     public void Die()
     {
         _isDying = true;
-        _camera.Lookahead.Time = 0f;
         StartCoroutine(Dying());
     }
 

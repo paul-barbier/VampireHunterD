@@ -6,6 +6,7 @@ public class CameraFollow : MonoBehaviour
     public CinemachinePositionComposer _camera;
     public CinemachineCamera _cinemachine;
     [SerializeField] private PlayerCharacter _player;
+    private Health _health;
 
 
     [Header("Camera Settings")]
@@ -21,7 +22,7 @@ public class CameraFollow : MonoBehaviour
     private void Awake()
     {
         _player = GetComponent<PlayerCharacter>();
-        //_changer = GetComponent<CameraChanger>();
+        _health = GetComponent<Health>();
     }
 
     private void Update()
@@ -44,7 +45,7 @@ public class CameraFollow : MonoBehaviour
             _targetHardLimit = Vector2.zero;
         }
 
-        if (_player._isDashing && !_player.IsGrounded)
+        if (_player._isDashing && !_player.IsGrounded || _health._isDying)
         {
             _camera.Lookahead.Time = 0f;
         }

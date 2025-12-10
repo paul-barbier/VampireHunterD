@@ -5,16 +5,32 @@ public class RespawnManager : MonoBehaviour
 {
     [SerializeField] private SpriteRenderer _objectToRespawn;
     [SerializeField] private float _respawnDelay;
+    [SerializeField] private Collider2D _dashEnnemiHitbox;
+    [SerializeField] private Collider2D _ennemiAttackHitbox;
 
     public bool _isRespawn = false;
     float _respawnTime = 0;
 
     private void Awake()
     {
-        // Si non assigné, cherche automatiquement l’objet "Visual" dans le parent
+        if (_dashEnnemiHitbox == null)
+        {
+            Transform visual = transform.parent.Find("Visual");
+            if (visual != null)
+                _dashEnnemiHitbox = visual.GetComponent<Collider2D>();
+        }
+
+        if (_ennemiAttackHitbox == null)
+        {
+            Transform attackZone = transform.parent.Find("Visual/AttackZone");
+            if (attackZone != null)
+                _ennemiAttackHitbox = attackZone.GetComponent<Collider2D>();
+        }
         if (_objectToRespawn == null)
         {
-            _objectToRespawn = GetComponent<SpriteRenderer>();
+            Transform visual = transform.parent.Find("Visual");
+            if (visual != null)
+                _objectToRespawn = visual.GetComponent<SpriteRenderer>();
         }
     }
     private void Start()
@@ -28,10 +44,11 @@ public class RespawnManager : MonoBehaviour
         if ( !_isRespawn )
             return;
 
-
         else if (_objectToRespawn.enabled == false && _respawnTime >= _respawnDelay )
         {
             _objectToRespawn.enabled = true;
+            _dashEnnemiHitbox.enabled = true;
+            _ennemiAttackHitbox.enabled = true;
             _respawnTime = 0f; 
             _isRespawn = false;
         }

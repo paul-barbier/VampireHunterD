@@ -929,8 +929,12 @@ public class PlayerCharacter : MonoBehaviour
     {
         RespawnManager rm = collision.transform.root.GetComponentInChildren<RespawnManager>(true);
         SpriteRenderer sprite = collision.GetComponent<SpriteRenderer>();
+        Collider2D dash = collision.GetComponent<Collider2D>();
+        Collider2D attackEnnemi = collision.transform.Find("AttackZone").GetComponent<Collider2D>();
         Debug.Log("RespawnManager trouvé = " + (rm != null));
         sprite.enabled = false;
+        dash.enabled = false;
+        attackEnnemi.enabled = false;
         if (rm != null)
             rm.RespawnFonction();
     }
