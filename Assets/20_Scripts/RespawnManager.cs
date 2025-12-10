@@ -53,7 +53,7 @@ public class RespawnManager : MonoBehaviour
             timerAfterRespawn += Time.deltaTime;
             if (timerAfterRespawn >= 0.5f)
             {
-                RespawnAnim.enabled = false;
+                Instantiate(RespawnAnim, transform.position, Quaternion.identity);
                 timerAfterRespawn = 0f;
 
                 _objectToRespawn.enabled = true;
