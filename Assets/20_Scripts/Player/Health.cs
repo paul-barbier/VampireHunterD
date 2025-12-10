@@ -9,9 +9,9 @@ public class Health : MonoBehaviour
     [SerializeField] private int _maxHealth;
     [SerializeField] private int _currentHealth;
     [SerializeField] private PlayerCharacter _character;
+    public CheckPoints checkpoint;
     public bool _isInvincible;
     public bool _isDying;
-    public CheckPoints checkpoint;
 
     //Visuel
     [SerializeField] private Animator HpAnime;
@@ -153,9 +153,10 @@ public class Health : MonoBehaviour
 
     private void Respawn()
     {
-        if (checkpoint)
+        if (checkpoint && CompareTag("Player"))
         {
-            transform.position = checkpoint.transform.position;
+            _character.transform.position = checkpoint.transform.position;
+
             GetHeal(GetMaxHealth());
             UpdateBar();
             _character._isDashing = false;
