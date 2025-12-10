@@ -4,10 +4,13 @@ using UnityEngine;
 public class RespawnManager : MonoBehaviour
 {
     [SerializeField] private SpriteRenderer _objectToRespawn;
+    [SerializeField] private SpriteRenderer RespawnAnim;
     [SerializeField] private float _respawnDelay;
     [SerializeField] private Collider2D _dashEnnemiHitbox;
     [SerializeField] private Collider2D _ennemiAttackHitbox;
 
+
+    float timerAfterRespawn = 0f;
     public bool _isRespawn = false;
     float _respawnTime = 0;
 
@@ -35,6 +38,7 @@ public class RespawnManager : MonoBehaviour
     }
     private void Start()
     {
+        RespawnAnim.enabled = false;
         _objectToRespawn.enabled = true;
     }
 
@@ -46,11 +50,18 @@ public class RespawnManager : MonoBehaviour
 
         else if (_objectToRespawn.enabled == false && _respawnTime >= _respawnDelay )
         {
-            _objectToRespawn.enabled = true;
-            _dashEnnemiHitbox.enabled = true;
-            _ennemiAttackHitbox.enabled = true;
-            _respawnTime = 0f; 
-            _isRespawn = false;
+            timerAfterRespawn += Time.deltaTime;
+            if (timerAfterRespawn >= 0.5f)
+            {
+                RespawnAnim.enabled = false;
+                timerAfterRespawn = 0f;
+
+                _objectToRespawn.enabled = true;
+                _dashEnnemiHitbox.enabled = true;
+                _ennemiAttackHitbox.enabled = true;
+                _respawnTime = 0f; 
+                _isRespawn = false;
+            }
         }
     }
 
