@@ -694,6 +694,7 @@ public class PlayerCharacter : MonoBehaviour
 
         if (_canDash || _health._isDying)
         {
+            _health._isInvincible = true;
             //Time.timeScale = 1f;
 
             _isDashing = true;
@@ -760,6 +761,7 @@ public class PlayerCharacter : MonoBehaviour
             _DAnimation.SetBool("IsDashing", false);
             _DAnimation.SetBool("IsDashingUp", false);
             _DAnimation.SetBool("IsDashingDown", false);
+            _health._isInvincible = false;
 
             _rotatePlayer = true;
 
