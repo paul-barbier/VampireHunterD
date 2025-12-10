@@ -453,18 +453,18 @@ public class PlayerCharacter : MonoBehaviour
         if (_movementInput >= 0.01 && IsGrounded)
         {
             _DAnimation.SetBool("IsRunning", true);
-            _capsuleBox.offset = new Vector2(1, 0.3f);
+            //_capsuleBox.offset = new Vector2(1, 0.3f);
         }
         else if (_movementInput <= -0.01 && IsGrounded)
         {
             _DAnimation.SetBool("IsRunning", true);
-            _capsuleBox.offset = new Vector2(-1, 0.3f);
+            //_capsuleBox.offset = new Vector2(-1, 0.3f);
 
         }
         else if (_movementInput == 0 && IsGrounded || _movementInput != 0 && !IsGrounded)
         {
             _DAnimation.SetBool("IsRunning", false);
-            _capsuleBox.offset = _offsetCapsule;
+            //_capsuleBox.offset = _offsetCapsule;
         }
     }
 
