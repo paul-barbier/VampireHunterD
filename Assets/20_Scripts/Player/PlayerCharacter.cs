@@ -96,6 +96,14 @@ public class PlayerCharacter : MonoBehaviour
     [SerializeField] public Animator _DAnimation;
     [SerializeField] private UnityEvent PlaySound;
     [SerializeField] private UnityEvent PlayMobDeath;
+
+    [Header("Dash Cursor (visual only)")]
+    [SerializeField] private GameObject _dashCursor = null;
+    [SerializeField] private float _cursorDistance = 1.5f;
+    [SerializeField] private float _cursorDeadzone = 0.2f;
+    [SerializeField] private float _cursorRotationOffset = -90f; // ajustable pour orienter correctement votre sprite flèche
+    [SerializeField] private float _cursorLerpSpeed = 12f; // vitesse d'interpolation (ajustable)
+
     #endregion EditorVariables
 
     #region Variables
@@ -146,6 +154,11 @@ public class PlayerCharacter : MonoBehaviour
     private float _startDashTime = 0.0f;
     private bool _bufferDash = false;
     [SerializeField] public bool _hittingDash = false;
+
+    // last meaningful direction for the visual cursor (does not affect dash logic)
+    private Vector2 _lastDashDirection = Vector2.zero;
+    // current interpolated direction used to draw the cursor smoothly
+    private Vector2 _cursorCurrentDirection = Vector2.right;
 
     [Header("Bounce")]
     [SerializeField] private Vector2 enemyBounceForce;
@@ -200,6 +213,21 @@ public class PlayerCharacter : MonoBehaviour
 
         dashHitbox.gameObject.SetActive(false);
         _isKnockBacked = false;
+
+        // activer le curseur visuel si assigné
+        if (_dashCursor != null)
+            _dashCursor.SetActive(true);
+
+        // initialiser la direction courante du curseur (évite jump dynamiques à la 1re frame)
+        if (_lastDashDirection.sqrMagnitude > 0.0001f)
+            _cursorCurrentDirection = _lastDashDirection.normalized;
+        else
+        {
+            bool facingRight = true;
+            if (_mesh != null)
+                facingRight = (_mesh.localScale.x >= 0f);
+            _cursorCurrentDirection = facingRight ? Vector2.right : Vector2.left;
+        }
     }
 
 #if UNITY_EDITOR
@@ -226,6 +254,7 @@ public class PlayerCharacter : MonoBehaviour
 
     private void Update()
     {
+        UpdateDashCursor(); // curseur visuel : mise à jour fluide
         RotateMesh();
     }
 
@@ -241,17 +270,60 @@ public class PlayerCharacter : MonoBehaviour
         _mesh.rotation = Quaternion.Euler(0, _currentMeshRotation.y, 0);
     }
 
+    private void UpdateDashCursor()
+    {
+        if (_dashCursor == null)
+            return;
+
+        // Toujours visible — purement visuel
+        if (!_dashCursor.activeSelf)
+            _dashCursor.SetActive(true);
+
+        // Déterminer direction cible : priorité remappée (_dashMovementInput), sinon la dernière direction du stick brut
+        Vector2 targetDir = Vector2.zero;
+
+        if (_dashMovementInput.sqrMagnitude > 0.0001f && _dashMovementInput.magnitude >= _cursorDeadzone)
+        {
+            targetDir = _dashMovementInput.normalized;
+        }
+        else if (_lastDashDirection.sqrMagnitude > 0.0001f)
+        {
+            targetDir = _lastDashDirection.normalized;
+        }
+        else
+        {
+            // fallback : facing via localScale.x (plus courant pour flip sprite)
+            bool facingRight = true;
+            if (_mesh != null)
+                facingRight = (_mesh.localScale.x >= 0f);
+            targetDir = facingRight ? Vector2.right : Vector2.left;
+        }
+
+        // Interpolation exponentielle (frame-rate indépendant) pour un feeling fluide
+        float t = 1f - Mathf.Exp(-_cursorLerpSpeed * Time.deltaTime);
+        _cursorCurrentDirection = Vector2.Lerp(_cursorCurrentDirection, targetDir, t);
+        if (_cursorCurrentDirection.sqrMagnitude > 0.000001f)
+            _cursorCurrentDirection.Normalize();
+
+        // positionner et orienter le curseur
+        Vector3 targetPos = transform.position + (Vector3)(_cursorCurrentDirection * _cursorDistance);
+        _dashCursor.transform.position = targetPos;
+
+        float angle = Mathf.Atan2(_cursorCurrentDirection.y, _cursorCurrentDirection.x) * Mathf.Rad2Deg;
+        _dashCursor.transform.rotation = Quaternion.Euler(0, 0, angle + _cursorRotationOffset);
+    }
+
     #endregion Visual
 
     #region Update
     private void FixedUpdate()
     {
-        //On reset la force � ajouter cette boucle de fixed update
+        //On reset la force à ajouter cette boucle de fixed update
         _forceToAdd = Vector2.zero;
         _prePhysicPosition = _rigidbody.position;
 
-        //Fonction qui d�tecte si on touche le sol ou non
-        //Et appelle les events associ�s
+        //Fonction qui détecte si on touche le sol ou non
+        //Et appelle les events associés
         GroundDetection();
         ManageAirTime();
         ManageCoyoteTime();
@@ -594,32 +666,21 @@ public class PlayerCharacter : MonoBehaviour
         }
     }
 
-    //public float GravityValue(float baseWalkSpeed, float maxHeight, float maxLength) // v0 = -2 * h / t_h^2 || -2 * h * v^2 / L_h^2
-    //{
-
-    //    return -2 * maxHeight * baseWalkSpeed * baseWalkSpeed / ((maxLength * 0.5f) * (maxLength * 0.5f));
-    //}
-
-    //public float InitSpeed(float baseWalkSpeed, float maxHeight, float maxLength) // v0 = 2 * h / t_h || 2 * h * v / L_h
-    //{
-    //    return 2 * maxHeight * baseWalkSpeed / ((maxLength * 0.5f));
-    //}
-
     #endregion Jump
 
     #region Dash
     public void GetDashInput(Vector2 Dashinput)
     {
         float scalaire = Vector2.Dot(Vector2.up, Dashinput);
-        /*On multiplie un ensemble de valeur par le nombre de marche,
-         * qu'on arrondis à l'inferieur ensuite,
-         * puis on redivise par le nombre de marche pour obtenir un ensemble restreint de valeur (0, 0,5, 1),
-         * Cet ensemble a un décalage arbitraire de 0,25 (marche de manoeuvre joystick)*/
-        float step = Mathf.Floor((MathF.Abs(scalaire) + 0.25f) * 2) / 2f;
-        /* Déplacement horizontal si le step > 0,5 dans ce cas déplacement vertical strict, donc pas horizontal, sinon on * le signe du déplacement (-1 ou 1),
-         * par l'inverse du déplacement vertical (1 - step) qui donne soit 1 (déplcamenet horizontal strict ou 0,5 déplacement diagonal)*/
+        float step = Mathf.Floor((Mathf.Abs(scalaire) + 0.25f) * 2) / 2f;
         float Mx = step > 0.5f ? 0 : Mathf.Sign(Dashinput.x) * (1 - step);
         _dashMovementInput = (new Vector2(Mx, step * Mathf.Sign(scalaire))).normalized;
+
+        // mettre à jour la dernière direction utile à partir du stick brut (Input System)
+        if (Dashinput.sqrMagnitude >= (_cursorDeadzone * _cursorDeadzone) && Dashinput.sqrMagnitude > 0.0001f)
+        {
+            _lastDashDirection = Dashinput.normalized;
+        }
     }
 
     public void StartDash()
