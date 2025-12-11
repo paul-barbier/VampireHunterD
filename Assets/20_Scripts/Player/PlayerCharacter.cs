@@ -692,7 +692,7 @@ public class PlayerCharacter : MonoBehaviour
             return;
         }
 
-        if (_canDash || _health._isDying ||!_attack.isAttacking)
+        if (_canDash || _health._isDying)
         {
             //_movementDisabled = true;
 
@@ -924,7 +924,6 @@ public class PlayerCharacter : MonoBehaviour
         _isKnockBacked = false;
         _DAnimation.SetBool("IsKnockbacked", false);
     }
-
     public void KillingEnemy(Collider2D collision)
     {
         RespawnManager rm = collision.transform.root.GetComponentInChildren<RespawnManager>(true);
@@ -932,6 +931,9 @@ public class PlayerCharacter : MonoBehaviour
         Collider2D dash = collision.GetComponent<Collider2D>();
         Collider2D attackEnnemi = collision.transform.Find("AttackZone").GetComponent<Collider2D>();
         Debug.Log("RespawnManager trouvé = " + (rm != null));
+
+        sprite.material.SetFloat("_Dissolve", 1f);
+        
         sprite.enabled = false;
         dash.enabled = false;
         attackEnnemi.enabled = false;
@@ -939,4 +941,9 @@ public class PlayerCharacter : MonoBehaviour
             rm.RespawnFonction();
     }
     #endregion Damage/Die
+
+    //private IEnumerator DeathMobDissolve()
+    //{
+    //    yield return new WaitForSeconds(0.1f);
+    //}
 }

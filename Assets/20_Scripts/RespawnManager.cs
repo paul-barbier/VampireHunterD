@@ -4,7 +4,7 @@ using UnityEngine;
 public class RespawnManager : MonoBehaviour
 {
     [SerializeField] private SpriteRenderer _objectToRespawn;
-    [SerializeField] private SpriteRenderer RespawnAnim;
+    [SerializeField] private ParticleSystem RespawnAnim;
     [SerializeField] private float _respawnDelay;
     [SerializeField] private Collider2D _dashEnnemiHitbox;
     [SerializeField] private Collider2D _ennemiAttackHitbox;
@@ -47,21 +47,29 @@ public class RespawnManager : MonoBehaviour
 
     private void Update()
     {
+        //if (!_isRespawn)
+        //    return;
+        //else
+        //{
+        //  Respawn();
+        //    _isRespawn = false;    
+        //}
         EnnemyPos = _objectToRespawn.transform.position;
+        RespawnAnim.transform.position = EnnemyPos;
         _respawnTime += Time.deltaTime;
         if (!_isRespawn)
             return;
-        DissolveEffect();
 
-         if (_objectToRespawn.enabled == false && _respawnTime >= _respawnDelay)
-         {
+        if (_objectToRespawn.enabled == false && _respawnTime >= _respawnDelay)
+        {
             timerAfterRespawn += Time.deltaTime;
             if (timerAfterRespawn >= 0.2f)
             {
-                Instantiate(RespawnAnim, EnnemyPos, Quaternion.identity);
+                RespawnAnim.Play();
                 if (timerAfterRespawn > 0.5f)
                 {
-                    Destroy(RespawnAnim.gameObject);
+                    Destroy(gameObject, 0.5f);
+                    _objectToRespawn.material.SetFloat("_Dissolve", 0f);
                     _objectToRespawn.enabled = true;
                     _dashEnnemiHitbox.enabled = true;
                     _ennemiAttackHitbox.enabled = true;
@@ -70,7 +78,7 @@ public class RespawnManager : MonoBehaviour
                     timerAfterRespawn = 0f;
                 }
             }
-         }
+        }
     }
 
     public void RespawnFonction()
@@ -98,4 +106,32 @@ public class RespawnManager : MonoBehaviour
             yield return null;
         }
     }
+
+    //private void Respawn()
+    //{
+    //    EnnemyPos = _objectToRespawn.transform.position;
+    //    _respawnTime += Time.deltaTime;
+    //    if (!_isRespawn)
+    //        return;
+    //    DissolveEffect();
+
+    //    if (_objectToRespawn.enabled == false && _respawnTime >= _respawnDelay)
+    //    {
+    //        timerAfterRespawn += Time.deltaTime;
+    //        if (timerAfterRespawn >= 0.2f)
+    //        {
+    //            Instantiate(RespawnAnim, EnnemyPos, Quaternion.identity);
+    //            if (timerAfterRespawn > 0.5f)
+    //            {
+    //                Destroy(gameObject, 0.5f);
+    //                _objectToRespawn.enabled = true;
+    //                _dashEnnemiHitbox.enabled = true;
+    //                _ennemiAttackHitbox.enabled = true;
+    //                _respawnTime = 0f;
+    //                _isRespawn = false;
+    //                timerAfterRespawn = 0f;
+    //            }
+    //        }
+    //    }
+    //}
 }
