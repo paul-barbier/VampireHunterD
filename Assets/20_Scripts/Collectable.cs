@@ -86,6 +86,10 @@ public class Collectable : MonoBehaviour
             dialogue._skipCollectible = false;
             dialogue._canSkipCollectible = false;
             Time.timeScale = 1.0f;
+            Debug.Log($"skip={dialogue._skipCollectible}, showing={dialogue._CollectibleUIShowing}, collected={_hasBeenCollected}");
+            Debug.Log("pipi");
+
+
         }
     }
 }
