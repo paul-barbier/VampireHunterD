@@ -7,6 +7,8 @@ public class Attack : MonoBehaviour
     [SerializeField] private float attackSpeed;
     [SerializeField] private float lowAngle;
     [SerializeField] private float highAngle;
+
+    Coroutine AttackCoroutine;
     public bool isAttacking = false;
     public bool canAttack = true;
 
@@ -60,8 +62,10 @@ public class Attack : MonoBehaviour
 
         SoundManager.PlaySound(SoundType.Attack);
 
-        StartCoroutine(AttackTime());
+        AttackCoroutine = StartCoroutine(AttackTime());
         StartCoroutine(AttackCooldown());
+
+        StopCoroutine(AttackCoroutine);
     }
 
     IEnumerator AttackTime()

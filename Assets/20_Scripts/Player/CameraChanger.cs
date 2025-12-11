@@ -8,6 +8,8 @@ public class CameraChanger : MonoBehaviour
     [SerializeField] private float Radius;
     [SerializeField] private Transform Target;
 
+    [SerializeField] private int direction;
+
     [Header("Cam")]
     public CinemachineCamera _cineCamera;
 
@@ -18,10 +20,12 @@ public class CameraChanger : MonoBehaviour
     {
         if (collision.GetComponent<PlayerCharacter>() != null)
         {
-            if (_cineCamera != null && defaultTarget != null)
-            {
-                defaultTarget.AddMember(Target, Weight, Radius);
-            }
+            //if (_cineCamera != null && defaultTarget != null)
+            //{
+            //    defaultTarget.AddMember(Target, Weight, Radius);
+            //}
+            collision.GetComponent<CameraFollow>().ChangeLook(direction);
+
         }
     }
 
@@ -29,11 +33,12 @@ public class CameraChanger : MonoBehaviour
     {
         if (collision.GetComponent<PlayerCharacter>() != null)
         {
-            if (_cineCamera != null && defaultTarget != null)
-            {
-                defaultTarget.RemoveMember(Target);
+            //if (_cineCamera != null && defaultTarget != null)
+            //{
+            //    defaultTarget.RemoveMember(Target);
+            //}
 
-            }
+            collision.GetComponent<CameraFollow>().ChangeLook(0);
         }
     }
 }

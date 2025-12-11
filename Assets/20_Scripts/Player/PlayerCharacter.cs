@@ -14,9 +14,6 @@ public class PlayerCharacter : MonoBehaviour
 
     #region DataStructure
 
-    [SerializeField] RespawnManager RespawnManager;
-    [SerializeField] SpriteRenderer _sprite;
-
     public enum PhysicState
     {
         Ground,
@@ -697,7 +694,7 @@ public class PlayerCharacter : MonoBehaviour
 
         if (_canDash || _health._isDying)
         {
-            //Time.timeScale = 1f;
+            //_movementDisabled = true;
 
             _isDashing = true;
             _canDash = false;
@@ -715,9 +712,9 @@ public class PlayerCharacter : MonoBehaviour
             {
                 _rotatePlayer = false;
 
-                float angle = Mathf.Atan2(_dashMovementInput.y, _dashMovementInput.x) * Mathf.Rad2Deg;
+                float angle = (Mathf.Atan2(_dashMovementInput.y, _dashMovementInput.x) * Mathf.Rad2Deg) % 90;
 
-                _mesh.rotation = Quaternion.Euler(0, 0, angle);
+                _mesh.rotation = Quaternion.Euler(0, _mesh.localEulerAngles.y, angle);
 
                 _DAnimation.SetBool("IsDashing", true);
             }
@@ -765,6 +762,7 @@ public class PlayerCharacter : MonoBehaviour
             _DAnimation.SetBool("IsDashingDown", false);
 
             _rotatePlayer = true;
+            //_movementDisabled = false;
 
             if (IsGrounded && !_canDash)
             {
@@ -914,7 +912,6 @@ public class PlayerCharacter : MonoBehaviour
             float curveValue = _knockbackValues.DecelerationFromKnockBack.Evaluate(ratio);
 
             float deceleration = _knockbackValues._knockbackDeceleration * _jumpParameters.DecelerationFromAirTime.Evaluate(ratio) * Time.fixedDeltaTime;
-
             targetKnockback = Vector2.MoveTowards(targetKnockback, Vector2.zero, deceleration);
 
             _rigidbody.AddForce(targetKnockback * _knockbackValues._knockbackForce, ForceMode2D.Impulse);

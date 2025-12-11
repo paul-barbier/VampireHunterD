@@ -12,7 +12,7 @@ public class Health : MonoBehaviour
     public CheckPoints checkpoint;
     public bool _isInvincible;
     public bool _isDying;
-    public Transform respawnPoint;
+
 
     //Visuel
     [SerializeField] private Animator HpAnime;

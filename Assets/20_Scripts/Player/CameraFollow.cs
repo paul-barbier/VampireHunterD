@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using Unity.Cinemachine;
+using UnityEngine.InputSystem.iOS;
 
 public class CameraFollow : MonoBehaviour
 {
@@ -13,6 +14,12 @@ public class CameraFollow : MonoBehaviour
     [SerializeField] private float offsetCam = 6.0f;
     [SerializeField] private float camLerpSpeed = 6f;
 
+    [SerializeField] private float DefaultLook = 1.0f;
+    [SerializeField] private float LookUp = 1.0f;
+    [SerializeField] private float LookDown = 1.0f;
+
+    private float CurrentLook = 1.0f;
+
     [SerializeField] private float PremierPlanCamZ = 10f;
     [SerializeField] private float SecondPlanCamZ = 15f;
 
@@ -23,6 +30,7 @@ public class CameraFollow : MonoBehaviour
     {
         _player = GetComponent<PlayerCharacter>();
         _health = GetComponent<Health>();
+        CurrentLook = DefaultLook;
     }
 
     private void Update()
@@ -31,17 +39,17 @@ public class CameraFollow : MonoBehaviour
 
         if (input > 0.3f)
         {
-            _targetOffset = new Vector3(offsetCam, 1f, 0f);
+            _targetOffset = new Vector3(offsetCam, CurrentLook, 0f);
             _targetHardLimit = new Vector2(-0.7f, 0f);
         }
         else if (input < -0.3f)
         {
-            _targetOffset = new Vector3(-offsetCam, 1f, 0f);
+            _targetOffset = new Vector3(-offsetCam, CurrentLook, 0f);
             _targetHardLimit = new Vector2(0.7f, 0f);
         }
         else if (input == 0)
         {
-            _targetOffset = new Vector3(0f, 1f, 0f);
+            _targetOffset = new Vector3(0f, CurrentLook, 0f);
             _targetHardLimit = Vector2.zero;
         }
 
@@ -88,5 +96,21 @@ public class CameraFollow : MonoBehaviour
     {
         _camera.Lookahead.IgnoreY = false;
         _camera.Lookahead.Smoothing = 7;
+    }
+
+    public void ChangeLook(int direction)
+    {
+        if(direction > 0)
+        {
+            CurrentLook = LookUp;
+        }
+        else if (direction < 0)
+        {
+            CurrentLook = LookDown;
+        }
+        else
+        {
+            CurrentLook = DefaultLook;
+        }
     }
 }

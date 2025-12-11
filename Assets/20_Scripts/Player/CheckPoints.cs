@@ -9,6 +9,7 @@ public class CheckPoints : MonoBehaviour
     {
         animator = GetComponentInChildren<Animator>();
     }
+
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.CompareTag("Player"))
@@ -20,7 +21,20 @@ public class CheckPoints : MonoBehaviour
             playerHealth.GetHeal(playerHealth.GetMaxHealth());
 
             playerHealth.checkpoint = this;
+        }
+    }
 
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        if (collision.CompareTag("Player"))
+        {
+            animator.SetBool("PlayAnime", true);
+
+            Health playerHealth = collision.GetComponent<Health>();
+
+            playerHealth.GetHeal(playerHealth.GetMaxHealth());
+
+            playerHealth.checkpoint = this;
         }
     }
 }
