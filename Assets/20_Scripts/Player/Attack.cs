@@ -62,7 +62,7 @@ public class Attack : MonoBehaviour
 
         SoundManager.PlaySound(SoundType.Attack);
 
-        AttackCoroutine = StartCoroutine(AttackTime());
+        StartCoroutine(AttackTime());
         StartCoroutine(AttackCooldown());
     }
 
