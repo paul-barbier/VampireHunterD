@@ -8,7 +8,7 @@ public class Attack : MonoBehaviour
     [SerializeField] private float lowAngle;
     [SerializeField] private float highAngle;
 
-    Coroutine AttackCoroutine;
+    public Coroutine AttackCoroutine;
     public bool isAttacking = false;
     public bool canAttack = true;
 
@@ -64,8 +64,6 @@ public class Attack : MonoBehaviour
 
         AttackCoroutine = StartCoroutine(AttackTime());
         StartCoroutine(AttackCooldown());
-
-        StopCoroutine(AttackCoroutine);
     }
 
     IEnumerator AttackTime()

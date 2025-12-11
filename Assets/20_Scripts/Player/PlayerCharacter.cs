@@ -695,6 +695,7 @@ public class PlayerCharacter : MonoBehaviour
         if (_canDash || _health._isDying)
         {
             //_movementDisabled = true;
+            StopCoroutine(_attack.AttackCoroutine);
 
             _isDashing = true;
             _canDash = false;

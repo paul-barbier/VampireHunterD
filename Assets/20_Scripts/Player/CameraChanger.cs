@@ -20,10 +20,6 @@ public class CameraChanger : MonoBehaviour
     {
         if (collision.GetComponent<PlayerCharacter>() != null)
         {
-            //if (_cineCamera != null && defaultTarget != null)
-            //{
-            //    defaultTarget.AddMember(Target, Weight, Radius);
-            //}
             collision.GetComponent<CameraFollow>().ChangeLook(direction);
 
         }
@@ -33,11 +29,6 @@ public class CameraChanger : MonoBehaviour
     {
         if (collision.GetComponent<PlayerCharacter>() != null)
         {
-            //if (_cineCamera != null && defaultTarget != null)
-            //{
-            //    defaultTarget.RemoveMember(Target);
-            //}
-
             collision.GetComponent<CameraFollow>().ChangeLook(0);
         }
     }
