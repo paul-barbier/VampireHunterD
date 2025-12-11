@@ -1,6 +1,5 @@
 ﻿using UnityEngine;
 using Unity.Cinemachine;
-using UnityEngine.InputSystem.iOS;
 
 public class CameraFollow : MonoBehaviour
 {
@@ -23,6 +22,9 @@ public class CameraFollow : MonoBehaviour
     [SerializeField] private float PremierPlanCamZ = 10f;
     [SerializeField] private float SecondPlanCamZ = 15f;
 
+    // nouvelle cible interpolée pour la distance caméra
+    private float _targetCameraDistance;
+
     private Vector3 _targetOffset;
     private Vector2 _targetHardLimit;
 
@@ -31,6 +33,11 @@ public class CameraFollow : MonoBehaviour
         _player = GetComponent<PlayerCharacter>();
         _health = GetComponent<Health>();
         CurrentLook = DefaultLook;
+
+        // initialiser la target distance sur le premier plan
+        _targetCameraDistance = PremierPlanCamZ;
+        if (_camera != null)
+            _camera.CameraDistance = _targetCameraDistance;
     }
 
     private void Update()
@@ -62,20 +69,27 @@ public class CameraFollow : MonoBehaviour
             _camera.Lookahead.Time = 1f;
         }
 
-        if (_player.transform.position.z == 0)
+        // interpolation lissée de la distance caméra
+        if (_camera != null)
         {
-            _camera.CameraDistance = 10f;
-            //_camera.CameraDistance = Mathf.Lerp(10, 15, Time.deltaTime * camLerpSpeed);
-        }
-        if (_player.transform.position.z == 10)
-        {
-            _camera.CameraDistance = 15f;
-            //_camera.CameraDistance = Mathf.Lerp(15, 10, Time.deltaTime * camLerpSpeed);
+            _camera.CameraDistance = Mathf.Lerp(_camera.CameraDistance, _targetCameraDistance, Time.deltaTime * camLerpSpeed);
         }
 
         _camera.TargetOffset = Vector3.Lerp(_camera.TargetOffset, _targetOffset, Time.deltaTime * camLerpSpeed);
 
         _camera.Composition.HardLimits.Offset = Vector2.Lerp(_camera.Composition.HardLimits.Offset, _targetHardLimit, Time.deltaTime * camLerpSpeed);
+    }
+
+    // méthode publique pour que des triggers (CameraChanger) modifient la cible distance
+    public void SetTargetCameraDistance(float distance)
+    {
+        _targetCameraDistance = distance;
+    }
+
+    // remet la cible sur le plan par défaut (PremierPlanCamZ)
+    public void ResetTargetCameraDistance()
+    {
+        _targetCameraDistance = PremierPlanCamZ;
     }
 
     public void LockCamOnPlayer()
