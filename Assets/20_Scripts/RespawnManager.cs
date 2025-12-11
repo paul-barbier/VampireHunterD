@@ -9,7 +9,7 @@ public class RespawnManager : MonoBehaviour
     [SerializeField] private Collider2D _dashEnnemiHitbox;
     [SerializeField] private Collider2D _ennemiAttackHitbox;
 
-
+    private Vector3 EnnemyPos;
     float timerAfterRespawn = 0f;
     public bool _isRespawn = false;
     float _respawnTime = 0;
@@ -38,12 +38,12 @@ public class RespawnManager : MonoBehaviour
     }
     private void Start()
     {
-        RespawnAnim.enabled = false;
         _objectToRespawn.enabled = true;
     }
 
     private void Update()
     {
+        EnnemyPos = _objectToRespawn.transform.position;
         _respawnTime += Time.deltaTime;
         if ( !_isRespawn )
             return;
@@ -53,14 +53,14 @@ public class RespawnManager : MonoBehaviour
             timerAfterRespawn += Time.deltaTime;
             if (timerAfterRespawn >= 0.5f)
             {
-                Instantiate(RespawnAnim, transform.position, Quaternion.identity);
+                Instantiate(RespawnAnim, EnnemyPos, Quaternion.identity);
                 timerAfterRespawn = 0f;
 
-                _objectToRespawn.enabled = true;
-                _dashEnnemiHitbox.enabled = true;
-                _ennemiAttackHitbox.enabled = true;
-                _respawnTime = 0f; 
-                _isRespawn = false;
+                    _objectToRespawn.enabled = true;
+                    _dashEnnemiHitbox.enabled = true;
+                    _ennemiAttackHitbox.enabled = true;
+                    _respawnTime = 0f;
+                    _isRespawn = false;
             }
         }
     }
