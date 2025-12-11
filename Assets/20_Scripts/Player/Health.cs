@@ -10,7 +10,9 @@ public class Health : MonoBehaviour
     [SerializeField] private int _currentHealth;
     [SerializeField] private PlayerCharacter _character;
     public CheckPoints checkpoint;
-    public bool _isInvincible;
+
+    
+    public bool _isInvincible = false;
     public bool _isDying;
 
 
@@ -34,10 +36,11 @@ public class Health : MonoBehaviour
 
     private const float VIGNETTE_BASE_INTENSITY = 0.2f;
     private const float VORONOI_BASE_INTENSITY = 0.0f;
-
+    private Material _hurtShader;
 
     private void Start()
     {
+        _hurtShader = _character._mesh.gameObject.GetComponent<Renderer>().material;
         _currentHealth = _maxHealth;
         _character = GetComponent<PlayerCharacter>();
         _hurtEffect.SetActive(false);
@@ -55,6 +58,7 @@ public class Health : MonoBehaviour
             return;
         _currentHealth -= damages;
         UpdateBar();
+        _hurtShader.SetFloat("_Damaged", 1.0f);
 
         if (_currentHealth <= 0)
             Die();
@@ -134,6 +138,9 @@ public class Health : MonoBehaviour
         //}
         Debug.Log("End Hurt");
         _isInvincible = false;
+
+        _hurtShader.SetFloat("_Damaged", 0.0f);
+
         _hurtEffect.SetActive(false);
     }
 

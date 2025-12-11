@@ -941,6 +941,8 @@ public class PlayerCharacter : MonoBehaviour
         Material mat = sprite.material;
         mat.SetFloat(_dissolveID, 0f);
         sprite.enabled = true;
+        if (dash != null) dash.enabled = false;
+        if (attackEnnemi != null) attackEnnemi.enabled = false;
 
         float elapsed = 0f;
         while (elapsed < duration)
@@ -955,8 +957,6 @@ public class PlayerCharacter : MonoBehaviour
 
         // Désactiver visuel et hitboxes après la dissolution
         sprite.enabled = false;
-        if (dash != null) dash.enabled = false;
-        if (attackEnnemi != null) attackEnnemi.enabled = false;
 
         if (rm != null)
             rm.RespawnFonction();

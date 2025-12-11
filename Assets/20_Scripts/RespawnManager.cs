@@ -65,10 +65,10 @@ public class RespawnManager : MonoBehaviour
             timerAfterRespawn += Time.deltaTime;
             if (timerAfterRespawn >= 0.2f)
             {
-                RespawnAnim.Play();
+                //RespawnAnim.Play();
                 if (timerAfterRespawn > 0.5f)
                 {
-                    Destroy(gameObject, 0.5f);
+                    //Destroy(gameObject, 0.5f);
                     _objectToRespawn.material.SetFloat("_Dissolve", 0f);
                     _objectToRespawn.enabled = true;
                     _dashEnnemiHitbox.enabled = true;
