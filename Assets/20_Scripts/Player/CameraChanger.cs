@@ -6,15 +6,7 @@ public class CameraChanger : MonoBehaviour
     PlayerCharacter _character;
     [SerializeField] private float Weight;
     [SerializeField] private float Radius;
-    [SerializeField] private Transform Target;
-
     [SerializeField] private int direction;
-
-    [Header("Cam")]
-    public CinemachineCamera _cineCamera;
-
-    [Header("Targets")]
-    public CinemachineTargetGroup defaultTarget;
 
     private void OnTriggerEnter2D(Collider2D collision)
     {

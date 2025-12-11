@@ -360,7 +360,7 @@ public class PlayerCharacter : MonoBehaviour
         if (isTouchingGround && !IsGrounded)
         {
 
-            //Land.Play();
+            Land.Play();
             if (!_canDash)
             {
                 _canDash = true;
