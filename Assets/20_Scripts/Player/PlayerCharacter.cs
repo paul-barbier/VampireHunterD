@@ -924,6 +924,44 @@ public class PlayerCharacter : MonoBehaviour
         _isKnockBacked = false;
         _DAnimation.SetBool("IsKnockbacked", false);
     }
+
+    //private IEnumerator DeathMobDissolve()
+    //{
+    //    yield return new WaitForSeconds(0.1f);
+    //}
+
+    private static readonly int _dissolveID = Shader.PropertyToID("_Dissolve");
+
+    private IEnumerator DissolveAndDisable(SpriteRenderer sprite, Collider2D dash, Collider2D attackEnnemi, RespawnManager rm, float duration = 1f)
+    {
+        if (sprite == null)
+            yield break;
+
+        // Utiliser sprite.material pour s'assurer d'instancier le matériau si nécessaire
+        Material mat = sprite.material;
+        mat.SetFloat(_dissolveID, 0f);
+        sprite.enabled = true;
+
+        float elapsed = 0f;
+        while (elapsed < duration)
+        {
+            elapsed += Time.deltaTime;
+            float value = Mathf.Clamp01(elapsed / duration);
+            mat.SetFloat(_dissolveID, value);
+            yield return null;
+        }
+
+        mat.SetFloat(_dissolveID, 1f);
+
+        // Désactiver visuel et hitboxes après la dissolution
+        sprite.enabled = false;
+        if (dash != null) dash.enabled = false;
+        if (attackEnnemi != null) attackEnnemi.enabled = false;
+
+        if (rm != null)
+            rm.RespawnFonction();
+    }
+
     public void KillingEnemy(Collider2D collision)
     {
         RespawnManager rm = collision.transform.root.GetComponentInChildren<RespawnManager>(true);
@@ -932,18 +970,8 @@ public class PlayerCharacter : MonoBehaviour
         Collider2D attackEnnemi = collision.transform.Find("AttackZone").GetComponent<Collider2D>();
         Debug.Log("RespawnManager trouvé = " + (rm != null));
 
-        sprite.material.SetFloat("_Dissolve", 1f);
-        
-        sprite.enabled = false;
-        dash.enabled = false;
-        attackEnnemi.enabled = false;
-        if (rm != null)
-            rm.RespawnFonction();
+        // Lance la coroutine qui fera l'effet Dissolve en 1 seconde, puis désactivera l'objet
+        StartCoroutine(DissolveAndDisable(sprite, dash, attackEnnemi, rm, 1f));
     }
     #endregion Damage/Die
-
-    //private IEnumerator DeathMobDissolve()
-    //{
-    //    yield return new WaitForSeconds(0.1f);
-    //}
 }
