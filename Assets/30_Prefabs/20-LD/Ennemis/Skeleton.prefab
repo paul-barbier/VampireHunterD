@@ -154,10 +154,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _objectToRespawn: {fileID: 8149170539411285104}
+  RespawnAnim: {fileID: 5623250928427857700, guid: 443b7a9e385d1794dafcfa5b1aac32e6, type: 3}
   _respawnDelay: 2
   _dashEnnemiHitbox: {fileID: 0}
   _ennemiAttackHitbox: {fileID: 0}
   _isRespawn: 0
+  dissolveDuration: 1
+  dissolveDelay: 0
 --- !u!1 &5376560768008259465
 GameObject:
   m_ObjectHideFlags: 0
@@ -199,7 +202,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8863607925293860305}
   m_Layer: 0
-  m_Name: Skeleton 1
+  m_Name: Skeleton
   m_TagString: Ennemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -214,7 +217,7 @@ Transform:
   m_GameObject: {fileID: 6042076303192272327}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -91.43, y: -73.9, z: 0}
+  m_LocalPosition: {x: 47.602478, y: 2.245295, z: 0}
   m_LocalScale: {x: 1.1687052, y: 1.1687052, z: 1.1687052}
   m_ConstrainProportionsScale: 0
   m_Children:

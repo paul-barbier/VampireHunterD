@@ -692,7 +692,7 @@ public class PlayerCharacter : MonoBehaviour
             return;
         }
 
-        if (_canDash || _health._isDying)
+        if (_canDash || _health._isDying ||!_attack.isAttacking)
         {
             //_movementDisabled = true;
 
