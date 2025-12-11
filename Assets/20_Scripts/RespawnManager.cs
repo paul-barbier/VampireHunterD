@@ -14,6 +14,10 @@ public class RespawnManager : MonoBehaviour
     public bool _isRespawn = false;
     float _respawnTime = 0;
 
+    [SerializeField] private float dissolveDuration = 1f;
+    [SerializeField] private float dissolveDelay = 0f;
+
+
     private void Awake()
     {
         if (_dashEnnemiHitbox == null)
@@ -45,24 +49,28 @@ public class RespawnManager : MonoBehaviour
     {
         EnnemyPos = _objectToRespawn.transform.position;
         _respawnTime += Time.deltaTime;
-        if ( !_isRespawn )
+        if (!_isRespawn)
             return;
+        DissolveEffect();
 
-        else if (_objectToRespawn.enabled == false && _respawnTime >= _respawnDelay )
-        {
+         if (_objectToRespawn.enabled == false && _respawnTime >= _respawnDelay)
+         {
             timerAfterRespawn += Time.deltaTime;
-            if (timerAfterRespawn >= 0.5f)
+            if (timerAfterRespawn >= 0.2f)
             {
                 Instantiate(RespawnAnim, EnnemyPos, Quaternion.identity);
-                timerAfterRespawn = 0f;
-
+                if (timerAfterRespawn > 0.5f)
+                {
+                    Destroy(RespawnAnim.gameObject);
                     _objectToRespawn.enabled = true;
                     _dashEnnemiHitbox.enabled = true;
                     _ennemiAttackHitbox.enabled = true;
                     _respawnTime = 0f;
                     _isRespawn = false;
+                    timerAfterRespawn = 0f;
+                }
             }
-        }
+         }
     }
 
     public void RespawnFonction()
@@ -73,6 +81,21 @@ public class RespawnManager : MonoBehaviour
             Debug.Log("Respawn called on : " + gameObject.name);
             _isRespawn = true;
             _respawnTime = 0f;
+        }
+    }
+
+
+    private IEnumerator DissolveEffect()
+    {
+        float eslepsedTime = 0f;
+
+        Material dissolveMat = GetComponent<SpriteRenderer>().material;
+        while (eslepsedTime < dissolveDuration)
+        {
+            eslepsedTime += Time.deltaTime;
+            float dissolveValue = Mathf.Lerp(0f, 1.1f, eslepsedTime / dissolveDuration);
+            dissolveMat.SetFloat("_Dissolve", dissolveValue);
+            yield return null;
         }
     }
 }
