@@ -36,12 +36,6 @@ public class PlatformeOneWay : MonoBehaviour
 
     private void Update()
     {
-        // traverser vers le bas
-        if (Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.DownArrow))
-        {
-            DownOneWay();
-        }
-
         // Détection automatique : si on saute vers le haut depuis en-dessous, autoriser le passage
         if (autoIgnoreOnJump && playerRigidbody != null)
         {
