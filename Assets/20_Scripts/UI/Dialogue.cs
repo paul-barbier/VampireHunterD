@@ -94,6 +94,16 @@ public class Dialogue : MonoBehaviour
     private void Update()
     {
         SkipDelaywaiting();
+
+        if (_dialogueActivated && Keyboard.current != null && Keyboard.current.eKey.wasPressedThisFrame)
+        {
+            SkipDialogue();
+        }
+
+        if (_CollectibleUIShowing && _canSkipCollectible && Keyboard.current != null && Keyboard.current.eKey.wasPressedThisFrame)
+        {
+            _skipCollectible = true;
+        }
     }
 
     bool isSkipDelaywaiting = false;
