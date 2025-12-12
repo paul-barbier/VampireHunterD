@@ -30,16 +30,17 @@ public class Dialogue : MonoBehaviour
     public bool _dialogueActivated;
     public bool _skipCollectible = false;
     public bool _canSkipCollectible = false;
+    public bool _isCinematique = false;
     private int _step;
 
     private void Start()
     {
         _collectible = FindAnyObjectByType<Collectable>();
-        _playerMovementScript = FindAnyObjectByType<PlayerCharacter>();
-        if (_playerMovementScript == null)
-        {
-            Debug.Log("Player null");
-        }
+        //_playerMovementScript = FindAnyObjectByType<PlayerCharacter>();
+        //if (_playerMovementScript == null)
+        //{
+        //    Debug.Log("Player null");
+        //}
 
         _dialogueActivated = false;
         _dialogueCanva.SetActive(false);
@@ -51,7 +52,7 @@ public class Dialogue : MonoBehaviour
         {
             _dialogueActivated = true;
             _dialogueCanva.SetActive(true);
-            SettingVelocity();
+            //SettingVelocity();
             ShowStep();
         }
     }
@@ -74,8 +75,6 @@ public class Dialogue : MonoBehaviour
             _dialogueCanva.SetActive(false);
             _step = 0;
             _dialogueActivated = false;
-            Destroy(this);
-            _playerCharacterMovement.SetActive(true);
         }
         else
         {
@@ -88,11 +87,10 @@ public class Dialogue : MonoBehaviour
         }
     }
 
-    private void SettingVelocity()
-    {
-        _playerMovementScript._forceToAdd = Vector2.zero;
-        _playerCharacterMovement.SetActive(false);
-    }
+    //private void SettingVelocity()
+    //{
+    //    _playerMovementScript._forceToAdd = Vector2.zero;
+    //}
 
     private void Update()
     {
@@ -129,7 +127,6 @@ public class Dialogue : MonoBehaviour
             _canSkipCollectible = true;
             timer = 0f;
             isSkipDelaywaiting = false;
-
         }
     }
 }

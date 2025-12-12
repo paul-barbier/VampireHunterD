@@ -8,13 +8,14 @@ public class UIDialogue : MonoBehaviour
     [SerializeField] private GameObject _pauseFirstButton, _optionsFirstButton, _optionsClosedButton, _commandesFirstButton, _commandesClosedButton;
 
     [SerializeField] private GameObject _dialogueUI;
-
+    [SerializeField] private Dialogue _dialogue;
 
     public void Start()
     {
         Time.timeScale = 1.0f;
         _pauseMenu.SetActive(false);
         _optionsMenu.SetActive(false);
+        _dialogue = GetComponentInChildren<Dialogue>();
     }
 
     public void Pause()
@@ -22,9 +23,9 @@ public class UIDialogue : MonoBehaviour
         if (!_pauseMenu.activeInHierarchy && !_optionsMenu.activeInHierarchy && !_commandesMenu.activeInHierarchy)
         {
             _pauseMenu.SetActive(true);
-            Time.timeScale = 0.0f;
             EventSystem.current.SetSelectedGameObject(null);
             EventSystem.current.SetSelectedGameObject(_pauseFirstButton);
+            Time.timeScale = 0.0f;
         }
         else if (_pauseMenu.activeInHierarchy || _optionsMenu.activeInHierarchy || _commandesMenu.activeInHierarchy)
         {

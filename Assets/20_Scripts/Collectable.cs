@@ -68,11 +68,18 @@ public class Collectable : MonoBehaviour
         _waitingGround = false;
 
         Debug.Log("IsGrounded Collectible");
-        _playerCharacterMovement.SetActive(false);
         _collectibleUI.SetActive(true);
         dialogue._CollectibleUIShowing = true;
         dialogue.SkipDelay();
-        Time.timeScale = 0.0f;
+
+        if (dialogue._isCinematique)
+        {
+            Time.timeScale = 1.0f;
+        }
+        else
+        {
+            Time.timeScale = 0.0f;
+        }
     }
 
     private void SkipCollectible()
@@ -80,14 +87,11 @@ public class Collectable : MonoBehaviour
         if (dialogue._skipCollectible == true && dialogue._CollectibleUIShowing == true && _hasBeenCollected == true)
         {
             _collectibleUI.SetActive(false);
-            _playerCharacterMovement.SetActive(true);
             dialogue._CollectibleUIShowing = false;
             _hasBeenCollected = false;
             dialogue._skipCollectible = false;
             dialogue._canSkipCollectible = false;
             Time.timeScale = 1.0f;
-            Debug.Log($"skip={dialogue._skipCollectible}, showing={dialogue._CollectibleUIShowing}, collected={_hasBeenCollected}");
-            Debug.Log("pipi");
 
 
         }
