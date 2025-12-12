@@ -18,6 +18,7 @@ public class Health : MonoBehaviour
 
     //Visuel
     [SerializeField] private Animator HpAnime;
+    [SerializeField] private Animator AnimMort;
 
     [Header("Time Stats")]
     [SerializeField] private float _hurtDisplayTime = 0.2f;
@@ -44,6 +45,8 @@ public class Health : MonoBehaviour
         _currentHealth = _maxHealth;
         _character = GetComponent<PlayerCharacter>();
         _hurtEffect.SetActive(false);
+        AnimMort.gameObject.SetActive(false);
+
     }
 
     private void Update()
@@ -84,9 +87,13 @@ public class Health : MonoBehaviour
         {
             state = 2;
         }
-        else
+        else if (ratio > 0f)
         {
             state = 3;
+        }
+        else
+        {
+            state = 4;
         }
 
         HpAnime.SetInteger("HealthState", state);
@@ -153,9 +160,14 @@ public class Health : MonoBehaviour
 
     IEnumerator Dying()
     {
+
         _character._DAnimation.SetBool("IsDying", true);
-        yield return new WaitForSeconds(4.0f);
-        _isDying = false;
+        _isInvincible = true;
+
+        yield return new WaitForSeconds(1.0f);
+        AnimMort.gameObject.SetActive(true);
+        AnimMort.SetBool("AnimDeath", true);
+        yield return new WaitForSeconds(1.5f);
         Respawn();
     }
 
@@ -163,6 +175,9 @@ public class Health : MonoBehaviour
     {
         if (checkpoint)
         {
+            AnimMort.SetBool("AnimDeath", false);
+            AnimMort.gameObject.SetActive(false);
+
             _character.transform.position = checkpoint.respawnPoint.position;
 
             GetHeal(GetMaxHealth());
@@ -171,6 +186,8 @@ public class Health : MonoBehaviour
             _character._isJumping = false;
             _character._movementDisabled = false;
             _character._DAnimation.SetBool("IsDying", false);
+            _isDying = false;
+            _isInvincible = false;
         }
     }
 }
