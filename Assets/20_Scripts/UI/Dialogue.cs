@@ -32,43 +32,27 @@ public class Dialogue : MonoBehaviour
     public bool _canSkipCollectible = false;
     private int _step;
 
-    [SerializeField] private bool _Cinematic;
-
     private void Start()
     {
         _collectible = FindAnyObjectByType<Collectable>();
-
-        if (_Cinematic == false)
+        _playerMovementScript = FindAnyObjectByType<PlayerCharacter>();
+        if (_playerMovementScript == null)
         {
-            _playerMovementScript = FindAnyObjectByType<PlayerCharacter>();
-            if (_playerMovementScript == null)
-            {
-                Debug.Log("Player null");
-            }
+            Debug.Log("Player null");
+        }
 
-            _dialogueActivated = false;
-            _dialogueCanva.SetActive(false);
-        }
-        else if (_Cinematic == true)
-        {
-            Debug.Log("Cinematique");
-            _dialogueActivated = true;
-            _dialogueCanva.SetActive(true);
-            ShowStep();
-        }
+        _dialogueActivated = false;
+        _dialogueCanva.SetActive(false);
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (_Cinematic == false)
+        if (collision.CompareTag("Player"))
         {
-            if (collision.CompareTag("Player"))
-            {
-                _dialogueActivated = true;
-                _dialogueCanva.SetActive(true);
-                SettingVelocity();
-                ShowStep();
-            }
+            _dialogueActivated = true;
+            _dialogueCanva.SetActive(true);
+            SettingVelocity();
+            ShowStep();
         }
     }
 
@@ -81,27 +65,18 @@ public class Dialogue : MonoBehaviour
 
     public void SkipDialogue()
     {
-        if (_Cinematic == false && _dialogueActivated)
+        _step++;
+        if (_step >= _speaker.Length)
         {
-            _step++;
-            if (_step >= _speaker.Length)
-            {
-                _dialogueCanva.SetActive(false);
-                _step = 0;
-                _dialogueActivated = false;
-                Destroy(this);
-                _playerCharacterMovement.SetActive(true);
-            }
-            else
-            {
-                ShowStep();
-            }
+            _dialogueCanva.SetActive(false);
+            _step = 0;
+            _dialogueActivated = false;
+            Destroy(this);
+            _playerCharacterMovement.SetActive(true);
         }
-
-        else if (_Cinematic == true && _dialogueActivated)
+        else
         {
-            Debug.Log("CinematiqueInput");
-            return;
+            ShowStep();
         }
         if (_canSkipCollectible == true && _CollectibleUIShowing == true)
         {
@@ -136,7 +111,7 @@ public class Dialogue : MonoBehaviour
             return;
 
         timer += Time.unscaledDeltaTime;
-        if (timer > _collectible._skipDelay) 
+        if (timer > _collectible._skipDelay)
         {
             _canSkipCollectible = true;
             timer = 0f;
