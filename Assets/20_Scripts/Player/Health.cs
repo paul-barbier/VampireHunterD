@@ -46,6 +46,7 @@ public class Health : MonoBehaviour
         _character = GetComponent<PlayerCharacter>();
         _hurtEffect.SetActive(false);
         AnimMort.gameObject.SetActive(false);
+        _isInvincible = false;
 
     }
 
@@ -160,7 +161,6 @@ public class Health : MonoBehaviour
 
     IEnumerator Dying()
     {
-
         _character._DAnimation.SetBool("IsDying", true);
         _isInvincible = true;
 
@@ -168,6 +168,7 @@ public class Health : MonoBehaviour
         AnimMort.gameObject.SetActive(true);
         AnimMort.SetBool("AnimDeath", true);
         yield return new WaitForSeconds(1.5f);
+        _isDying = false;
         Respawn();
     }
 
@@ -185,9 +186,9 @@ public class Health : MonoBehaviour
             _character._isDashing = false;
             _character._isJumping = false;
             _character._movementDisabled = false;
-            _character._DAnimation.SetBool("IsDying", false);
-            _isDying = false;
             _isInvincible = false;
+
+            _character._DAnimation.SetBool("IsDying", false);
         }
     }
 }
