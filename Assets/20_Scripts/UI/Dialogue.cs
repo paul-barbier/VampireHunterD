@@ -65,6 +65,9 @@ public class Dialogue : MonoBehaviour
 
     public void SkipDialogue()
     {
+        if (!_canSkipCollectible)
+            return;
+
         _step++;
         if (_step >= _speaker.Length)
         {

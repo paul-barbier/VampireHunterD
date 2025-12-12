@@ -1,6 +1,8 @@
+using Microsoft.Unity.VisualStudio.Editor;
 using System.Collections;
 using Unity.Cinemachine;
 using UnityEngine;
+using UnityEngine.ProBuilder.Shapes;
 using UnityEngine.Rendering.Universal;
 
 
@@ -61,6 +63,7 @@ public class Health : MonoBehaviour
         if (_isInvincible)
             return;
         _currentHealth -= damages;
+        StartCoroutine(Hurt());
         UpdateBar();
         _hurtShader.SetFloat("_Damaged", 1.0f);
 
@@ -71,9 +74,6 @@ public class Health : MonoBehaviour
     public void UpdateBar()
     {
         float ratio = (float)_currentHealth / _maxHealth;
-
-        StartCoroutine(Hurt());
-        SoundManager.PlaySound(SoundType.D_Dmg, 5f);
 
         int state = 0;
         if (ratio > 0.75f)
@@ -122,13 +122,17 @@ public class Health : MonoBehaviour
 
     private IEnumerator Hurt()
     {
-        _hurtEffect.SetActive(true);
+        SoundManager.PlaySound(SoundType.D_Dmg, 5f);
+
         _isInvincible = true;
         yield return new WaitForSeconds(1.5f);
-        _Material.SetFloat(_vignetteIntensity, VIGNETTE_BASE_INTENSITY);
-        _Material.SetFloat(_voronoiIntensity, VORONOI_BASE_INTENSITY);
+        _hurtShader.SetFloat("_Damaged", 1.0f);
+        _hurtEffect.SetActive(true);
 
-        yield return new WaitForSeconds(_hurtDisplayTime);
+        //_Material.SetFloat(_vignetteIntensity, VIGNETTE_BASE_INTENSITY);
+        //_Material.SetFloat(_voronoiIntensity, VORONOI_BASE_INTENSITY);
+
+        //yield return new WaitForSeconds(_hurtDisplayTime);
 
         //float elapsedTime = 0.0f;
         //while (elapsedTime < _hurtFadeOutTime)
@@ -176,6 +180,7 @@ public class Health : MonoBehaviour
     {
         if (checkpoint)
         {
+            AnimMort.Rebind();
             AnimMort.SetBool("AnimDeath", false);
             AnimMort.gameObject.SetActive(false);
 
@@ -186,7 +191,6 @@ public class Health : MonoBehaviour
             _character._isDashing = false;
             _character._isJumping = false;
             _character._movementDisabled = false;
-            _isInvincible = false;
 
             _character._DAnimation.SetBool("IsDying", false);
         }

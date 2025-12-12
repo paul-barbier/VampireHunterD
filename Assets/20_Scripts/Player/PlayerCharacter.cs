@@ -676,7 +676,6 @@ public class PlayerCharacter : MonoBehaviour
         float Mx = step > 0.5f ? 0 : Mathf.Sign(Dashinput.x) * (1 - step);
         _dashMovementInput = (new Vector2(Mx, step * Mathf.Sign(scalaire))).normalized;
 
-        // mettre à jour la dernière direction utile à partir du stick brut (Input System)
         if (Dashinput.sqrMagnitude >= (_cursorDeadzone * _cursorDeadzone) && Dashinput.sqrMagnitude > 0.0001f)
         {
             _lastDashDirection = Dashinput.normalized;
@@ -694,15 +693,12 @@ public class PlayerCharacter : MonoBehaviour
 
         if (_canDash || _health._isDying)
         {
-            //_movementDisabled = true;
-
             _isDashing = true;
             _canDash = false;
             cameraFollow._camera.Lookahead.IgnoreY = true;
             cameraFollow.LockCamOnPlayer();
 
             _chuteTime = 0.0f;
-
 
             if (_dashMovementInput.y == 1)
             {
