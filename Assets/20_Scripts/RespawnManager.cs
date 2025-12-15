@@ -63,21 +63,19 @@ public class RespawnManager : MonoBehaviour
         if (_objectToRespawn.enabled == false && _respawnTime >= _respawnDelay)
         {
             timerAfterRespawn += Time.deltaTime;
-            if (timerAfterRespawn >= 0.2f)
+
+            if(timerAfterRespawn == 0.3f)
+                Instantiate(RespawnAnim, transform.position, Quaternion.identity);
+
+            if (timerAfterRespawn > 0.5f)
             {
-                //RespawnAnim.Play();
-                if (timerAfterRespawn > 0.5f)
-                {
-                    //Destroy(gameObject, 0.5f);
-                    //_objectToRespawn.material.SetFloat("_Dissolve", 0f);
-                    //_objectToRespawn.enabled = true;
-                    StartCoroutine(DissolveEffect());
-                    _dashEnnemiHitbox.enabled = true;
-                    _ennemiAttackHitbox.enabled = true;
-                    _respawnTime = 0f;
-                    _isRespawn = false;
-                    timerAfterRespawn = 0f;
-                }
+                _objectToRespawn.enabled = true;
+                StartCoroutine(DissolveEffect());
+                _dashEnnemiHitbox.enabled = true;
+                _ennemiAttackHitbox.enabled = true;
+                _respawnTime = 0f;
+                _isRespawn = false;
+                timerAfterRespawn = 0f;
             }
         }
     }
@@ -96,7 +94,7 @@ public class RespawnManager : MonoBehaviour
     private static readonly int _dissolveID = Shader.PropertyToID("_Dissolve");
     private IEnumerator DissolveEffect()
     {
-        if(_objectToRespawn == null)
+        if (_objectToRespawn == null)
             yield break;
         Material mat = _objectToRespawn.material;
         mat.SetFloat(_dissolveID, 0f);
