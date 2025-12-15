@@ -857,6 +857,14 @@ public class PlayerCharacter : MonoBehaviour
         {
             StopDashOnEnemy(collision);
             BounceOnEnemy();
+            if (_currentMeshRotation.y >= 0f && _currentMeshRotation.y != 180.0f)
+            {
+                Instantiate(DaBloodyBlood, collision.transform.position, Quaternion.Euler(0, 0, 0));
+            }
+            if (_currentMeshRotation.y >= 180.0f)
+            {
+                Instantiate(DaBloodyBlood180, collision.transform.position, Quaternion.Euler(0, 0, 0));
+            }
             //Time.timeScale = 0.2f;
             ChauveSourisD.gameObject.SetActive(true);
             _canDash = true;
@@ -924,7 +932,8 @@ public class PlayerCharacter : MonoBehaviour
  
 
     private static readonly int _dissolveID = Shader.PropertyToID("_Dissolve");
-
+    [SerializeField] private ParticleSystem DaBloodyBlood;
+    [SerializeField] private ParticleSystem DaBloodyBlood180;
     private IEnumerator DissolveAndDisable(SpriteRenderer sprite, Collider2D dash, Collider2D attackEnnemi, RespawnManager rm, float duration = 1f)
     {
         if (sprite == null)
@@ -962,6 +971,15 @@ public class PlayerCharacter : MonoBehaviour
         Collider2D dash = collision.GetComponent<Collider2D>();
         Collider2D attackEnnemi = collision.transform.Find("AttackZone").GetComponent<Collider2D>();
         Debug.Log("RespawnManager trouvé = " + (rm != null));
+
+        if (_currentMeshRotation.y >= 0f && _currentMeshRotation.y != 180.0f)
+        {
+            Instantiate(DaBloodyBlood, collision.transform.position, Quaternion.Euler(0, 0, 0));
+        }
+        if (_currentMeshRotation.y >= 180.0f)
+        {
+            Instantiate(DaBloodyBlood180, collision.transform.position, Quaternion.Euler(0, 0, 0));
+        }
 
         StartCoroutine(DissolveAndDisable(sprite, dash, attackEnnemi, rm, 0.5f));
     }
