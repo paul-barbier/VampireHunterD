@@ -79,23 +79,25 @@ public class PlayerTeleport : MonoBehaviour
             transform.position = currentTeleporter.GetComponent<Teleporter>().GetDestination().position;
             PlaySound.Invoke();
 
-            int currentLayer = gameObject.layer;
-            if (currentLayer == layerPremier)
+            if (gameObject.layer == layerPremier)
             {
-                // Passe en SecondPlan : change le layer du joueur et ignore globalement la paire de layers
-                gameObject.layer = layerSecond;
+                SetLayerRecursively(gameObject, layerSecond);
                 SetIgnoreBetweenPlans(true);
             }
-            else if (currentLayer == layerSecond)
+            else if (gameObject.layer == layerSecond)
             {
-                // Revenir en PremierPlan : change le layer du joueur et restaure les collisions entre les plans
-                gameObject.layer = layerPremier;
+                SetLayerRecursively(gameObject, layerPremier);
                 SetIgnoreBetweenPlans(true);
             }
-            else
-            {
-                Debug.Log("Le joueur n'est ni sur 'PremierPlan' ni sur 'SecondPlan' — aucun basculement effectué.");
-            }
+        }
+    }
+    private void SetLayerRecursively(GameObject obj, int newLayer)
+    {
+        obj.layer = newLayer;
+
+        foreach (Transform child in obj.transform)
+        {
+            SetLayerRecursively(child.gameObject, newLayer);
         }
     }
 }

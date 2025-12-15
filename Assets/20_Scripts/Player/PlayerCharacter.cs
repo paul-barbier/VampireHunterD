@@ -360,7 +360,7 @@ public class PlayerCharacter : MonoBehaviour
         if (isTouchingGround && !IsGrounded)
         {
 
-            Land.Play();
+            Instantiate(Land, new Vector3(_mesh.transform.position.x, _mesh.transform.position.y - 7, _mesh.transform.position.z), Quaternion.identity);
             if (!_canDash)
             {
                 _canDash = true;
@@ -925,7 +925,7 @@ public class PlayerCharacter : MonoBehaviour
 
     private static readonly int _dissolveID = Shader.PropertyToID("_Dissolve");
 
-    private IEnumerator DissolveAndDisable(SpriteRenderer sprite, Collider2D dash, Collider2D attackEnnemi, RespawnManager rm, float duration = 1f)
+    private IEnumerator DissolveAndDisable(SpriteRenderer sprite, Collider2D dash, Collider2D attackEnnemi, RespawnManager rm, float duration = 0.1f)
     {
         if (sprite == null)
             yield break;
@@ -963,8 +963,7 @@ public class PlayerCharacter : MonoBehaviour
         Collider2D attackEnnemi = collision.transform.Find("AttackZone").GetComponent<Collider2D>();
         Debug.Log("RespawnManager trouvé = " + (rm != null));
 
-        // Lance la coroutine qui fera l'effet Dissolve en 1 seconde, puis désactivera l'objet
-        StartCoroutine(DissolveAndDisable(sprite, dash, attackEnnemi, rm, 1f));
+        StartCoroutine(DissolveAndDisable(sprite, dash, attackEnnemi, rm, 0.5f));
     }
     #endregion Damage/Die
 }
