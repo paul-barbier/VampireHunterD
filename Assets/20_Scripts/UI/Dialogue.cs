@@ -87,11 +87,6 @@ public class Dialogue : MonoBehaviour
         }
     }
 
-    //private void SettingVelocity()
-    //{
-    //    _playerMovementScript._forceToAdd = Vector2.zero;
-    //}
-
     private void Update()
     {
         SkipDelaywaiting();

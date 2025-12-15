@@ -258,7 +258,7 @@ public class PlayerCharacter : MonoBehaviour
 
     private void RotateMesh()
     {
-        if (!_rotatePlayer || _isDashing)
+        if (!_rotatePlayer || _isDashing || _movementDisabled)
             return;
 
         float targetRotation = _movementInput >= 0.01 ? 0f : _movementInput <= -0.01 ? 180f : _currentMeshRotation.y;
@@ -561,6 +561,10 @@ public class PlayerCharacter : MonoBehaviour
 
     public void StartJump()
     {
+
+        if (_movementDisabled) 
+            return;
+
         if ((!IsGrounded && !_isInCoyoteTime) || _isJumping)
         {
             _bufferJump = true;
@@ -984,4 +988,45 @@ public class PlayerCharacter : MonoBehaviour
         StartCoroutine(DissolveAndDisable(sprite, dash, attackEnnemi, rm, 0.5f));
     }
     #endregion Damage/Die
+
+    public void EnterCinematicMode()
+    {
+        _movementDisabled = true;
+
+        _isDashing = false;
+        _isJumping = false;
+        _hittingDash = false;
+
+        _rotatePlayer = false;
+
+        _currentDashForce = Vector2.zero;
+        _currentJumpForce = Vector2.zero;
+        _currentHorizontalVelocity = Vector2.zero;
+        _forceToAdd = Vector2.zero;
+
+        _rigidbody.linearVelocity = Vector2.zero;
+
+        // --- Animator : tout couper ---
+        _DAnimation.SetBool("IsRunning", false);
+        _DAnimation.SetBool("IsJumping", false);
+        _DAnimation.SetBool("IsFalling", false);
+        _DAnimation.SetBool("IsDashing", false);
+        _DAnimation.SetBool("IsDashingUp", false);
+        _DAnimation.SetBool("IsDashingDown", false);
+
+        // --- Camera ---
+        if (cameraFollow != null)
+            cameraFollow.LockCamOnPlayer();
+    }
+
+    public void ExitCinematicMode()
+    {
+        _movementDisabled = false;
+        _rotatePlayer = true;
+
+        if (cameraFollow != null)
+            cameraFollow.UnLockCamOnPlayer();
+    }
+
+
 }

@@ -6,6 +6,7 @@ public class CameraFollow : MonoBehaviour
     public CinemachinePositionComposer _camera;
     public CinemachineCamera _cinemachine;
     [SerializeField] private PlayerCharacter _player;
+    [SerializeField] private Cinematique _cinematique;
     private Health _health;
 
 
@@ -60,7 +61,7 @@ public class CameraFollow : MonoBehaviour
             _targetHardLimit = Vector2.zero;
         }
 
-        if (_player._isDashing && !_player.IsGrounded || _health._isDying)
+        if (_player._isDashing && !_player.IsGrounded || _health._isDying || _cinematique.IsCinematic)
         {
             _camera.Lookahead.Time = 0f;
         }

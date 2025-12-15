@@ -506,6 +506,15 @@ public partial class @PlayerInputs: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""skipAction"",
+                    ""type"": ""Button"",
+                    ""id"": ""c77cbac3-3466-4fad-b7c6-81117cce7e6b"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -574,6 +583,28 @@ public partial class @PlayerInputs: IInputActionCollection2, IDisposable
                     ""action"": ""BackMenu"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""751e39ed-c286-4ffc-b6f9-721369858dd4"",
+                    ""path"": ""<Keyboard>/space"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""skipAction"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""be2966a9-ebd2-4802-af3f-53a0888e786b"",
+                    ""path"": ""<Gamepad>/buttonSouth"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""skipAction"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -595,6 +626,7 @@ public partial class @PlayerInputs: IInputActionCollection2, IDisposable
         m_Menu_PauseMenu = m_Menu.FindAction("PauseMenu", throwIfNotFound: true);
         m_Menu_Back = m_Menu.FindAction("Back", throwIfNotFound: true);
         m_Menu_BackMenu = m_Menu.FindAction("BackMenu", throwIfNotFound: true);
+        m_Menu_skipAction = m_Menu.FindAction("skipAction", throwIfNotFound: true);
     }
 
     ~@PlayerInputs()
@@ -852,6 +884,7 @@ public partial class @PlayerInputs: IInputActionCollection2, IDisposable
     private readonly InputAction m_Menu_PauseMenu;
     private readonly InputAction m_Menu_Back;
     private readonly InputAction m_Menu_BackMenu;
+    private readonly InputAction m_Menu_skipAction;
     /// <summary>
     /// Provides access to input actions defined in input action map "Menu".
     /// </summary>
@@ -875,6 +908,10 @@ public partial class @PlayerInputs: IInputActionCollection2, IDisposable
         /// Provides access to the underlying input action "Menu/BackMenu".
         /// </summary>
         public InputAction @BackMenu => m_Wrapper.m_Menu_BackMenu;
+        /// <summary>
+        /// Provides access to the underlying input action "Menu/skipAction".
+        /// </summary>
+        public InputAction @skipAction => m_Wrapper.m_Menu_skipAction;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -910,6 +947,9 @@ public partial class @PlayerInputs: IInputActionCollection2, IDisposable
             @BackMenu.started += instance.OnBackMenu;
             @BackMenu.performed += instance.OnBackMenu;
             @BackMenu.canceled += instance.OnBackMenu;
+            @skipAction.started += instance.OnSkipAction;
+            @skipAction.performed += instance.OnSkipAction;
+            @skipAction.canceled += instance.OnSkipAction;
         }
 
         /// <summary>
@@ -930,6 +970,9 @@ public partial class @PlayerInputs: IInputActionCollection2, IDisposable
             @BackMenu.started -= instance.OnBackMenu;
             @BackMenu.performed -= instance.OnBackMenu;
             @BackMenu.canceled -= instance.OnBackMenu;
+            @skipAction.started -= instance.OnSkipAction;
+            @skipAction.performed -= instance.OnSkipAction;
+            @skipAction.canceled -= instance.OnSkipAction;
         }
 
         /// <summary>
@@ -1055,5 +1098,12 @@ public partial class @PlayerInputs: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnBackMenu(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "skipAction" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnSkipAction(InputAction.CallbackContext context);
     }
 }
