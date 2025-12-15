@@ -17,6 +17,8 @@ public class RespawnManager : MonoBehaviour
     [SerializeField] private float dissolveDuration = 1f;
     [SerializeField] private float dissolveDelay = 0f;
 
+    private bool respawnAnimPlayed = false;
+
 
     private void Awake()
     {
@@ -47,38 +49,34 @@ public class RespawnManager : MonoBehaviour
 
     private void Update()
     {
-        //if (!_isRespawn)
-        //    return;
-        //else
-        //{
-        //  Respawn();
-        //    _isRespawn = false;    
-        //}
-        EnnemyPos = _objectToRespawn.transform.position;
-        RespawnAnim.transform.position = EnnemyPos;
-        _respawnTime += Time.deltaTime;
         if (!_isRespawn)
             return;
+
+        _respawnTime += Time.deltaTime;
+
 
         if (_objectToRespawn.enabled == false && _respawnTime >= _respawnDelay)
         {
             timerAfterRespawn += Time.deltaTime;
-            if (timerAfterRespawn >= 0.2f)
+
+            if (!respawnAnimPlayed && timerAfterRespawn >= 0.1f)
             {
-                //RespawnAnim.Play();
-                if (timerAfterRespawn > 0.5f)
-                {
-                    //Destroy(gameObject, 0.5f);
-                    //_objectToRespawn.material.SetFloat("_Dissolve", 0f);
-                    //_objectToRespawn.enabled = true;
-                    StartCoroutine(DissolveEffect());
-                    _dashEnnemiHitbox.enabled = true;
-                    _ennemiAttackHitbox.enabled = true;
-                    _respawnTime = 0f;
-                    _isRespawn = false;
-                    timerAfterRespawn = 0f;
-                }
+                Instantiate(RespawnAnim, _objectToRespawn.transform.position, Quaternion.identity);
+                respawnAnimPlayed = true;
             }
+            if (timerAfterRespawn > 0.5f)
+            {
+                _objectToRespawn.enabled = true;
+                StartCoroutine(DissolveEffect());
+                _dashEnnemiHitbox.enabled = true;
+                _ennemiAttackHitbox.enabled = true;
+                _respawnTime = 0f;
+                _isRespawn = false;
+                respawnAnimPlayed = false;
+                timerAfterRespawn = 0f;
+            }
+
+
         }
     }
 
@@ -96,7 +94,7 @@ public class RespawnManager : MonoBehaviour
     private static readonly int _dissolveID = Shader.PropertyToID("_Dissolve");
     private IEnumerator DissolveEffect()
     {
-        if(_objectToRespawn == null)
+        if (_objectToRespawn == null)
             yield break;
         Material mat = _objectToRespawn.material;
         mat.SetFloat(_dissolveID, 0f);

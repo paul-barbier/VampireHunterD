@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5736886214404245133}
   - component: {fileID: 643357548323742858}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: AttackZone
   m_TagString: AttackZone
   m_Icon: {fileID: 0}
@@ -92,7 +92,7 @@ GameObject:
   - component: {fileID: 3950847654423334374}
   - component: {fileID: 9180516042417848196}
   - component: {fileID: 3173946814581333525}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Visual
   m_TagString: Dash
   m_Icon: {fileID: 0}
@@ -366,7 +366,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7244516321170534717}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Point2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -398,7 +398,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4550668097015384220}
   - component: {fileID: 861844944796123730}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: RespawnManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -414,8 +414,8 @@ Transform:
   m_GameObject: {fileID: 3514439456989738603}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: 7.043236, y: -0.46566868, z: 0}
+  m_LocalScale: {x: 1.16871, y: 1.16871, z: 1.16871}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 8931138327105946514}
@@ -433,7 +433,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _objectToRespawn: {fileID: 4362424934322308913}
-  RespawnAnim: {fileID: 5623250928427857700, guid: 443b7a9e385d1794dafcfa5b1aac32e6, type: 3}
+  RespawnAnim: {fileID: 7985984846646446054, guid: 48a4689cbae02c844b062c0a9bbe1fbf, type: 3}
   _respawnDelay: 2
   _dashEnnemiHitbox: {fileID: 0}
   _ennemiAttackHitbox: {fileID: 0}
@@ -449,7 +449,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8931138327105946514}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: ChauveSouris
   m_TagString: ChauveSouris
   m_Icon: {fileID: 0}
@@ -465,14 +465,14 @@ Transform:
   m_GameObject: {fileID: 5407140872962772109}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 33.442253, y: 4.511101, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 4550668097015384220}
   - {fileID: 7084640602733602460}
   - {fileID: 7244516321170534717}
   - {fileID: 6740539357879864320}
+  - {fileID: 4550668097015384220}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &6356870207736273192
@@ -484,7 +484,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7084640602733602460}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Point1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
