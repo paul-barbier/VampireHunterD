@@ -17,6 +17,8 @@ public class RespawnManager : MonoBehaviour
     [SerializeField] private float dissolveDuration = 1f;
     [SerializeField] private float dissolveDelay = 0f;
 
+    private bool respawnAnimPlayed = false;
+
 
     private void Awake()
     {
@@ -47,26 +49,21 @@ public class RespawnManager : MonoBehaviour
 
     private void Update()
     {
-        //if (!_isRespawn)
-        //    return;
-        //else
-        //{
-        //  Respawn();
-        //    _isRespawn = false;    
-        //}
-        EnnemyPos = _objectToRespawn.transform.position;
-        RespawnAnim.transform.position = EnnemyPos;
-        _respawnTime += Time.deltaTime;
         if (!_isRespawn)
             return;
+
+        _respawnTime += Time.deltaTime;
+
 
         if (_objectToRespawn.enabled == false && _respawnTime >= _respawnDelay)
         {
             timerAfterRespawn += Time.deltaTime;
 
-            if(timerAfterRespawn == 0.3f)
-                Instantiate(RespawnAnim, transform.position, Quaternion.identity);
-
+            if (!respawnAnimPlayed && timerAfterRespawn >= 0.1f)
+            {
+                Instantiate(RespawnAnim, _objectToRespawn.transform.position, Quaternion.identity);
+                respawnAnimPlayed = true;
+            }
             if (timerAfterRespawn > 0.5f)
             {
                 _objectToRespawn.enabled = true;
@@ -75,8 +72,11 @@ public class RespawnManager : MonoBehaviour
                 _ennemiAttackHitbox.enabled = true;
                 _respawnTime = 0f;
                 _isRespawn = false;
+                respawnAnimPlayed = false;
                 timerAfterRespawn = 0f;
             }
+
+
         }
     }
 

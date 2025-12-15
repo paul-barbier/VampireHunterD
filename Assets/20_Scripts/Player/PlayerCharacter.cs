@@ -925,7 +925,7 @@ public class PlayerCharacter : MonoBehaviour
 
     private static readonly int _dissolveID = Shader.PropertyToID("_Dissolve");
 
-    private IEnumerator DissolveAndDisable(SpriteRenderer sprite, Collider2D dash, Collider2D attackEnnemi, RespawnManager rm, float duration = 0.1f)
+    private IEnumerator DissolveAndDisable(SpriteRenderer sprite, Collider2D dash, Collider2D attackEnnemi, RespawnManager rm, float duration = 1f)
     {
         if (sprite == null)
             yield break;
