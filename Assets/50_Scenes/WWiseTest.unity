@@ -580,11 +580,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 42423c1d43de38e4d83c7c65d666c712, type: 3}
---- !u!198 &369174151 stripped
-ParticleSystem:
-  m_CorrespondingSourceObject: {fileID: 341663135786270647, guid: a38c065f7f2b48d42b8647a546721097, type: 3}
-  m_PrefabInstance: {fileID: 830658722}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &501669169
 GameObject:
   m_ObjectHideFlags: 0
@@ -883,10 +878,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 341663135786270647, guid: a38c065f7f2b48d42b8647a546721097, type: 3}
-      propertyPath: stopAction
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 838490804841158670, guid: a38c065f7f2b48d42b8647a546721097, type: 3}
       propertyPath: _aura
       value: 
@@ -899,26 +890,6 @@ PrefabInstance:
       propertyPath: _cinemachine
       value: 
       objectReference: {fileID: 1838835370}
-    - target: {fileID: 2582406482295659073, guid: a38c065f7f2b48d42b8647a546721097, type: 3}
-      propertyPath: soundList.Array.data[1].Name
-      value: Teleport
-      objectReference: {fileID: 0}
-    - target: {fileID: 2582406482295659073, guid: a38c065f7f2b48d42b8647a546721097, type: 3}
-      propertyPath: 'soundList.Array.data[1].Sounds.Array.data[0]'
-      value: 
-      objectReference: {fileID: 8300000, guid: 72c79caed6506cf45afb68595160342e, type: 3}
-    - target: {fileID: 2582406482295659073, guid: a38c065f7f2b48d42b8647a546721097, type: 3}
-      propertyPath: soundGroundList.Array.data[0].Sounds.Array.size
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2582406482295659073, guid: a38c065f7f2b48d42b8647a546721097, type: 3}
-      propertyPath: 'soundGroundList.Array.data[0].Sounds.Array.data[0]'
-      value: 
-      objectReference: {fileID: 8300000, guid: 67e9fe32a5822a541a1194a32fcb11ba, type: 3}
-    - target: {fileID: 3403784465517668524, guid: a38c065f7f2b48d42b8647a546721097, type: 3}
-      propertyPath: Land
-      value: 
-      objectReference: {fileID: 369174151}
     - target: {fileID: 3403784465517668524, guid: a38c065f7f2b48d42b8647a546721097, type: 3}
       propertyPath: DaBloodyBlood
       value: 
