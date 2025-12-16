@@ -18,7 +18,6 @@ public class PositionAura : MonoBehaviour
         if (chauveSouris != null)
         {
             transform.position = chauveSouris.position;
-            // Ajoute une oscillation verticale
             float newY = chauveSouris.position.y + Mathf.Sin(Time.time * frequency) * oscillationampl;
             transform.position = new Vector3(transform.position.x, newY, transform.position.z);
 
