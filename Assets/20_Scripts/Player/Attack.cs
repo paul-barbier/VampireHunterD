@@ -26,6 +26,12 @@ public class Attack : MonoBehaviour
 
     void Update()
     {
+        if (_playerCharacter._isCinematic)
+        {
+            CancelAttack();
+            return;
+        }
+
         if (!isAttacking || _playerCharacter._isDashing)
             return;
 
@@ -53,6 +59,9 @@ public class Attack : MonoBehaviour
 
     public void AttackZone()
     {
+        if (_playerCharacter._isCinematic)
+            return;
+
         if (!canAttack || _playerCharacter._isDashing)
             return;
 
@@ -65,6 +74,7 @@ public class Attack : MonoBehaviour
         StartCoroutine(AttackTime());
         StartCoroutine(AttackCooldown());
     }
+
 
     IEnumerator AttackTime()
     {
@@ -80,5 +90,33 @@ public class Attack : MonoBehaviour
         yield return new WaitForSeconds(0.2f);
         canAttack = true;
     }
+
+    private void CancelAttack()
+    {
+        isAttacking = false;
+
+        attackPivot.gameObject.SetActive(false);
+        highAngle = 50f;
+        attackPivot.localRotation = Quaternion.identity;
+
+        _DAnimation.SetBool("IsAttacking", false);
+
+        StopAllCoroutines();
+    }
+
+    public void ResetAttackState()
+    {
+        isAttacking = false;
+        canAttack = true;
+
+        attackPivot.gameObject.SetActive(false);
+        highAngle = 50f;
+        attackPivot.localRotation = Quaternion.identity;
+
+        _DAnimation.SetBool("IsAttacking", false);
+    }
+
+
+
 }
 

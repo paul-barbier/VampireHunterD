@@ -999,6 +999,7 @@ public class PlayerCharacter : MonoBehaviour
         _isDashing = false;
         _isJumping = false;
         _hittingDash = false;
+        _attack.isAttacking = false;
 
         _rotatePlayer = false;
 
@@ -1015,6 +1016,7 @@ public class PlayerCharacter : MonoBehaviour
         _DAnimation.SetBool("IsRunning", false);
         _DAnimation.SetBool("IsJumping", false);
         _DAnimation.SetBool("IsFalling", false);
+        _DAnimation.SetBool("IsAttacking", false);
         _DAnimation.SetBool("IsDashing", false);
         _DAnimation.SetBool("IsDashingUp", false);
         _DAnimation.SetBool("IsDashingDown", false);
@@ -1028,10 +1030,15 @@ public class PlayerCharacter : MonoBehaviour
     {
         _movementDisabled = false;
         _rotatePlayer = true;
+        _isCinematic = false;
+
+        if (_attack != null)
+            _attack.ResetAttackState();
 
         if (cameraFollow != null)
             cameraFollow.UnLockCamOnPlayer();
     }
+
 
 
 }
