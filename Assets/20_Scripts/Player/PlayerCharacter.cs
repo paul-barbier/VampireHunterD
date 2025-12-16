@@ -802,6 +802,9 @@ public class PlayerCharacter : MonoBehaviour
         yield return new WaitForSeconds(1.0f);
         _canDash = true;
         ChauveSourisD.gameObject.SetActive(true);
+        _aura.Play();
+        yield return new WaitForSeconds(0.5f);
+        _aura.Stop();
     }
 
     public void BounceOnEnemy()
@@ -851,12 +854,13 @@ public class PlayerCharacter : MonoBehaviour
         //Dash sur mob
         if (collision.CompareTag("Dash") && _isDashing && collision != dashHitbox)
         {
-            StopDashOnEnemy(collision);
             BounceOnEnemy();
             ChauveSourisD.gameObject.SetActive(true);
+            _aura.Play();
             _canDash = true;
             PlayMobDeath.Invoke();
             KillingEnemy(collision);
+            StartCoroutine(StopAuraAfterDelay());
             return;
         }
         //Dash sur cadavre
@@ -970,7 +974,12 @@ public class PlayerCharacter : MonoBehaviour
         if (rm != null)
             rm.RespawnFonction();
     }
-
+    [SerializeField] private ParticleSystem _aura;
+    private IEnumerator StopAuraAfterDelay()
+    {
+        yield return new WaitForSeconds(0.5f);
+        _aura.Stop();
+    }
     public void KillingEnemy(Collider2D collision)
     {
         RespawnManager rm = collision.transform.root.GetComponentInChildren<RespawnManager>(true);
