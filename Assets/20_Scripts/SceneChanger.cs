@@ -1,32 +1,28 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class SceneChanger : MonoBehaviour
 {
+    [Header("Scene")]
     [SerializeField] private string _wantedScene;
     [SerializeField] private string _spawnPointName;
 
-
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.CompareTag("Player"))
-        {
-            Debug.Log("Ok" + _spawnPointName);
-            SpawnManager.NextSpawnPoint = _spawnPointName;
-            SceneManager.LoadScene(_wantedScene);
-        }
+        if (!collision.CompareTag("Player")) return;
+
+        SpawnManager.NextSpawnPoint = _spawnPointName;
+
+        TransiSceneAnimator.Instance.OnFadeBlackSwitch.RemoveAllListeners();
+        TransiSceneAnimator.Instance.OnFadeBlackSwitch.AddListener(ChangeSceneNow);
+
+        TransiSceneAnimator.Instance.ChangeScene();
     }
 
-    //public void Awake()
-    //{
-    //    GameObject[] gameObj = GameObject.FindGameObjectsWithTag("Music");
-    //    if (gameObj.Length > 1)
-    //    {
-    //        Destroy(this.gameObject);
-    //    }
-    //    DontDestroyOnLoad(this.gameObject);
-    //}
-
-
-
+    public void ChangeSceneNow()
+    {
+        SceneManager.LoadScene(_wantedScene);
+    }
 }
+
