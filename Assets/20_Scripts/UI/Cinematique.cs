@@ -1,6 +1,7 @@
 using System.Collections;
-using UnityEngine;
 using TMPro;
+using Unity.Cinemachine;
+using UnityEngine;
 
 #region DATA
 
@@ -31,9 +32,7 @@ public class Cinematique : MonoBehaviour
     [Header("Speakers")]
     public Speaker[] speakers;
 
-    private PlayerCharacter playerCharacter;
-
-    public bool IsCinematic = false;
+    private PlayerCharacter _playerCharacter;
 
     private void Start()
     {
@@ -47,7 +46,7 @@ public class Cinematique : MonoBehaviour
         if (!other.CompareTag("Player"))
             return;
 
-        playerCharacter = other.GetComponent<PlayerCharacter>();
+        _playerCharacter = other.GetComponent<PlayerCharacter>();
 
         StartCoroutine(SubtitleCoroutine());
 
@@ -60,10 +59,8 @@ public class Cinematique : MonoBehaviour
         textbox.SetActive(true);
 
         // --- Bloque le joueur ---
-        if (playerCharacter != null)
-            playerCharacter.EnterCinematicMode();
-
-        IsCinematic = true;
+        if (_playerCharacter != null)
+            _playerCharacter.EnterCinematicMode();
 
         foreach (SubtitleLine line in lines)
         {
@@ -78,11 +75,10 @@ public class Cinematique : MonoBehaviour
         // --- Fin ---
         textbox.SetActive(false);
         DisableAllSpeakers();
-        IsCinematic = false;
+        _playerCharacter._isCinematic = false;
 
-
-        if (playerCharacter != null)
-            playerCharacter.ExitCinematicMode();
+        if (_playerCharacter != null)
+            _playerCharacter.ExitCinematicMode();
     }
 
     // =========================

@@ -187,6 +187,9 @@ public class PlayerCharacter : MonoBehaviour
     private Vector2 _sizeDashHitbox;
     private Vector2 _offsetDashHitbox;
 
+    //CINEMATIQUE
+    public bool _isCinematic = false;
+
     #endregion Variables
 
     #region Initialization
@@ -211,7 +214,7 @@ public class PlayerCharacter : MonoBehaviour
 
         dashHitbox.gameObject.SetActive(false);
         _isKnockBacked = false;
-
+        _isCinematic = false;
         // activer le curseur visuel si assigné
         if (_dashCursor != null)
             _dashCursor.SetActive(true);
@@ -998,6 +1001,8 @@ public class PlayerCharacter : MonoBehaviour
         _hittingDash = false;
 
         _rotatePlayer = false;
+
+        _isCinematic = true;
 
         _currentDashForce = Vector2.zero;
         _currentJumpForce = Vector2.zero;

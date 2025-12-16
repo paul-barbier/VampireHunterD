@@ -61,7 +61,7 @@ public class CameraFollow : MonoBehaviour
             _targetHardLimit = Vector2.zero;
         }
 
-        if (_player._isDashing && !_player.IsGrounded || _health._isDying || _cinematique.IsCinematic)
+        if (_player._isDashing && !_player.IsGrounded || _health._isDying ||_player._isCinematic)
         {
             _camera.Lookahead.Time = 0f;
         }

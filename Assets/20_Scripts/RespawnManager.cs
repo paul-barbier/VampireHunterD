@@ -61,7 +61,7 @@ public class RespawnManager : MonoBehaviour
 
             if (!respawnAnimPlayed && timerAfterRespawn >= 0.1f)
             {
-                Instantiate(RespawnAnim, _objectToRespawn.transform.position, Quaternion.identity);
+                Instantiate(RespawnAnim, new Vector3(_objectToRespawn.transform.position.x, _objectToRespawn.transform.position.y - 1.5f, _objectToRespawn.transform.position.z), Quaternion.identity);
                 respawnAnimPlayed = true;
             }
             if (timerAfterRespawn > 0.5f)
@@ -75,8 +75,6 @@ public class RespawnManager : MonoBehaviour
                 respawnAnimPlayed = false;
                 timerAfterRespawn = 0f;
             }
-
-
         }
     }
 
