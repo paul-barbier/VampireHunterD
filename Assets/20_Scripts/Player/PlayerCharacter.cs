@@ -368,6 +368,7 @@ public class PlayerCharacter : MonoBehaviour
             {
                 _canDash = true;
                 ChauveSourisD.gameObject.SetActive(true);
+                StartCoroutine(StopAuraAfterDelay());
             }
 
             IsGrounded = true;
@@ -977,6 +978,7 @@ public class PlayerCharacter : MonoBehaviour
     [SerializeField] private ParticleSystem _aura;
     private IEnumerator StopAuraAfterDelay()
     {
+        _aura.Play();
         yield return new WaitForSeconds(0.5f);
         _aura.Stop();
     }
