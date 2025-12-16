@@ -855,6 +855,7 @@ public class PlayerCharacter : MonoBehaviour
         //Dash sur mob
         if (collision.CompareTag("Dash") && _isDashing && collision != dashHitbox)
         {
+            StopDashOnEnemy(collision);
             BounceOnEnemy();
             ChauveSourisD.gameObject.SetActive(true);
             _canDash = true;
