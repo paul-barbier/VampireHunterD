@@ -1,6 +1,5 @@
 using System.Collections;
 using TMPro;
-using Unity.Cinemachine;
 using UnityEngine;
 
 #region DATA
@@ -8,8 +7,9 @@ using UnityEngine;
 [System.Serializable]
 public class Speaker
 {
-    public string id;           // Ex : "Player", "Ame", "Passeur", "Boss"
-    public GameObject portrait; // Portrait ou GameObject à afficher
+    public string id;                 // Ex : "Player", "Ame", "Passeur", "Boss"
+    public string displayName;        // Nom affiché à l’écran
+    public GameObject portrait;       // Portrait ou GameObject à afficher
 }
 
 [System.Serializable]
@@ -17,7 +17,7 @@ public struct SubtitleLine
 {
     public float duration;
     [TextArea] public string text;
-    public string speakerId; // Doit correspondre à Speaker.id
+    public string speakerId;          // Doit correspondre à Speaker.id
 }
 
 #endregion
@@ -28,6 +28,7 @@ public class Cinematique : MonoBehaviour
     public SubtitleLine[] lines;
     public GameObject textbox;
     public TMP_Text subtitles;
+    public TMP_Text speakerNameText;  // ← NOUVEAU : nom du speaker
 
     [Header("Speakers")]
     public Speaker[] speakers;
@@ -37,9 +38,9 @@ public class Cinematique : MonoBehaviour
     private void Start()
     {
         textbox.SetActive(false);
+        ClearSpeakerName();
         DisableAllSpeakers();
     }
-
 
     private void OnTriggerEnter2D(Collider2D other)
     {
@@ -74,8 +75,8 @@ public class Cinematique : MonoBehaviour
 
         // --- Fin ---
         textbox.SetActive(false);
+        ClearSpeakerName();
         DisableAllSpeakers();
-        _playerCharacter._isCinematic = false;
 
         if (_playerCharacter != null)
             _playerCharacter.ExitCinematicMode();
@@ -102,10 +103,29 @@ public class Cinematique : MonoBehaviour
             {
                 if (speaker.portrait != null)
                     speaker.portrait.SetActive(true);
+
+                SetSpeakerName(speaker.displayName);
                 return;
             }
         }
 
         Debug.LogWarning($"[Cinematique] Speaker '{id}' non trouvé.");
+        ClearSpeakerName();
+    }
+
+    // =========================
+    // SPEAKER NAME
+    // =========================
+
+    private void SetSpeakerName(string name)
+    {
+        if (speakerNameText != null)
+            speakerNameText.text = name;
+    }
+
+    private void ClearSpeakerName()
+    {
+        if (speakerNameText != null)
+            speakerNameText.text = "";
     }
 }
