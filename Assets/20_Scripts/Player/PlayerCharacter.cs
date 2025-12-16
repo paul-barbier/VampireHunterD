@@ -857,7 +857,6 @@ public class PlayerCharacter : MonoBehaviour
         {
             BounceOnEnemy();
             ChauveSourisD.gameObject.SetActive(true);
-            _aura.Play();
             _canDash = true;
             PlayMobDeath.Invoke();
             KillingEnemy(collision);
@@ -879,6 +878,7 @@ public class PlayerCharacter : MonoBehaviour
             }
             //Time.timeScale = 0.2f;
             ChauveSourisD.gameObject.SetActive(true);
+            StartCoroutine(StopAuraAfterDelay());
             _canDash = true;
             collision.enabled = false;
             StartCoroutine(CadavreHitboxCD(collision));
