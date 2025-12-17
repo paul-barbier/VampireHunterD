@@ -877,7 +877,6 @@ public class PlayerCharacter : MonoBehaviour
             {
                 Instantiate(DaBloodyBlood180, collision.transform.position, Quaternion.Euler(0, 0, 0));
             }
-            //Time.timeScale = 0.2f;
             ChauveSourisD.gameObject.SetActive(true);
             StartCoroutine(StopAuraAfterDelay());
             _canDash = true;
