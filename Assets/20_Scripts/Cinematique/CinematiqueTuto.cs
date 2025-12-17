@@ -13,6 +13,6 @@ public class CinematiqueTuto : MonoBehaviour
     }
     void LoadScene(VideoPlayer vp)
     {
-        SceneManager.LoadScene(2);
+        SceneManager.LoadScene(SceneName);
     }
 }
