@@ -29,7 +29,7 @@ Transform:
   m_GameObject: {fileID: 321379243702358425}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 5.08996, y: 7.57, z: -10}
+  m_LocalPosition: {x: -19.28291, y: -64.54, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -333,7 +333,15 @@ MonoBehaviour:
     - {fileID: 8300000, guid: b7b83cdf0c8e81544a040347d89b4437, type: 3}
     - {fileID: 8300000, guid: fdc58e71a7c6a5043aa951c3d529730f, type: 3}
   - Name: MobFootsteps
-    sounds: []
+    sounds:
+    - {fileID: 8300000, guid: 5f2b392323a9e1744929e98890b4fa81, type: 3}
+    - {fileID: 8300000, guid: b9893ca38ed1ede449934f2c19182cd1, type: 3}
+    - {fileID: 8300000, guid: 116edafb70c6e5b4a963fbf6c6eb6d84, type: 3}
+    - {fileID: 8300000, guid: 899677f0ff1f4484fa5487b9a413f281, type: 3}
+    - {fileID: 8300000, guid: d618ee1c9a48e4246a0e242d8f3c10ad, type: 3}
+    - {fileID: 8300000, guid: 3e67ad7b4c64c9240862813f26dfea7c, type: 3}
+    - {fileID: 8300000, guid: 9399326709c9c4347ba6c8b1cc2331d9, type: 3}
+    - {fileID: 8300000, guid: 634c1e8fdb64abc47a53b1329af9e004, type: 3}
   - Name: Attack
     sounds:
     - {fileID: 8300000, guid: 9ff2005fd11cf7e4a8dfe11c6b708fd8, type: 3}
@@ -379,9 +387,18 @@ MonoBehaviour:
     - {fileID: 8300000, guid: 3d00d1e20b93eec49a5a751f93d15104, type: 3}
   - Name: StepsVillageois
     sounds:
-    - {fileID: 8300000, guid: 5f49e57af273e5348b972cdb0160b91c, type: 3}
-    - {fileID: 8300000, guid: 5f49e57af273e5348b972cdb0160b91c, type: 3}
-    - {fileID: 8300000, guid: 5f49e57af273e5348b972cdb0160b91c, type: 3}
+    - {fileID: 8300000, guid: 428e96259d7efd64c9ef0c70dcc73fda, type: 3}
+    - {fileID: 8300000, guid: b2801279cbb6ea9438c1ec62c8ac3863, type: 3}
+    - {fileID: 8300000, guid: d9d1f447b8cb84844affb3a31f8b378a, type: 3}
+    - {fileID: 8300000, guid: 5e89c2c8646e5db49962575356f7136e, type: 3}
+    - {fileID: 8300000, guid: 11bc3627935e9e4488f7fe7c1b006960, type: 3}
+    - {fileID: 8300000, guid: 1929afe55d26346449a25750dfcfba2c, type: 3}
+  - Name: Checkpoints
+    sounds:
+    - {fileID: 8300000, guid: 3fad9377dc966db4b9df80574ad3d337, type: 3}
+  - Name: TorchLighting
+    sounds:
+    - {fileID: 8300000, guid: f7528e533e90b6f42b7e98cc0a18fe2b, type: 3}
 --- !u!1 &5946286106577519382
 GameObject:
   m_ObjectHideFlags: 0
@@ -443,7 +460,7 @@ Transform:
   m_GameObject: {fileID: 7614178230349327506}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 5.08996, y: 7.57, z: -10}
+  m_LocalPosition: {x: -22.21032, y: -61.293663, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:

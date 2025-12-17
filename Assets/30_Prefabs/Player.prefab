@@ -273,7 +273,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 12
+  m_SortingOrder: 89
   m_Sprite: {fileID: -2472763267653063995, guid: f4e0d110ca1017a48837f8576a933c7a, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -319,7 +319,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 29122224b713b9147bab79c0ddbc7100, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _aura: {fileID: 0}
   _dissolveSpeed: 1
   _playerCharacter: {fileID: 3403784465517668524}
 --- !u!1 &3634221963745358714
@@ -510,7 +509,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 25
+  m_SortingOrder: 90
   m_Sprite: {fileID: 8164408767924170613, guid: 19dba204746b2f247a181069e8f9fa7a, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -938,7 +937,7 @@ MonoBehaviour:
   _isDashing: 0
   _hittingDash: 0
   enemyBounceForce: {x: 0, y: 8}
-  BouncingTime: 0.3
+  BouncingTime: 0.4
   targetKnockback: {x: 15, y: 15, z: 0}
   _isKnockBacked: 0
   _currentMeshRotation: {x: 0, y: 0, z: 0}
@@ -947,8 +946,10 @@ MonoBehaviour:
   _capsuleBox: {fileID: 1432363591201203488}
   attackHitbox: {fileID: 1030361369149033380}
   dashHitbox: {fileID: 8076329334359803592}
+  _isCinematic: 0
   DaBloodyBlood: {fileID: 5403446210264408118, guid: 765ef696f6fa1ba46a4c7d04831f7c43, type: 3}
   DaBloodyBlood180: {fileID: 5403446210264408118, guid: 40a50211ada54e54aa7b1b42dfceb0a1, type: 3}
+  _aura: {fileID: 0}
 --- !u!114 &7089133477461453087
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1048,10 +1049,11 @@ MonoBehaviour:
   _camera: {fileID: 0}
   _cinemachine: {fileID: 0}
   _player: {fileID: 3403784465517668524}
+  _cinematique: {fileID: 0}
   offsetCam: 9
-  camLerpSpeed: 20
+  camLerpSpeed: 5
   DefaultLook: 1
-  LookUp: 2.57
+  LookUp: 3
   LookDown: -6
   PremierPlanCamZ: 10
   SecondPlanCamZ: 15
@@ -1326,17 +1328,41 @@ PrefabInstance:
       value: SoundBank
       objectReference: {fileID: 0}
     - target: {fileID: 3526760214530090117, guid: 020d2e61f61ab90489b5ae83b737a3e0, type: 3}
+      propertyPath: soundList.Array.size
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 3526760214530090117, guid: 020d2e61f61ab90489b5ae83b737a3e0, type: 3}
       propertyPath: soundList.Array.data[1].Name
       value: Teleport
+      objectReference: {fileID: 0}
+    - target: {fileID: 3526760214530090117, guid: 020d2e61f61ab90489b5ae83b737a3e0, type: 3}
+      propertyPath: soundList.Array.data[5].Name
+      value: Checkpoints
       objectReference: {fileID: 0}
     - target: {fileID: 3526760214530090117, guid: 020d2e61f61ab90489b5ae83b737a3e0, type: 3}
       propertyPath: soundList.Array.data[1].Sounds.Array.size
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3526760214530090117, guid: 020d2e61f61ab90489b5ae83b737a3e0, type: 3}
+      propertyPath: soundList.Array.data[4].Sounds.Array.size
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 3526760214530090117, guid: 020d2e61f61ab90489b5ae83b737a3e0, type: 3}
+      propertyPath: soundList.Array.data[5].Sounds.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3526760214530090117, guid: 020d2e61f61ab90489b5ae83b737a3e0, type: 3}
       propertyPath: 'soundList.Array.data[1].Sounds.Array.data[0]'
       value: 
       objectReference: {fileID: 8300000, guid: 72c79caed6506cf45afb68595160342e, type: 3}
+    - target: {fileID: 3526760214530090117, guid: 020d2e61f61ab90489b5ae83b737a3e0, type: 3}
+      propertyPath: 'soundList.Array.data[5].Sounds.Array.data[0]'
+      value: 
+      objectReference: {fileID: 8300000, guid: 3fad9377dc966db4b9df80574ad3d337, type: 3}
+    - target: {fileID: 3526760214530090117, guid: 020d2e61f61ab90489b5ae83b737a3e0, type: 3}
+      propertyPath: 'soundList.Array.data[4].Sounds.Array.data[12]'
+      value: 
+      objectReference: {fileID: 8300000, guid: 3d75218cd12d41549aa22c15aa5a51b7, type: 3}
     - target: {fileID: 3526760214530090117, guid: 020d2e61f61ab90489b5ae83b737a3e0, type: 3}
       propertyPath: soundGroundList.Array.data[0].Sounds.Array.size
       value: 1

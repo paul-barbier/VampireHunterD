@@ -25,6 +25,7 @@ public enum SoundType
     CataWater,
     StepsVillageois,
     Checkpoints,
+    TorchLighting,
 
 }
 
