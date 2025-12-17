@@ -13,8 +13,16 @@ public class UIDialogue : MonoBehaviour
     public void Start()
     {
         Time.timeScale = 1.0f;
-        _pauseMenu.SetActive(false);
-        _optionsMenu.SetActive(false);
+
+        if (_pauseMenu != null) 
+            _pauseMenu.SetActive(false);
+
+        if (_optionsMenu != null) 
+            _optionsMenu.SetActive(false);
+
+        if (_commandesMenu != null) 
+            _commandesMenu.SetActive(false);
+
         _dialogue = GetComponentInChildren<Dialogue>();
     }
 
@@ -82,18 +90,17 @@ public class UIDialogue : MonoBehaviour
 
     public void Back()
     {
-        Debug.Log("RondAppuyé");
-        if (_pauseMenu.activeInHierarchy && !_optionsMenu.activeInHierarchy && !_commandesMenu.activeInHierarchy)
-        {
-            Reprendre();
-        }
-        else if (_optionsMenu.activeInHierarchy && _pauseMenu.activeInHierarchy)
+        if (_optionsMenu != null && _optionsMenu.activeInHierarchy)
         {
             CloseOptions();
         }
-        else if (_commandesMenu.activeInHierarchy && _pauseMenu.activeInHierarchy)
+        else if (_commandesMenu != null && _commandesMenu.activeInHierarchy)
         {
             CloseCommandes();
+        }
+        else if (_pauseMenu != null && _pauseMenu.activeInHierarchy)
+        {
+            Reprendre();
         }
     }
 }
