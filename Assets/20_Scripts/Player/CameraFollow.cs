@@ -23,7 +23,6 @@ public class CameraFollow : MonoBehaviour
     [SerializeField] private float PremierPlanCamZ = 10f;
     [SerializeField] private float SecondPlanCamZ = 15f;
 
-    // nouvelle cible interpolée pour la distance caméra
     private float _targetCameraDistance;
 
     private Vector3 _targetOffset;
@@ -35,7 +34,6 @@ public class CameraFollow : MonoBehaviour
         _health = GetComponent<Health>();
         CurrentLook = DefaultLook;
 
-        // initialiser la target distance sur le premier plan
         _targetCameraDistance = PremierPlanCamZ;
         if (_camera != null)
             _camera.CameraDistance = _targetCameraDistance;
@@ -70,7 +68,6 @@ public class CameraFollow : MonoBehaviour
             _camera.Lookahead.Time = 1f;
         }
 
-        //interpolation lissée de la distance caméra
         if (_camera != null && _player.transform.position.z == 0)
         {
             _camera.CameraDistance = Mathf.Lerp(_camera.CameraDistance, PremierPlanCamZ, Time.deltaTime * camLerpSpeed);
@@ -85,13 +82,11 @@ public class CameraFollow : MonoBehaviour
         _camera.Composition.HardLimits.Offset = Vector2.Lerp(_camera.Composition.HardLimits.Offset, _targetHardLimit, Time.deltaTime * camLerpSpeed);
     }
 
-    // méthode publique pour que des triggers (CameraChanger) modifient la cible distance
     public void SetTargetCameraDistance(float distance)
     {
         _targetCameraDistance = distance;
     }
 
-    // remet la cible sur le plan par défaut (PremierPlanCamZ)
     public void ResetTargetCameraDistance()
     {
         _targetCameraDistance = PremierPlanCamZ;
