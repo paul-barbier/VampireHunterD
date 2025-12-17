@@ -597,7 +597,7 @@ public class PlayerCharacter : MonoBehaviour
     {
         if (!_isJumping || _health._isDying)
             return;
-        _capsuleBox.offset = new Vector2(0, 1.5f);
+        _capsuleBox.offset = new Vector2(0, 0.5f);
 
         ContactPoint2D[] contactPointArray = new ContactPoint2D[1];
         ContactFilter2D filter = _ceilingContactFilter;
