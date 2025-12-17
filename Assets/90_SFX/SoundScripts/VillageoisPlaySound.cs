@@ -6,6 +6,6 @@ public class VillageoisPlaySound : MonoBehaviour
     public void PlayMobFoot()
     {
         //PlaySoundEvent.Invoke();
-        AudioSource.PlayClipAtPoint(SoundManager.instance.soundList[(int)SoundType.StepsVillageois].Sounds[0], transform.position, 0.3f);
+        AudioSource.PlayClipAtPoint(SoundManager.instance.soundList[(int)SoundType.StepsVillageois].Sounds[0], transform.position, 1f);
     }
 }

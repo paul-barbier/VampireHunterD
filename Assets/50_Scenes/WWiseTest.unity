@@ -11038,6 +11038,38 @@ PrefabInstance:
       propertyPath: m_Name
       value: CandleFlame (3)
       objectReference: {fileID: 0}
+    - target: {fileID: 5361071890197866054, guid: ec2044c0d57a4284db8eef61142d9028, type: 3}
+      propertyPath: ShapeModule.m_Scale.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5361071890197866054, guid: ec2044c0d57a4284db8eef61142d9028, type: 3}
+      propertyPath: ShapeModule.m_Scale.y
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5361071890197866054, guid: ec2044c0d57a4284db8eef61142d9028, type: 3}
+      propertyPath: ShapeModule.m_Scale.z
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5361071890197866054, guid: ec2044c0d57a4284db8eef61142d9028, type: 3}
+      propertyPath: VelocityModule.x.scalar
+      value: 0.04
+      objectReference: {fileID: 0}
+    - target: {fileID: 5361071890197866054, guid: ec2044c0d57a4284db8eef61142d9028, type: 3}
+      propertyPath: ShapeModule.radius.value
+      value: 0.005
+      objectReference: {fileID: 0}
+    - target: {fileID: 5361071890197866054, guid: ec2044c0d57a4284db8eef61142d9028, type: 3}
+      propertyPath: VelocityModule.x.minScalar
+      value: -0.05
+      objectReference: {fileID: 0}
+    - target: {fileID: 5361071890197866054, guid: ec2044c0d57a4284db8eef61142d9028, type: 3}
+      propertyPath: VelocityModule.y.minScalar
+      value: -0.15
+      objectReference: {fileID: 0}
+    - target: {fileID: 5361071890197866054, guid: ec2044c0d57a4284db8eef61142d9028, type: 3}
+      propertyPath: VelocityModule.z.minScalar
+      value: -0.03
+      objectReference: {fileID: 0}
     - target: {fileID: 6454641187750739139, guid: ec2044c0d57a4284db8eef61142d9028, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0.68
@@ -22913,6 +22945,14 @@ PrefabInstance:
     - target: {fileID: 3935958143210245295, guid: 5c0ac78a5e94a8f43873de2006d190ce, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4580544228863247886, guid: 5c0ac78a5e94a8f43873de2006d190ce, type: 3}
+      propertyPath: EmissionModule.m_Bursts.Array.data[0].repeatInterval
+      value: 10.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7707940525958605560, guid: 5c0ac78a5e94a8f43873de2006d190ce, type: 3}
+      propertyPath: EmissionModule.m_Bursts.Array.data[0].repeatInterval
+      value: 10.1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

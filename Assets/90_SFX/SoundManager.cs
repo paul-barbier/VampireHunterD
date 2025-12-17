@@ -24,6 +24,7 @@ public enum SoundType
     BatVFX,
     CataWater,
     StepsVillageois,
+    Checkpoints,
 
 }
 

@@ -70,7 +70,7 @@ public class MusicManager : MonoBehaviour
 
         if (sceneName == "Niv_HUB")
             clipToPlay = HubMusic;
-        else if (sceneName == "Niv_3_Crypte 1")
+        else if (sceneName == "Niv_3_Crypte")
             clipToPlay = CataMusic;
         else if (sceneName == "Salle3")
             clipToPlay = HorlogeMusic;

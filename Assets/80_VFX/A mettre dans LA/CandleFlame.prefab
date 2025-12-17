@@ -672,7 +672,7 @@ ParticleSystem:
     donutRadius: 0.2
     m_Position: {x: 0, y: 0, z: 0}
     m_Rotation: {x: 0, y: 90, z: 0}
-    m_Scale: {x: 1, y: 1, z: 1}
+    m_Scale: {x: 0.5, y: 0.5, z: 0.5}
     placementMode: 0
     m_MeshMaterialIndex: 0
     m_MeshNormalOffset: 0
@@ -751,7 +751,7 @@ ParticleSystem:
     sphericalDirectionAmount: 0
     randomPositionAmount: 0
     radius:
-      value: 0.01
+      value: 0.005
       mode: 0
       spread: 0
       speed:
@@ -1495,8 +1495,8 @@ ParticleSystem:
     x:
       serializedVersion: 2
       minMaxState: 3
-      scalar: 0.08
-      minScalar: -0.09
+      scalar: 0.04
+      minScalar: -0.05
       maxCurve:
         serializedVersion: 2
         m_Curve:
@@ -1549,7 +1549,7 @@ ParticleSystem:
       serializedVersion: 2
       minMaxState: 3
       scalar: 0.16
-      minScalar: -0.2
+      minScalar: -0.15
       maxCurve:
         serializedVersion: 2
         m_Curve:
@@ -1602,7 +1602,7 @@ ParticleSystem:
       serializedVersion: 2
       minMaxState: 3
       scalar: 0.1
-      minScalar: -0.06
+      minScalar: -0.03
       maxCurve:
         serializedVersion: 2
         m_Curve:
