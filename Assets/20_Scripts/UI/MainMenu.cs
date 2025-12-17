@@ -49,6 +49,8 @@ public class MainMenu : MonoBehaviour
     public void Jouer()
     {
         SceneManager.LoadScene(1);
+        _mainMenu.SetActive(false);
+
     }
 
     public void Quit()
