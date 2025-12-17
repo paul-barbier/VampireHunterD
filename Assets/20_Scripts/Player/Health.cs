@@ -124,30 +124,30 @@ public class Health : MonoBehaviour
     {
         SoundManager.PlaySound(SoundType.D_Dmg, 5f);
 
-        _isInvincible = true;
-        yield return new WaitForSeconds(1.5f);
         _hurtShader.SetFloat("_Damaged", 1.0f);
         _hurtEffect.SetActive(true);
 
-        //_Material.SetFloat(_vignetteIntensity, VIGNETTE_BASE_INTENSITY);
-        //_Material.SetFloat(_voronoiIntensity, VORONOI_BASE_INTENSITY);
+        _Material.SetFloat(_vignetteIntensity, VIGNETTE_BASE_INTENSITY);
+        _Material.SetFloat(_voronoiIntensity, VORONOI_BASE_INTENSITY);
 
-        //yield return new WaitForSeconds(_hurtDisplayTime);
+        yield return new WaitForSeconds(_hurtDisplayTime);
 
-        //float elapsedTime = 0.0f;
-        //while (elapsedTime < _hurtFadeOutTime)
-        //{
-        //    elapsedTime += Time.deltaTime;
+        float elapsedTime = 0.0f;
+        while (elapsedTime < _hurtFadeOutTime)
+        {
+            elapsedTime += Time.deltaTime;
 
 
-        //    float vignetteIntensity = Mathf.Lerp(VIGNETTE_BASE_INTENSITY, 0f, elapsedTime / _hurtFadeOutTime);
-        //    float voronoiIntensity = Mathf.Lerp(VORONOI_BASE_INTENSITY, 0f, elapsedTime / _hurtFadeOutTime);
+            float vignetteIntensity = Mathf.Lerp(_vignetteIntensity, 0f, elapsedTime / _hurtFadeOutTime);
+            float voronoiIntensity = Mathf.Lerp(_voronoiIntensity, 0f, elapsedTime / _hurtFadeOutTime);
 
-        //    _Material.SetFloat(_vignetteIntensity, vignetteIntensity);
-        //    _Material.SetFloat(_voronoiIntensity, voronoiIntensity);
+            _Material.SetFloat(_vignetteIntensity, vignetteIntensity);
+            _Material.SetFloat(_voronoiIntensity, voronoiIntensity);
 
-        //    yield return null;
-        //}
+            yield return null;
+        }
+        _isInvincible = true;
+        yield return new WaitForSeconds(1.5f);
         Debug.Log("End Hurt");
         _isInvincible = false;
 
