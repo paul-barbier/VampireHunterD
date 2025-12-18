@@ -321,37 +321,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _dissolveSpeed: 1
   _playerCharacter: {fileID: 3403784465517668524}
---- !u!1 &2886219302243381498
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 6401556579574256096}
-  m_Layer: 6
-  m_Name: GameObject
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &6401556579574256096
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2886219302243381498}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 5167549000642208514}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &3634221963745358714
 GameObject:
   m_ObjectHideFlags: 0
@@ -492,7 +461,6 @@ Transform:
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 7888530792909689178}
-  - {fileID: 6401556579574256096}
   - {fileID: 5627316185133770394}
   - {fileID: 5678964012433711846}
   - {fileID: 4312871601400655523}
@@ -1061,11 +1029,11 @@ MonoBehaviour:
   HpAnime: {fileID: 0}
   AnimMort: {fileID: 0}
   _hurtDisplayTime: 1
-  _hurtFadeOutTime: 1.5
+  _hurtFadeOutTime: 0.2
   _hurtEffect: {fileID: 2100820236830293440, guid: b7c001ec38ca54343853fe180a31cad8, type: 2}
-  _Material: {fileID: 2100000, guid: b667e0278a3017a44aba1c1bdf36db89, type: 2}
-  _maxIntensity: 1
-  _vignetteIntensityStat: 1
+  _Material: {fileID: -876546973899608171, guid: 610550ef15c396942acd11a230b83263, type: 3}
+  _maxIntensity: 0
+  _vignetteIntensityStat: 0
 --- !u!114 &2527351097556045588
 MonoBehaviour:
   m_ObjectHideFlags: 0
