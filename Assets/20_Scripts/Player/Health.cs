@@ -37,8 +37,7 @@ public class Health : MonoBehaviour
     private int _voronoiIntensity = Shader.PropertyToID("_NoiseIntensity");
     private int _vignetteIntensity = Shader.PropertyToID("_Intensity");
 
-    private const float VIGNETTE_BASE_INTENSITY = 0.2f;
-    private const float VORONOI_BASE_INTENSITY = 0.0f;
+ 
     private Material _hurtShader;
 
     private void Start()
@@ -127,8 +126,8 @@ public class Health : MonoBehaviour
         _hurtShader.SetFloat("_Damaged", 1.0f);
         _hurtEffect.SetActive(true);
 
-        _Material.SetFloat(_vignetteIntensity, VIGNETTE_BASE_INTENSITY);
-        _Material.SetFloat(_voronoiIntensity, VORONOI_BASE_INTENSITY);
+        _Material.SetFloat(_vignetteIntensity, _vignetteIntensityStat);
+        _Material.SetFloat(_voronoiIntensity, _maxIntensity);
 
         yield return new WaitForSeconds(_hurtDisplayTime);
 
@@ -138,14 +137,17 @@ public class Health : MonoBehaviour
             elapsedTime += Time.deltaTime;
 
 
-            float vignetteIntensity = Mathf.Lerp(_vignetteIntensity, 0f, elapsedTime / _hurtFadeOutTime);
-            float voronoiIntensity = Mathf.Lerp(_voronoiIntensity, 0f, elapsedTime / _hurtFadeOutTime);
+            float vignetteIntensity = Mathf.Lerp(_vignetteIntensityStat, 0f, (elapsedTime / _hurtFadeOutTime));
+            float voronoiIntensity = Mathf.Lerp(_maxIntensity, 0f, (elapsedTime / _hurtFadeOutTime));
 
             _Material.SetFloat(_vignetteIntensity, vignetteIntensity);
             _Material.SetFloat(_voronoiIntensity, voronoiIntensity);
 
             yield return null;
         }
+        _hurtEffect.SetActive(false);
+        _voronoiIntensity = Shader.PropertyToID("_NoiseIntensity");
+        _vignetteIntensity = Shader.PropertyToID("_Intensity");
         _isInvincible = true;
         yield return new WaitForSeconds(1.5f);
         Debug.Log("End Hurt");
@@ -153,7 +155,6 @@ public class Health : MonoBehaviour
 
         _hurtShader.SetFloat("_Damaged", 0.0f);
 
-        _hurtEffect.SetActive(false);
     }
 
     public void Die()
