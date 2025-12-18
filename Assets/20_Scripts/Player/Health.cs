@@ -68,12 +68,12 @@ public class Health : MonoBehaviour
         if (_currentHealth <= 0)
             Die();
     }
-
+    private int state = 0;
     public void UpdateBar()
     {
         float ratio = (float)_currentHealth / _maxHealth;
 
-        int state = 0;
+        state = 0;
         if (ratio > 0.75f)
         {
             state = 0;
@@ -132,18 +132,22 @@ public class Health : MonoBehaviour
         yield return new WaitForSeconds(_hurtDisplayTime);
 
         float elapsedTime = 0.0f;
-        while (elapsedTime < _hurtFadeOutTime)
+
+        if (state != 3)
         {
-            elapsedTime += Time.deltaTime;
+            while (elapsedTime < _hurtFadeOutTime)
+            {
+                elapsedTime += Time.deltaTime;
 
 
-            float vignetteIntensity = Mathf.Lerp(_vignetteIntensityStat, 0f, elapsedTime / _hurtFadeOutTime);
-            float voronoiIntensity = Mathf.Lerp(_maxIntensity, 0f, elapsedTime / _hurtFadeOutTime);
+                float vignetteIntensity = Mathf.Lerp(_vignetteIntensityStat, 0f, elapsedTime / _hurtFadeOutTime);
+                float voronoiIntensity = Mathf.Lerp(_maxIntensity, 0f, elapsedTime / _hurtFadeOutTime);
 
-            _Material.SetFloat(_vignetteIntensity, vignetteIntensity);
-            _Material.SetFloat(_voronoiIntensity, voronoiIntensity);
+                _Material.SetFloat(_vignetteIntensity, vignetteIntensity);
+                _Material.SetFloat(_voronoiIntensity, voronoiIntensity);
 
-            yield return null;
+                yield return null;
+            }
         }
         yield return new WaitForSeconds(1.5f);
         Debug.Log("End Hurt");
@@ -151,7 +155,10 @@ public class Health : MonoBehaviour
 
         _hurtShader.SetFloat("_Damaged", 0.0f);
 
-        _hurtEffect.SetActive(false);
+        if (state != 3)
+        {
+            _hurtEffect.SetActive(false);
+        }
     }
 
     public void Die()
@@ -191,6 +198,8 @@ public class Health : MonoBehaviour
             _character._movementDisabled = false;
 
             _character._DAnimation.SetBool("IsDying", false);
+            _hurtEffect.SetActive(false);
+
         }
     }
 }
