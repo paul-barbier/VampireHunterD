@@ -566,7 +566,7 @@ public class PlayerCharacter : MonoBehaviour
     public void StartJump()
     {
 
-        if (_movementDisabled) 
+        if (_movementDisabled ||_isDashing) 
             return;
 
         if ((!IsGrounded && !_isInCoyoteTime) || _isJumping)
