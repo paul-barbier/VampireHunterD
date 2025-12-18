@@ -80,7 +80,7 @@ public class RespawnManager : MonoBehaviour
 
     public void RespawnFonction()
     {
-        Debug.Log($"RespawnFonction appelée sur : {gameObject.name}");
+        Debug.Log($"RespawnFonction appelée sur : {_objectToRespawn.transform.parent.name}");
         if (_objectToRespawn.enabled == false)
         {
             Debug.Log("Respawn called on : " + gameObject.name);

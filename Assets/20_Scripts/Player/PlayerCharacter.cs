@@ -984,7 +984,7 @@ public class PlayerCharacter : MonoBehaviour
     }
     public void KillingEnemy(Collider2D collision)
     {
-        RespawnManager rm = collision.transform.root.GetComponentInChildren<RespawnManager>(true);
+        RespawnManager rm = collision.transform.parent.GetComponentInChildren<RespawnManager>(true);
         SpriteRenderer sprite = collision.GetComponent<SpriteRenderer>();
         Collider2D dash = collision.GetComponent<Collider2D>();
         Collider2D attackEnnemi = collision.transform.Find("AttackZone").GetComponent<Collider2D>();

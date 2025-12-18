@@ -19,6 +19,7 @@ public class SwordDamage : MonoBehaviour
         if (collision != null && collision.CompareTag("Dash") && CompareTag("Sword"))
         {
             _character.KillingEnemy(collision);
+            Debug.Log("Killing :" + collision.transform.parent.name);
             PlaySound.Invoke();
             //SoundManager.PlaySound(SoundType.VampireDeath, 10f);
         }

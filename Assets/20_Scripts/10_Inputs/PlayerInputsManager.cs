@@ -40,7 +40,11 @@ public class PlayerInputsManager : MonoBehaviour
     private void FixedUpdate()
     {
         _character.GetMovementInput(_inputs.Player.Move.ReadValue<float>());
-
-        _character.GetDashInput(_inputs.Player.DashDirection.ReadValue<Vector2>());
+        
+        Vector2 dashDirection = _inputs.Player.DashDirection.ReadValue<Vector2>();
+        if(dashDirection != Vector2.zero)
+        {
+            _character.GetDashInput(dashDirection);
+        }
     }
 }

@@ -17,8 +17,11 @@ public class CameraFollow : MonoBehaviour
     [SerializeField] private float DefaultLook = 1.0f;
     [SerializeField] private float LookUp = 1.0f;
     [SerializeField] private float LookDown = 1.0f;
+    [SerializeField] private float LookRight = 1.0f;
+    [SerializeField] private float LookLeft = 1.0f;
 
-    private float CurrentLook = 1.0f;
+    private float CurrentLookHorizontal = 1.0f;
+    private float CurrentLookVertical = 1.0f;
 
     [SerializeField] private float PremierPlanCamZ = 10f;
     [SerializeField] private float SecondPlanCamZ = 15f;
@@ -32,7 +35,7 @@ public class CameraFollow : MonoBehaviour
     {
         _player = GetComponent<PlayerCharacter>();
         _health = GetComponent<Health>();
-        CurrentLook = DefaultLook;
+        CurrentLookVertical = DefaultLook;
 
         _targetCameraDistance = PremierPlanCamZ;
         if (_camera != null)
@@ -45,17 +48,17 @@ public class CameraFollow : MonoBehaviour
 
         if (input > 0.3f)
         {
-            _targetOffset = new Vector3(offsetCam, CurrentLook, 0f);
+            _targetOffset = new Vector3(offsetCam + CurrentLookHorizontal, CurrentLookVertical, 0f);
             _targetHardLimit = new Vector2(-0.7f, 0f);
         }
         else if (input < -0.3f)
         {
-            _targetOffset = new Vector3(-offsetCam, CurrentLook, 0f);
+            _targetOffset = new Vector3(-offsetCam - CurrentLookHorizontal, CurrentLookVertical, 0f);
             _targetHardLimit = new Vector2(0.7f, 0f);
         }
         else if (input == 0)
         {
-            _targetOffset = new Vector3(0f, CurrentLook, 0f);
+            _targetOffset = new Vector3(0f, CurrentLookVertical, 0f);
             _targetHardLimit = Vector2.zero;
         }
 
@@ -68,7 +71,7 @@ public class CameraFollow : MonoBehaviour
             _camera.Lookahead.Time = 1f;
         }
 
-        if (_camera != null && _player.transform.position.z == 0)
+        if (_camera != null && _player.transform.position.z <= 0)
         {
             _camera.CameraDistance = Mathf.Lerp(_camera.CameraDistance, PremierPlanCamZ, Time.deltaTime * camLerpSpeed);
         }
@@ -112,19 +115,31 @@ public class CameraFollow : MonoBehaviour
         _camera.Lookahead.Smoothing = 7;
     }
 
-    public void ChangeLook(int direction)
+    public void ChangeLook(CameraDirection direction)
     {
-        if(direction > 0)
+        //if(direction > 0)
+        //{
+        //    CurrentLookVertical = LookUp;
+        //}
+        //else if (direction < 0)
+        //{
+        //    CurrentLookVertical = LookDown;
+        //}
+        //else
+        //{
+        //    CurrentLookVertical = DefaultLook;
+        //}
+        switch (direction)
         {
-            CurrentLook = LookUp;
+            case CameraDirection.HAUT: CurrentLookVertical = LookUp; break;
+            case CameraDirection.BAS: CurrentLookVertical = LookDown; break;
+            case CameraDirection.DROITE: CurrentLookHorizontal = LookRight; break;
+            case CameraDirection.GAUCHE: CurrentLookHorizontal = LookLeft; break;
+            default:
+                CurrentLookVertical = DefaultLook;
+                CurrentLookHorizontal = 0;
+                break;
         }
-        else if (direction < 0)
-        {
-            CurrentLook = LookDown;
-        }
-        else
-        {
-            CurrentLook = DefaultLook;
-        }
+    
     }
 }
