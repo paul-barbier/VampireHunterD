@@ -1031,9 +1031,9 @@ MonoBehaviour:
   _hurtDisplayTime: 1
   _hurtFadeOutTime: 0.2
   _hurtEffect: {fileID: 2100820236830293440, guid: b7c001ec38ca54343853fe180a31cad8, type: 2}
-  _Material: {fileID: -876546973899608171, guid: 610550ef15c396942acd11a230b83263, type: 3}
-  _maxIntensity: 0
-  _vignetteIntensityStat: 0
+  _Material: {fileID: 2100000, guid: b202cc43b72f6f944b7736241316a76b, type: 2}
+  _maxIntensity: 1
+  _vignetteIntensityStat: 1
 --- !u!114 &2527351097556045588
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1055,6 +1055,8 @@ MonoBehaviour:
   DefaultLook: 1
   LookUp: 3
   LookDown: -6
+  LookRight: 1
+  LookLeft: 1
   PremierPlanCamZ: 10
   SecondPlanCamZ: 15
 --- !u!114 &4783772777195660557
