@@ -130,6 +130,8 @@ public class Health : MonoBehaviour
         _isInvincible = true;
 
         yield return new WaitForSeconds(_hurtDisplayTime);
+        _isInvincible = false;
+        _hurtShader.SetFloat("_Damaged", 0.0f);
 
         float elapsedTime = 0.0f;
 
@@ -149,11 +151,6 @@ public class Health : MonoBehaviour
                 yield return null;
             }
         }
-        yield return new WaitForSeconds(1.5f);
-        Debug.Log("End Hurt");
-        _isInvincible = false;
-
-        _hurtShader.SetFloat("_Damaged", 0.0f);
 
         if (state != 3)
         {
