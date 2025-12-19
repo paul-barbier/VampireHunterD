@@ -11,11 +11,17 @@ public class TutoBubble : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        TutoApparaitre.SetActive(true);
+        if (collision.CompareTag("Player"))
+        {
+            TutoApparaitre.SetActive(true);
+        }
     }
 
     private void OnTriggerExit2D(Collider2D collision)
     {
-        TutoApparaitre.SetActive(false);
+        if (collision.CompareTag("Player"))
+        {
+            TutoApparaitre.SetActive(false);
+        }
     }
 }
