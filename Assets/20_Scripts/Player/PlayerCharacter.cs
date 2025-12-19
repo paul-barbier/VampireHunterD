@@ -434,7 +434,6 @@ public class PlayerCharacter : MonoBehaviour
         if (_movementDisabled || _isDashing || _health._isDying)
             return;
 
-        //Vector2 maxSpeed = new Vector2(_horizontalPhysic.MaxSpeed * _movementInput, 0.0f);
         Vector2 maxSpeed = SnapToGround(_movementInput);
         float velocityDot = Mathf.Clamp(Vector2.Dot(_rigidbody.linearVelocity, maxSpeed), -1.0f, 1.0f);
         velocityDot = _horizontalPhysic.AccelerationRemapFromVelocityDot.Evaluate(velocityDot);

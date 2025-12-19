@@ -19,7 +19,7 @@ public class CheckPoints : MonoBehaviour
     {
         if (collision.CompareTag("Player"))
         {
-            Instantiate(checkpointEffect, effectSpawnPoint.position, Quaternion.identity);
+            Instantiate(checkpointEffect, new Vector3(effectSpawnPoint.transform.position.x, effectSpawnPoint.transform.position.y, effectSpawnPoint.transform.position.z), Quaternion.identity);
             if (!alreadyplayed)
             {
                 AudioSource.PlayClipAtPoint(SoundManager.instance.soundList[(int)SoundType.Checkpoints].Sounds[0], transform.position, 0.6f);
