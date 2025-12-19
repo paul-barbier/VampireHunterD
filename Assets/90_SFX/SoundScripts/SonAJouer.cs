@@ -4,12 +4,27 @@ using UnityEngine.Events;
 public class SonAJouer : MonoBehaviour
 {
     //[SerializeField] private UnityEvent PlaySoundEvent;
+
+    [SerializeField] private RespawnManager _respawnManager;
+
+    private void Awake()
+    {
+        Transform respawnManager = transform.parent.Find("RespawnManager");
+        if (respawnManager != null)
+            _respawnManager = respawnManager.GetComponent<RespawnManager>();
+    }
+
     public void PlayMobFoot()
     {
-        //PlaySoundEvent.Invoke();
         if (SoundManager.instance == null) 
             return;
-
-        AudioSource.PlayClipAtPoint(SoundManager.instance.soundList[(int)SoundType.MobFootsteps].Sounds[0], transform.position, 0.3f);
+        if(_respawnManager._isRespawn == false)
+        {
+            AudioSource.PlayClipAtPoint(SoundManager.instance.soundList[(int)SoundType.MobFootsteps].Sounds[0], transform.position, 0.3f);
+        }
+        else
+        {
+            return;
+        }
     }
 }

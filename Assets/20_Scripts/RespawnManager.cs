@@ -8,6 +8,7 @@ public class RespawnManager : MonoBehaviour
     [SerializeField] private float _respawnDelay;
     [SerializeField] private Collider2D _dashEnnemiHitbox;
     [SerializeField] private Collider2D _ennemiAttackHitbox;
+    [SerializeField] private AudioSource _audioSource;
 
     private Vector3 EnnemyPos;
     float timerAfterRespawn = 0f;
@@ -41,6 +42,13 @@ public class RespawnManager : MonoBehaviour
             if (visual != null)
                 _objectToRespawn = visual.GetComponent<SpriteRenderer>();
         }
+
+        if(_audioSource == null)
+        {
+            Transform audioSource = transform.parent.Find("Visual");
+            if (audioSource != null)
+                _audioSource = audioSource.GetComponent<AudioSource>();
+        }
     }
     private void Start()
     {
@@ -67,6 +75,7 @@ public class RespawnManager : MonoBehaviour
             if (timerAfterRespawn > 0.5f)
             {
                 _objectToRespawn.enabled = true;
+                _audioSource.enabled = true;
                 StartCoroutine(DissolveEffect());
                 _dashEnnemiHitbox.enabled = true;
                 _ennemiAttackHitbox.enabled = true;

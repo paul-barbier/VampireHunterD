@@ -945,17 +945,17 @@ public class PlayerCharacter : MonoBehaviour
     private static readonly int _dissolveID = Shader.PropertyToID("_Dissolve");
     [SerializeField] private ParticleSystem DaBloodyBlood;
     [SerializeField] private ParticleSystem DaBloodyBlood180;
-    private IEnumerator DissolveAndDisable(SpriteRenderer sprite, Collider2D dash, Collider2D attackEnnemi, RespawnManager rm, float duration = 1f)
+    private IEnumerator DissolveAndDisable(SpriteRenderer sprite, Collider2D dash, Collider2D attackEnnemi, RespawnManager rm, AudioSource audioSource, float duration = 1f)
     {
         if (sprite == null)
             yield break;
 
-        // Utiliser sprite.material pour s'assurer d'instancier le matériau si nécessaire
         Material mat = sprite.material;
         mat.SetFloat(_dissolveID, 0f);
         sprite.enabled = true;
         if (dash != null) dash.enabled = false;
         if (attackEnnemi != null) attackEnnemi.enabled = false;
+        if (audioSource != null) audioSource.enabled = false;
 
         float elapsed = 0f;
         while (elapsed < duration)
@@ -986,6 +986,7 @@ public class PlayerCharacter : MonoBehaviour
         RespawnManager rm = collision.transform.parent.GetComponentInChildren<RespawnManager>(true);
         SpriteRenderer sprite = collision.GetComponent<SpriteRenderer>();
         Collider2D dash = collision.GetComponent<Collider2D>();
+        AudioSource audioSource = collision.GetComponent<AudioSource>();
         Collider2D attackEnnemi = collision.transform.Find("AttackZone").GetComponent<Collider2D>();
         Debug.Log("RespawnManager trouvé = " + (rm != null));
 
@@ -998,7 +999,7 @@ public class PlayerCharacter : MonoBehaviour
             Instantiate(DaBloodyBlood180, collision.transform.position, Quaternion.Euler(0, 0, 0));
         }
 
-        StartCoroutine(DissolveAndDisable(sprite, dash, attackEnnemi, rm, 0.5f));
+        StartCoroutine(DissolveAndDisable(sprite, dash, attackEnnemi, rm, audioSource, 0.5f));
     }
     #endregion Damage/Die
 

@@ -2,10 +2,26 @@ using UnityEngine;
 
 public class VillageoisPlaySound : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    [SerializeField] private RespawnManager _respawnManager;
+
+    private void Awake()
+    {
+        Transform respawnManager = transform.parent.Find("RespawnManager");
+        if (respawnManager != null)
+            _respawnManager = respawnManager.GetComponent<RespawnManager>();
+    }
+
     public void PlayMobFoot()
     {
-        //PlaySoundEvent.Invoke();
-        AudioSource.PlayClipAtPoint(SoundManager.instance.soundList[(int)SoundType.StepsVillageois].Sounds[0], transform.position, 1f);
+        if (SoundManager.instance == null)
+            return;
+        if (_respawnManager._isRespawn == false)
+        {
+            AudioSource.PlayClipAtPoint(SoundManager.instance.soundList[(int)SoundType.StepsVillageois].Sounds[0], transform.position, 1f);
+        }
+        else
+        {
+            return;
+        }
     }
 }
