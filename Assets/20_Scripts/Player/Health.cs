@@ -120,7 +120,14 @@ public class Health : MonoBehaviour
 
     private IEnumerator Hurt()
     {
-        SoundManager.PlaySound(SoundType.D_Dmg, 5f);
+        if (state != 4)
+        {
+            SoundManager.PlaySound(SoundType.D_Dmg, 0.5f);
+        }
+        if (state == 4)
+        {
+            SoundManager.PlaySound(SoundType.DDeath, 5f);
+        }
 
         _hurtShader.SetFloat("_Damaged", 1.0f);
         _hurtEffect.SetActive(true);

@@ -6,10 +6,11 @@ using System.Collections;
 public class MusicManager : MonoBehaviour
 {
     [Header("Music Clips")]
-    [SerializeField] private AudioClip HubMusic;
-    [SerializeField] private AudioClip CataMusic;
-    [SerializeField] private AudioClip HorlogeMusic;
-    [SerializeField] private AudioClip BossMusic;
+    [SerializeField] private AudioClip Hub;
+    [SerializeField] private AudioClip Catacombes;
+    [SerializeField] private AudioClip Tour;
+    [SerializeField] private AudioClip Menu;
+    [SerializeField] private AudioClip Tuto;
 
     [Header("Volume")]
     [SerializeField] private float MusiqueVolume = 0.5f;
@@ -69,13 +70,15 @@ public class MusicManager : MonoBehaviour
         AudioClip clipToPlay = null;
 
         if (sceneName == "Niv_HUB")
-            clipToPlay = HubMusic;
+            clipToPlay = Hub;
         else if (sceneName == "Niv_3_Crypte")
-            clipToPlay = CataMusic;
-        else if (sceneName == "Salle3")
-            clipToPlay = HorlogeMusic;
-        else if (sceneName == "Salle4")
-            clipToPlay = BossMusic;
+            clipToPlay = Catacombes;
+        else if (sceneName == "Niv_2_Tour")
+            clipToPlay = Tour;
+        else if (sceneName == "Niv_1_Tuto")
+            clipToPlay = Tuto;
+        else if (sceneName == "Menu")
+            clipToPlay = Menu;
 
         audioSource.loop = true;
 

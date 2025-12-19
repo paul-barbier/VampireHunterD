@@ -26,6 +26,7 @@ public enum SoundType
     StepsVillageois,
     Checkpoints,
     TorchLighting,
+    DDeath,
 
 }
 
