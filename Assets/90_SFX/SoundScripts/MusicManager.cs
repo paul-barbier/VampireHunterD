@@ -17,7 +17,7 @@ public class MusicManager : MonoBehaviour
 
     [SerializeField] private Slider volumeSlider;
 
-    private AudioSource audioSource;
+    [SerializeField] private AudioSource audioSource;
     public static MusicManager instance;
 
     private Coroutine fadeCoroutine;
@@ -25,17 +25,17 @@ public class MusicManager : MonoBehaviour
 
     private void Awake()
     {
-        if (instance == null)
-        {
-            instance = this;
-            DontDestroyOnLoad(gameObject);
-            audioSource = gameObject.AddComponent<AudioSource>();
-        }
-        else
-        {
-            Destroy(gameObject);
-            return;
-        }
+        //if (instance == null)
+        //{
+        //    instance = this;
+        //    DontDestroyOnLoad(gameObject);
+        //    audioSource = gameObject.AddComponent<AudioSource>();
+        //}
+        //else
+        //{
+        //    Destroy(gameObject);
+        //    return;
+        //}
         SceneManager.sceneLoaded += OnSceneLoaded;
     }
 

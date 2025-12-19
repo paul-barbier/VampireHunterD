@@ -6,10 +6,11 @@ using UnityEngine.Audio;
 public class AudioMixerTamer : MonoBehaviour
 {
     [SerializeField] private AudioMixer myAudioMixer;
+    [SerializeField] private string name;
 
     public void SetVolume(float sliderValue)
     {
-        myAudioMixer.SetFloat("SFX", Mathf.Log10(sliderValue) * 20);
+        myAudioMixer.SetFloat(name, Mathf.Log10(sliderValue) * 20);
     }
 }
 
