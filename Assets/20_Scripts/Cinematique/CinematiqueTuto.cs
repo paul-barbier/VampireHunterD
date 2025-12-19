@@ -5,7 +5,9 @@ using UnityEngine.Video;
 public class CinematiqueTuto : MonoBehaviour
 {
     public VideoPlayer VideoPlayer;
-    public string SceneName;
+    [SerializeField] private string SceneName;
+    [SerializeField] private string _spawnPointName;
+
 
     void Start()
     {
@@ -13,6 +15,9 @@ public class CinematiqueTuto : MonoBehaviour
     }
     void LoadScene(VideoPlayer vp)
     {
+        SpawnManager.NextSpawnPoint = _spawnPointName;
+
+        TransiSceneAnimator.Instance.ChangeScene();
         SceneManager.LoadScene(SceneName);
     }
 }

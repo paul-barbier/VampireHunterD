@@ -71,7 +71,7 @@ public class CameraFollow : MonoBehaviour
             _camera.Lookahead.Time = 1f;
         }
 
-        if (_camera != null && _player.transform.position.z <= 0)
+        if (_camera != null && _player.transform.position.z <= 1)
         {
             _camera.CameraDistance = Mathf.Lerp(_camera.CameraDistance, PremierPlanCamZ, Time.deltaTime * camLerpSpeed);
         }
