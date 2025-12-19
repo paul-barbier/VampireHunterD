@@ -5,7 +5,7 @@ public class DontdestroyONload : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     private void Awake()
     {
-        GameObject[] objs = GameObject.FindGameObjectsWithTag("Music");
+        GameObject[] objs = GameObject.FindGameObjectsWithTag("UI");
         if (objs.Length > 1)
         {
             Destroy(this.gameObject);
