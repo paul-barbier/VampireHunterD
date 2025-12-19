@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class TransitionTour : MonoBehaviour
@@ -16,5 +17,11 @@ public class TransitionTour : MonoBehaviour
         Destroy(_GradientBlack);
         Destroy(_GradientCatacombes);
         Object.FindFirstObjectByType<CaveDarkness3D>().RestoreLight();
+    }
+
+    private IEnumerator PlafondCasse()
+    {
+        yield return new WaitForSeconds(4);
+        Destroy(_plafond);
     }
 }
