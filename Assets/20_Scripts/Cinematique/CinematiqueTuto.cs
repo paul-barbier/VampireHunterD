@@ -17,7 +17,7 @@ public class CinematiqueTuto : MonoBehaviour
     {
         SpawnManager.NextSpawnPoint = _spawnPointName;
 
-        TransiSceneAnimator.Instance.ChangeScene();
+        //TransiSceneAnimator.Instance.ChangeScene();
         SceneManager.LoadScene(SceneName);
     }
 }
