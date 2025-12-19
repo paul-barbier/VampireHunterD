@@ -8,6 +8,7 @@ public class TransitionTour : MonoBehaviour
     [SerializeField] private GameObject _GradientCatac;
     [SerializeField] private GameObject _GradientBlack;
     [SerializeField] private GameObject _GradientCatacombes;
+    [SerializeField] private GameObject _PorteGradient;
     [SerializeField] private Animator _plafondAnim;
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -19,6 +20,7 @@ public class TransitionTour : MonoBehaviour
         Destroy(_GradientCatac);
         Destroy(_GradientBlack);
         Destroy(_GradientCatacombes);
+        Destroy(_PorteGradient);
         Object.FindFirstObjectByType<CaveDarkness3D>().RestoreLight();
     }
 
