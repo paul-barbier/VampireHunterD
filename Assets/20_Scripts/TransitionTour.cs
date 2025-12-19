@@ -8,10 +8,13 @@ public class TransitionTour : MonoBehaviour
     [SerializeField] private GameObject _GradientCatac;
     [SerializeField] private GameObject _GradientBlack;
     [SerializeField] private GameObject _GradientCatacombes;
+    [SerializeField] private Animator _plafondAnim;
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        Destroy(_plafond);
+        _plafondAnim.SetBool("Cassable", true);
+
+        StartCoroutine(PlafondCasse());
         Destroy(_murQuiBloque);
         Destroy(_GradientCatac);
         Destroy(_GradientBlack);
