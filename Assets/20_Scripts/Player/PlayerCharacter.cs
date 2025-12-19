@@ -242,11 +242,6 @@ public class PlayerCharacter : MonoBehaviour
     {
         _jumpTime = _jumpParameters.Height / _jumpParameters.ImpulseForce;
 
-        //_maxJumpParameters.InitValue = InitSpeed(_groundPhysic.MaxSpeed, _maxJumpParameters.Height, _maxJumpParameters.Length);
-        //_maxJumpParameters.GravityValue = GravityValue(_groundPhysic.MaxSpeed, _maxJumpParameters.Height, _maxJumpParameters.Length);
-
-        //_jumpParameters.InitValue = InitSpeed(_groundPhysic.MaxSpeed, _jumpParameters.Height, _jumpParameters.Length);
-        //_jumpParameters.GravityValue = GravityValue(_groundPhysic.MaxSpeed, _jumpParameters.Height, _jumpParameters.Length);
     }
 
     #endregion Initialization
@@ -456,18 +451,15 @@ public class PlayerCharacter : MonoBehaviour
         if (_movementInput >= 0.01 && IsGrounded)
         {
             _DAnimation.SetBool("IsRunning", true);
-            //_capsuleBox.offset = new Vector2(1, 0.3f);
         }
         else if (_movementInput <= -0.01 && IsGrounded)
         {
             _DAnimation.SetBool("IsRunning", true);
-            //_capsuleBox.offset = new Vector2(-1, 0.3f);
 
         }
         else if (_movementInput == 0 && IsGrounded || _movementInput != 0 && !IsGrounded)
         {
             _DAnimation.SetBool("IsRunning", false);
-            //_capsuleBox.offset = _offsetCapsule;
         }
     }
 
@@ -577,7 +569,6 @@ public class PlayerCharacter : MonoBehaviour
         cameraFollow.LockCamOnPlayer();
         _DAnimation.SetBool("IsJumping", true);
         PlaySound.Invoke();
-        //_currentJumpForce.y = _jumpParameters.InitValue;
         _currentJumpForce.y = _jumpParameters.ImpulseForce;
         _rigidbody.linearVelocity = new Vector2(_rigidbody.linearVelocity.x, _currentJumpForce.y);
         _currentHorizontalVelocity.y = 0.0f;
