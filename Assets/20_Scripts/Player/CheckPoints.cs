@@ -22,8 +22,8 @@ public class CheckPoints : MonoBehaviour
             Instantiate(checkpointEffect, new Vector3(effectSpawnPoint.transform.position.x, effectSpawnPoint.transform.position.y, effectSpawnPoint.transform.position.z), Quaternion.identity);
             if (!alreadyplayed)
             {
-                AudioSource.PlayClipAtPoint(SoundManager.instance.soundList[(int)SoundType.Checkpoints].Sounds[0], transform.position, 0.6f);
-                AudioSource.PlayClipAtPoint(SoundManager.instance.soundList[(int)SoundType.TorchLighting].Sounds[0], transform.position, 1f);
+                AudioSource.PlayClipAtPoint(SoundManager.instance.soundList[(int)SoundType.Checkpoints].Sounds[0], transform.position, 0.2f);
+                AudioSource.PlayClipAtPoint(SoundManager.instance.soundList[(int)SoundType.TorchLighting].Sounds[0], transform.position, 0.4f);
                 alreadyplayed = true;
             }
             animator.SetBool("PlayAnime", true);

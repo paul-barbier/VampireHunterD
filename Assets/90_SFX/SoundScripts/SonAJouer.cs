@@ -20,7 +20,7 @@ public class SonAJouer : MonoBehaviour
             return;
         if(_respawnManager._isRespawn == false)
         {
-            AudioSource.PlayClipAtPoint(SoundManager.instance.soundList[(int)SoundType.MobFootsteps].Sounds[0], transform.position, 0.3f);
+            AudioSource.PlayClipAtPoint(SoundManager.instance.soundList[(int)SoundType.MobFootsteps].Sounds[0], transform.position, 0.1f);
         }
         else
         {
