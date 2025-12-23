@@ -261,6 +261,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2e3ad0a76e0ec2149b781c458747ef3d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _respawnManager: {fileID: 0}
 --- !u!82 &8528870270197626150
 AudioSource:
   m_ObjectHideFlags: 0
@@ -270,7 +271,7 @@ AudioSource:
   m_GameObject: {fileID: 571801845577881827}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 24300002, guid: 952217d2521946e4e8b36d143506bd8d, type: 2}
+  OutputAudioMixerGroup: {fileID: 4797644937947523358, guid: 952217d2521946e4e8b36d143506bd8d, type: 2}
   m_audioClip: {fileID: 0}
   m_Resource: {fileID: 0}
   m_PlayOnAwake: 0
@@ -283,7 +284,7 @@ AudioSource:
   Priority: 128
   DopplerLevel: 1
   MinDistance: 1
-  MaxDistance: 1.5
+  MaxDistance: 7
   Pan2D: 0
   rolloffMode: 2
   BypassEffects: 0
@@ -318,7 +319,7 @@ AudioSource:
     m_Curve:
     - serializedVersion: 3
       time: 0
-      value: 0
+      value: 1
       inSlope: 0
       outSlope: 0
       tangentMode: 0
