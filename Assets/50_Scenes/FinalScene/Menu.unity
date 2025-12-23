@@ -2118,6 +2118,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 8300000, guid: 5970a56fb7762a34183f9adc4da3e154, type: 3}
     - target: {fileID: 4113882942219357192, guid: 9ea1a83824a61604a8505ca212a7d6e5, type: 3}
+      propertyPath: Tuto
+      value: 
+      objectReference: {fileID: 8300000, guid: 0ce742e79dc4fc2478d6d34b20eb296b, type: 3}
+    - target: {fileID: 4113882942219357192, guid: 9ea1a83824a61604a8505ca212a7d6e5, type: 3}
       propertyPath: Catacombes
       value: 
       objectReference: {fileID: 8300000, guid: c769ad8b3efeadf43a7d7615d2cceb7c, type: 3}
@@ -2180,6 +2184,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 4311861258617514780, guid: 9ea1a83824a61604a8505ca212a7d6e5, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1591689362}
+    - targetCorrespondingSourceObject: {fileID: 4311861258617514780, guid: 9ea1a83824a61604a8505ca212a7d6e5, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1591689365}
   m_SourcePrefab: {fileID: 100100000, guid: 9ea1a83824a61604a8505ca212a7d6e5, type: 3}
 --- !u!1 &1591689361 stripped
 GameObject:
@@ -2283,6 +2290,18 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &1591689365
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1591689361}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 40f6e505f5557bd4bb5bc6502dce5be0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1611975493
 GameObject:
   m_ObjectHideFlags: 0
