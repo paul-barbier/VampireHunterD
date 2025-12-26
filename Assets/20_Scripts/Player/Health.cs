@@ -136,7 +136,7 @@ public class Health : MonoBehaviour
         _Material.SetFloat(_voronoiIntensity, _maxIntensity);
         _isInvincible = true;
 
-        yield return new WaitForSeconds(_hurtDisplayTime);
+        yield return new WaitForSeconds(1.5f);
         _isInvincible = false;
         _hurtShader.SetFloat("_Damaged", 0.0f);
 

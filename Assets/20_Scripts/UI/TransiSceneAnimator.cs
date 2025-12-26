@@ -4,6 +4,7 @@ using UnityEngine.Events;
 public class TransiSceneAnimator : MonoBehaviour
 {
     public UnityEvent OnFadeBlackSwitch;
+    public UnityEvent DestroyCinematiqueTrigger;
     public static TransiSceneAnimator Instance;
 
     [SerializeField] private Animator AnimChangementScene;
@@ -14,14 +15,12 @@ public class TransiSceneAnimator : MonoBehaviour
     {
         if (Instance != null)
         {
-            Debug.Log("Instance déjà existante, destruction");
             Destroy(gameObject);
             return;
         }
 
         Instance = this;
         DontDestroyOnLoad(transform.root.gameObject);
-        Debug.Log("DontDestroyOnLoad appliqué");
 
         AnimChangementScene.GetComponent<Animator>();
         GOChangementScene.GetComponent<GameObject>();
@@ -49,6 +48,11 @@ public class TransiSceneAnimator : MonoBehaviour
     public void LoadingScene()
     {
         OnFadeBlackSwitch.Invoke();
+    }
+
+    public void DestroyTrigger()
+    {
+        DestroyCinematiqueTrigger.Invoke();
     }
 
     private void Desactive()

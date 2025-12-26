@@ -99,7 +99,7 @@ public class CameraFollow : MonoBehaviour
     {
         _camera.Composition.DeadZone.Size = new Vector2(0.6f, 0f);
         _camera.Lookahead.IgnoreY = true;
-        _camera.Lookahead.Smoothing = 6;
+        _camera.Lookahead.Smoothing = 10;
     }
 
     public void UnLockCamOnPlayer()

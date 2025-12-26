@@ -17,12 +17,23 @@ public class SceneChanger : MonoBehaviour
         TransiSceneAnimator.Instance.OnFadeBlackSwitch.RemoveAllListeners();
         TransiSceneAnimator.Instance.OnFadeBlackSwitch.AddListener(ChangeSceneNow);
 
+        if (gameObject.CompareTag("Cinematic"))
+        {
+            TransiSceneAnimator.Instance.DestroyCinematiqueTrigger.RemoveAllListeners();
+            TransiSceneAnimator.Instance.DestroyCinematiqueTrigger.AddListener(DeleteCinematiqueTrigger);
+        }
+
         TransiSceneAnimator.Instance.ChangeScene();
     }
 
     public void ChangeSceneNow()
     {
         SceneManager.LoadScene(_wantedScene);
+    }
+
+    public void DeleteCinematiqueTrigger()
+    {
+        Destroy(gameObject);
     }
 }
 
