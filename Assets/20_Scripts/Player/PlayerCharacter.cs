@@ -371,7 +371,10 @@ public class PlayerCharacter : MonoBehaviour
 
             //On invoque l'event en passant true pour signifier que le joueur arrive au sol
             OnPhysicStateChanged.Invoke(PhysicState.Ground);
-            cameraFollow.LockCamOnPlayer();
+            if (cameraFollow != null)
+            {
+                cameraFollow.LockCamOnPlayer();
+            }
         }
         //Si le rigidbody ne touche pas le sol mais on a en m�moire qu'il le touche, on est sur la frame o� il quitte le sol
         else if (!isTouchingGround && IsGrounded)
@@ -382,7 +385,7 @@ public class PlayerCharacter : MonoBehaviour
             //On invoque l'event en passant false pour signifier que le joueur quitte au sol
             OnPhysicStateChanged.Invoke(PhysicState.Air);
 
-            if (!_isDashing || !_isFalling)
+            if (!_isDashing || !_isFalling && cameraFollow != null)
             {
                 cameraFollow.UnLockCamOnPlayer();
             }
@@ -566,7 +569,10 @@ public class PlayerCharacter : MonoBehaviour
             Invoke(nameof(StopJumpBuffer), _jumpParameters.BufferTime);
             return;
         }
-        cameraFollow.LockCamOnPlayer();
+        if (cameraFollow != null)
+        {
+            cameraFollow.LockCamOnPlayer();
+        }
         _DAnimation.SetBool("IsJumping", true);
         PlaySound.Invoke();
         _currentJumpForce.y = _jumpParameters.ImpulseForce;
@@ -694,7 +700,10 @@ public class PlayerCharacter : MonoBehaviour
             _isDashing = true;
             _canDash = false;
             cameraFollow._camera.Lookahead.IgnoreY = true;
-            cameraFollow.LockCamOnPlayer();
+            if (cameraFollow != null)
+            {
+                cameraFollow.LockCamOnPlayer();
+            }
 
             _chuteTime = 0.0f;
 
