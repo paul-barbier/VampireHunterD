@@ -35,7 +35,6 @@ public class SpawnManager1 : MonoBehaviour
         GameObject spawn = GameObject.Find(NextSpawnPoint);
         if (spawn == null)
         {
-            Debug.LogWarning("Spawn point introuvable : " + NextSpawnPoint);
             return;
         }
 

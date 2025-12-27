@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using static PlayerCharacter;
 using static UnityEngine.EventSystems.EventTrigger;
 using UnityEngine.Events;
 
@@ -194,7 +193,9 @@ public class PlayerCharacter : MonoBehaviour
 
     #region Initialization
 
-    private void Awake()
+
+
+    public void Awake()
     {
         _attack = GetComponent<Attack>();
         _rigidbody = GetComponent<Rigidbody2D>();
