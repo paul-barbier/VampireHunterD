@@ -107,7 +107,6 @@ public class Dialogue : MonoBehaviour
 
     public void SkipDelay()
     {
-        Debug.Log("Attendre " + _collectible._skipDelay + " secondes");
         isSkipDelaywaiting = true;
     }
 
