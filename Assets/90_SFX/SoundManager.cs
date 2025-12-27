@@ -71,6 +71,7 @@ public class SoundManager : MonoBehaviour
     {
         audiosource = GetComponent<AudioSource>();
     }
+
 #if UNITY_EDITOR
     private void OnEnable()
     {
@@ -80,8 +81,8 @@ public class SoundManager : MonoBehaviour
         {
             soundList[i].Name = names[i];
         }
-#endif
     }
+#endif
 }
 
 
