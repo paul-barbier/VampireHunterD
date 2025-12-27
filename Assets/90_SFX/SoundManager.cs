@@ -33,6 +33,13 @@ public enum SoundType
 [RequireComponent(typeof(AudioSource)), ExecuteInEditMode]
 public class SoundManager : MonoBehaviour
 {
+    [Serializable]
+    public struct SoundList
+    {
+        public AudioClip[] Sounds { get => sounds; }
+        [SerializeField] public string Name;
+        [SerializeField] private AudioClip[] sounds; 
+    }
 
     [SerializeField] public SoundList[] soundList;
     public static SoundManager instance;
@@ -75,18 +82,6 @@ public class SoundManager : MonoBehaviour
         }
 #endif
     }
-    public void PlaySound2(string name)
-    {
-        
-
-    }
 }
 
 
-    [Serializable]
-    public struct SoundList
-    {
-        public AudioClip[] Sounds { get => sounds; }
-        [SerializeField] public string Name;
-        [SerializeField] private AudioClip[] sounds; 
-    }
