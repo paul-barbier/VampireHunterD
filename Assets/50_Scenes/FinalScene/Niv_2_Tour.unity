@@ -4434,6 +4434,17 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &247685472 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1306148818934128645, guid: cc288c3365f0a7e48adaa66810c7bbd0, type: 3}
+  m_PrefabInstance: {fileID: 2010833249}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bf23e6598ebc05945888263ce0ab3580, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &248573844
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -15738,7 +15749,7 @@ PrefabInstance:
     - target: {fileID: 1025947961121557855, guid: 42423c1d43de38e4d83c7c65d666c712, type: 3}
       propertyPath: dialogue
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 247685472}
     - target: {fileID: 1025947961121557855, guid: 42423c1d43de38e4d83c7c65d666c712, type: 3}
       propertyPath: _collectibleUI
       value: 
@@ -21777,7 +21788,7 @@ PrefabInstance:
     - target: {fileID: 1025947961121557855, guid: 42423c1d43de38e4d83c7c65d666c712, type: 3}
       propertyPath: dialogue
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 247685472}
     - target: {fileID: 1025947961121557855, guid: 42423c1d43de38e4d83c7c65d666c712, type: 3}
       propertyPath: _collectibleUI
       value: 
@@ -37123,13 +37134,17 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1256976632058375836, guid: cc288c3365f0a7e48adaa66810c7bbd0, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 116
+      objectReference: {fileID: 0}
     - target: {fileID: 1583608347549350301, guid: cc288c3365f0a7e48adaa66810c7bbd0, type: 3}
       propertyPath: m_LocalPosition.x
       value: -10.127345
       objectReference: {fileID: 0}
     - target: {fileID: 1583608347549350301, guid: cc288c3365f0a7e48adaa66810c7bbd0, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 3.64
+      value: 117
       objectReference: {fileID: 0}
     - target: {fileID: 2878279371600276957, guid: cc288c3365f0a7e48adaa66810c7bbd0, type: 3}
       propertyPath: m_IsActive
@@ -37174,6 +37189,14 @@ PrefabInstance:
     - target: {fileID: 5092682219036021025, guid: cc288c3365f0a7e48adaa66810c7bbd0, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7768346687245313051, guid: cc288c3365f0a7e48adaa66810c7bbd0, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8667556051630471893, guid: cc288c3365f0a7e48adaa66810c7bbd0, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 117
       objectReference: {fileID: 0}
     - target: {fileID: 9152470939424207808, guid: cc288c3365f0a7e48adaa66810c7bbd0, type: 3}
       propertyPath: m_Name
@@ -40221,7 +40244,7 @@ PrefabInstance:
     - target: {fileID: 1025947961121557855, guid: 42423c1d43de38e4d83c7c65d666c712, type: 3}
       propertyPath: dialogue
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 247685472}
     - target: {fileID: 1025947961121557855, guid: 42423c1d43de38e4d83c7c65d666c712, type: 3}
       propertyPath: _collectibleUI
       value: 
