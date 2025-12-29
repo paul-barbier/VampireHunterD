@@ -287,7 +287,7 @@ ParticleSystem:
     startSize:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 100
+      scalar: 1.5
       minScalar: 1
       maxCurve:
         serializedVersion: 2
@@ -1427,7 +1427,7 @@ ParticleSystem:
   UVModule:
     serializedVersion: 2
     enabled: 1
-    mode: 0
+    mode: 1
     timeMode: 0
     fps: 30
     frameOverTime:
@@ -1546,6 +1546,11 @@ ParticleSystem:
     rowMode: 1
     sprites:
     - sprite: {fileID: 8744015920321576916, guid: 968a5e5fcc9037349aa1cfd066e9ac69, type: 3}
+    - sprite: {fileID: 1812975025888984400, guid: 968a5e5fcc9037349aa1cfd066e9ac69, type: 3}
+    - sprite: {fileID: 4465912681521809776, guid: 968a5e5fcc9037349aa1cfd066e9ac69, type: 3}
+    - sprite: {fileID: 7507429296761249183, guid: 968a5e5fcc9037349aa1cfd066e9ac69, type: 3}
+    - sprite: {fileID: 5190066845651574385, guid: 968a5e5fcc9037349aa1cfd066e9ac69, type: 3}
+    - sprite: {fileID: 2779958298886760004, guid: 968a5e5fcc9037349aa1cfd066e9ac69, type: 3}
     flipU: 0
     flipV: 0
   VelocityModule:
@@ -4858,7 +4863,7 @@ ParticleSystemRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 1000
+  m_SortingOrder: 100
   m_RenderMode: 0
   m_MeshDistribution: 0
   m_SortMode: 0
@@ -4882,7 +4887,7 @@ ParticleSystemRenderer:
   m_VertexStreams: 00010304
   m_UseCustomTrailVertexStreams: 0
   m_TrailVertexStreams: 00010304
-  m_Mesh: {fileID: 0}
+  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
   m_Mesh1: {fileID: 0}
   m_Mesh2: {fileID: 0}
   m_Mesh3: {fileID: 0}

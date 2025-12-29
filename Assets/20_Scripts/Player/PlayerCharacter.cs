@@ -359,7 +359,7 @@ public class PlayerCharacter : MonoBehaviour
         if (isTouchingGround && !IsGrounded)
         {
 
-            Instantiate(Land, new Vector3(_mesh.transform.position.x, _mesh.transform.position.y - 7, _mesh.transform.position.z), Quaternion.identity);
+            Instantiate(Land, new Vector3(_mesh.transform.position.x, _mesh.transform.position.y - 2, _mesh.transform.position.z), Quaternion.identity);
             if (!_canDash)
             {
                 _canDash = true;
