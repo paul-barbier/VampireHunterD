@@ -10698,6 +10698,34 @@ PrefabInstance:
       propertyPath: m_Name
       value: TransitionScene
       objectReference: {fileID: 0}
+    - target: {fileID: 6661523874077893640, guid: e20e68a142c22b84790b5e127d308404, type: 3}
+      propertyPath: DestroyCinematiqueTrigger.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6661523874077893640, guid: e20e68a142c22b84790b5e127d308404, type: 3}
+      propertyPath: DestroyCinematiqueTrigger.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6661523874077893640, guid: e20e68a142c22b84790b5e127d308404, type: 3}
+      propertyPath: DestroyCinematiqueTrigger.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 3423955855060118787, guid: 41f046ad31b81db4e9a801937c69c352, type: 3}
+    - target: {fileID: 6661523874077893640, guid: e20e68a142c22b84790b5e127d308404, type: 3}
+      propertyPath: DestroyCinematiqueTrigger.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6661523874077893640, guid: e20e68a142c22b84790b5e127d308404, type: 3}
+      propertyPath: DestroyCinematiqueTrigger.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: DeleteCinematiqueTrigger
+      objectReference: {fileID: 0}
+    - target: {fileID: 6661523874077893640, guid: e20e68a142c22b84790b5e127d308404, type: 3}
+      propertyPath: DestroyCinematiqueTrigger.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: SceneChanger, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 6661523874077893640, guid: e20e68a142c22b84790b5e127d308404, type: 3}
+      propertyPath: DestroyCinematiqueTrigger.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -11264,15 +11292,19 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3205122257472911744, guid: fbad8de467c7cf2419882377b45ab417, type: 3}
       propertyPath: m_LocalScale.x
-      value: 16.77859
+      value: 18.961483
+      objectReference: {fileID: 0}
+    - target: {fileID: 3205122257472911744, guid: fbad8de467c7cf2419882377b45ab417, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 5.8663416
       objectReference: {fileID: 0}
     - target: {fileID: 3205122257472911744, guid: fbad8de467c7cf2419882377b45ab417, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -291.95142
+      value: -290.8061
       objectReference: {fileID: 0}
     - target: {fileID: 3205122257472911744, guid: fbad8de467c7cf2419882377b45ab417, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -50.85
+      value: -51.3957
       objectReference: {fileID: 0}
     - target: {fileID: 3205122257472911744, guid: fbad8de467c7cf2419882377b45ab417, type: 3}
       propertyPath: m_LocalPosition.z
@@ -12399,19 +12431,19 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1256976632058375836, guid: cc288c3365f0a7e48adaa66810c7bbd0, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 2.52
+      value: 580.41
       objectReference: {fileID: 0}
     - target: {fileID: 1256976632058375836, guid: cc288c3365f0a7e48adaa66810c7bbd0, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 2.9
+      value: 45.56
       objectReference: {fileID: 0}
     - target: {fileID: 1583608347549350301, guid: cc288c3365f0a7e48adaa66810c7bbd0, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.4524622
+      value: 578.3424
       objectReference: {fileID: 0}
     - target: {fileID: 1583608347549350301, guid: cc288c3365f0a7e48adaa66810c7bbd0, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 3.9
+      value: 46.56
       objectReference: {fileID: 0}
     - target: {fileID: 1771718570910241269, guid: cc288c3365f0a7e48adaa66810c7bbd0, type: 3}
       propertyPath: m_LocalScale.x
@@ -12448,6 +12480,10 @@ PrefabInstance:
     - target: {fileID: 3568833247055276141, guid: cc288c3365f0a7e48adaa66810c7bbd0, type: 3}
       propertyPath: LookRight
       value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4443176443664175061, guid: cc288c3365f0a7e48adaa66810c7bbd0, type: 3}
+      propertyPath: _cursorLerpSpeed
+      value: 200
       objectReference: {fileID: 0}
     - target: {fileID: 4743302169559103507, guid: cc288c3365f0a7e48adaa66810c7bbd0, type: 3}
       propertyPath: m_LocalPosition.z
@@ -12523,11 +12559,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8667556051630471893, guid: cc288c3365f0a7e48adaa66810c7bbd0, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.4524622
+      value: 578.3424
       objectReference: {fileID: 0}
     - target: {fileID: 8667556051630471893, guid: cc288c3365f0a7e48adaa66810c7bbd0, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 3.9
+      value: 46.56
       objectReference: {fileID: 0}
     - target: {fileID: 9152470939424207808, guid: cc288c3365f0a7e48adaa66810c7bbd0, type: 3}
       propertyPath: m_Name
@@ -16515,7 +16551,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5911483592660119000, guid: b40d6fe6146f9ad42a486464fc898a4a, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -1.63
+      value: -2.03
       objectReference: {fileID: 0}
     - target: {fileID: 5911483592660119000, guid: b40d6fe6146f9ad42a486464fc898a4a, type: 3}
       propertyPath: m_LocalRotation.w
@@ -19677,7 +19713,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5911483592660119000, guid: b40d6fe6146f9ad42a486464fc898a4a, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -1.55
+      value: -1.99
       objectReference: {fileID: 0}
     - target: {fileID: 5911483592660119000, guid: b40d6fe6146f9ad42a486464fc898a4a, type: 3}
       propertyPath: m_LocalRotation.w

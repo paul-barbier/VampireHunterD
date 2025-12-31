@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.Windows;
 
 public class PlayerInputsManager : MonoBehaviour
@@ -14,6 +15,29 @@ public class PlayerInputsManager : MonoBehaviour
     private UIDialogue _dialogueMenu = null;
     private MainMenu _mainMenu = null;
 
+    //private void Awake()
+    //{
+    //    _character = GetComponent<PlayerCharacter>();
+    //    _attack = GetComponent<Attack>();
+    //    _playerTP = GetComponent<PlayerTeleport>();
+    //    _dialogue = FindFirstObjectByType<Dialogue>();
+    //    _oneWay = GetComponent<PlatformeOneWay>();
+    //    _dialogueMenu = FindFirstObjectByType<UIDialogue>();
+    //    _mainMenu = GetComponent<MainMenu>();
+
+    //    _inputs = new PlayerInputs();
+    //    _inputs.Player.Jump.started += _ => _character.StartJump();
+    //    _inputs.Player.Attack.started += _ => _attack.AttackZone();
+    //    _inputs.Player.Interact.started += _ => _playerTP.UseTP();
+    //    _inputs.Player.Dash.started += _ => _character.StartDash();
+    //    _inputs.Player.OneWayDown.started += _ => _oneWay.DownOneWay();
+    //    _inputs.Player.SkipDialogue.started += _ => _dialogue.SkipDialogue();
+    //    _inputs.Menu.PauseMenu.started += _ => _dialogueMenu.Pause();
+    //    _inputs.Menu.Back.started += _ => _dialogueMenu.Back();
+    //    _inputs.Menu.BackMenu.started += _ => _mainMenu.BackMenu();
+    //    _inputs.Enable();
+    //}
+
     private void Awake()
     {
         _character = GetComponent<PlayerCharacter>();
@@ -25,20 +49,22 @@ public class PlayerInputsManager : MonoBehaviour
         _mainMenu = GetComponent<MainMenu>();
 
         _inputs = new PlayerInputs();
-        _inputs.Player.Jump.started += _ => _character.StartJump();
-        _inputs.Player.Attack.started += _ => _attack.AttackZone();
-        _inputs.Player.Interact.started += _ => _playerTP.UseTP();
-        _inputs.Player.Dash.started += _ => _character.StartDash();
-        _inputs.Player.OneWayDown.started += _ => _oneWay.DownOneWay();
-        _inputs.Player.SkipDialogue.started += _ => _dialogue.SkipDialogue();
-        _inputs.Menu.PauseMenu.started += _ => _dialogueMenu.Pause();
-        _inputs.Menu.Back.started += _ => _dialogueMenu.Back();
-        _inputs.Menu.BackMenu.started += _ => _mainMenu.BackMenu();
-        _inputs.Enable();
+
+        _inputs.Player.Jump.started += OnJump;
+        _inputs.Player.Attack.started += OnAttack;
+        _inputs.Player.Interact.started += OnInteract;
+        _inputs.Player.Dash.started += OnDash;
+        _inputs.Player.OneWayDown.started += OnOneWayDown;
+        _inputs.Player.SkipDialogue.started += OnSkipDialogue;
+
+        _inputs.Menu.PauseMenu.started += OnPause;
+        _inputs.Menu.Back.started += OnBack;
+        _inputs.Menu.BackMenu.started += OnBackMenu;
     }
 
     private void FixedUpdate()
     {
+        if (_character == null) return;
         _character.GetMovementInput(_inputs.Player.Move.ReadValue<float>());
         
         Vector2 dashDirection = _inputs.Player.DashDirection.ReadValue<Vector2>();
@@ -46,5 +72,80 @@ public class PlayerInputsManager : MonoBehaviour
         {
             _character.GetDashInput(dashDirection);
         }
+    }
+    private void OnJump(InputAction.CallbackContext ctx)
+    {
+        if (_character == null) return;
+        _character.StartJump();
+    }
+
+    private void OnAttack(InputAction.CallbackContext ctx)
+    {
+        if (_attack == null) return;
+        _attack.AttackZone();
+    }
+
+    private void OnDash(InputAction.CallbackContext ctx)
+    {
+        if (_character == null) return;
+        _character.StartDash();
+    }
+    private void OnInteract(InputAction.CallbackContext ctx)
+    {
+        if (_character == null) return;
+        _playerTP.UseTP();
+    }
+
+    private void OnOneWayDown(InputAction.CallbackContext ctx)
+    {
+        if (_attack == null) return;
+        _oneWay.DownOneWay();
+    }
+
+    private void OnSkipDialogue(InputAction.CallbackContext ctx)
+    {
+        if (_character == null) return;
+        _dialogue.SkipDialogue();
+    }
+    private void OnPause(InputAction.CallbackContext ctx)
+    {
+        if (_character == null) return;
+        _dialogueMenu.Pause();
+    }
+
+    private void OnBack(InputAction.CallbackContext ctx)
+    {
+        if (_attack == null) return;
+        _dialogueMenu.Back();
+    }
+
+    private void OnBackMenu(InputAction.CallbackContext ctx)
+    {
+        if (_character == null) return;
+        _mainMenu.BackMenu();
+    }
+
+    private void OnEnable()
+    {
+        _inputs?.Enable();
+    }
+
+    private void OnDisable()
+    {
+        if (_inputs == null) return;
+
+        _inputs.Player.Jump.started -= OnJump;
+        _inputs.Player.Attack.started -= OnAttack;
+        _inputs.Player.Interact.started -= OnInteract;
+        _inputs.Player.Dash.started -= OnDash;
+        _inputs.Player.OneWayDown.started -= OnOneWayDown;
+        _inputs.Player.SkipDialogue.started -= OnSkipDialogue;
+
+        _inputs.Menu.PauseMenu.started -= OnPause;
+        _inputs.Menu.Back.started -= OnBack;
+        _inputs.Menu.BackMenu.started -= OnBackMenu;
+
+        _inputs.Disable();
+        _inputs.Dispose();
     }
 }
