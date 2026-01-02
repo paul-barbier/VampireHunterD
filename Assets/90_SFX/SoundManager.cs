@@ -27,6 +27,7 @@ public enum SoundType
     Checkpoints,
     TorchLighting,
     DDeath,
+    PlafondCasse,
 
 }
 

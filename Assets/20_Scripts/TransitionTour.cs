@@ -21,11 +21,15 @@ public class TransitionTour : MonoBehaviour
         Destroy(_GradientBlack);
         Destroy(_GradientCatacombes);
         Destroy(_PorteGradient);
+
         Object.FindFirstObjectByType<CaveDarkness3D>().RestoreLight();
+
     }
 
     private IEnumerator PlafondCasse()
     {
+        AudioSource.PlayClipAtPoint(SoundManager.instance.soundList[(int)SoundType.PlafondCasse].Sounds[0], transform.position, 5f);
+
         yield return new WaitForSeconds(4);
         Destroy(_plafond);
     }

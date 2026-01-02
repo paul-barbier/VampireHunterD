@@ -14,6 +14,7 @@ public class PlayerInputsManager : MonoBehaviour
     private PlatformeOneWay _oneWay = null;
     private UIDialogue _dialogueMenu = null;
     private MainMenu _mainMenu = null;
+    private CinematiqueTuto _cinematiqueTuto = null;
 
     //private void Awake()
     //{
@@ -46,7 +47,14 @@ public class PlayerInputsManager : MonoBehaviour
         _dialogue = FindFirstObjectByType<Dialogue>();
         _oneWay = GetComponent<PlatformeOneWay>();
         _dialogueMenu = FindFirstObjectByType<UIDialogue>();
-        _mainMenu = GetComponent<MainMenu>();
+        if (_mainMenu != null)
+        {
+            _mainMenu = GetComponent<MainMenu>();
+        }
+        if (_cinematiqueTuto != null)
+        { 
+            _cinematiqueTuto = GetComponent<CinematiqueTuto>(); 
+        }
 
         _inputs = new PlayerInputs();
 
@@ -60,6 +68,7 @@ public class PlayerInputsManager : MonoBehaviour
         _inputs.Menu.PauseMenu.started += OnPause;
         _inputs.Menu.Back.started += OnBack;
         _inputs.Menu.BackMenu.started += OnBackMenu;
+        _inputs.Menu.SkipCinematique.started += OnCinematique;
     }
 
     private void FixedUpdate()
@@ -124,6 +133,11 @@ public class PlayerInputsManager : MonoBehaviour
         if (_character == null) return;
         _mainMenu.BackMenu();
     }
+    private void OnCinematique(InputAction.CallbackContext ctx)
+    {
+        if (_cinematiqueTuto == null) return;
+        _mainMenu.BackMenu();
+    }
 
     private void OnEnable()
     {
@@ -144,6 +158,7 @@ public class PlayerInputsManager : MonoBehaviour
         _inputs.Menu.PauseMenu.started -= OnPause;
         _inputs.Menu.Back.started -= OnBack;
         _inputs.Menu.BackMenu.started -= OnBackMenu;
+        _inputs.Menu.SkipCinematique.started -= OnCinematique;
 
         _inputs.Disable();
         _inputs.Dispose();

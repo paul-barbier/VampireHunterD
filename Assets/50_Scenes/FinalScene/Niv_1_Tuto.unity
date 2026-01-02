@@ -12853,19 +12853,19 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1256976632058375836, guid: cc288c3365f0a7e48adaa66810c7bbd0, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 7.11
+      value: 1.86
       objectReference: {fileID: 0}
     - target: {fileID: 1256976632058375836, guid: cc288c3365f0a7e48adaa66810c7bbd0, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 2.7
+      value: 3.17
       objectReference: {fileID: 0}
     - target: {fileID: 1583608347549350301, guid: cc288c3365f0a7e48adaa66810c7bbd0, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -9.861284
+      value: -0.31707287
       objectReference: {fileID: 0}
     - target: {fileID: 1583608347549350301, guid: cc288c3365f0a7e48adaa66810c7bbd0, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 3.7
+      value: 4.17
       objectReference: {fileID: 0}
     - target: {fileID: 1771718570910241269, guid: cc288c3365f0a7e48adaa66810c7bbd0, type: 3}
       propertyPath: m_LocalScale.x
@@ -12953,12 +12953,24 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5641620830832935138, guid: cc288c3365f0a7e48adaa66810c7bbd0, type: 3}
       propertyPath: soundList.Array.size
-      value: 21
+      value: 22
       objectReference: {fileID: 0}
     - target: {fileID: 5641620830832935138, guid: cc288c3365f0a7e48adaa66810c7bbd0, type: 3}
       propertyPath: soundList.Array.data[20].Name
       value: DDeath
       objectReference: {fileID: 0}
+    - target: {fileID: 5641620830832935138, guid: cc288c3365f0a7e48adaa66810c7bbd0, type: 3}
+      propertyPath: soundList.Array.data[21].Name
+      value: PlafondCasse
+      objectReference: {fileID: 0}
+    - target: {fileID: 5641620830832935138, guid: cc288c3365f0a7e48adaa66810c7bbd0, type: 3}
+      propertyPath: soundList.Array.data[21].sounds.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5641620830832935138, guid: cc288c3365f0a7e48adaa66810c7bbd0, type: 3}
+      propertyPath: 'soundList.Array.data[21].sounds.Array.data[0]'
+      value: 
+      objectReference: {fileID: 8300000, guid: 1ddaa96c9e33b9647bf4eb2fba17d261, type: 3}
     - target: {fileID: 5856434639364487019, guid: cc288c3365f0a7e48adaa66810c7bbd0, type: 3}
       propertyPath: m_SortingOrder
       value: 1
@@ -12981,11 +12993,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8667556051630471893, guid: cc288c3365f0a7e48adaa66810c7bbd0, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -9.861284
+      value: -0.31707287
       objectReference: {fileID: 0}
     - target: {fileID: 8667556051630471893, guid: cc288c3365f0a7e48adaa66810c7bbd0, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 3.7
+      value: 4.17
       objectReference: {fileID: 0}
     - target: {fileID: 9152470939424207808, guid: cc288c3365f0a7e48adaa66810c7bbd0, type: 3}
       propertyPath: m_Name
@@ -19047,7 +19059,7 @@ Transform:
   m_GameObject: {fileID: 1074864839}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 588.8, y: 40.3, z: 0}
+  m_LocalPosition: {x: 580.17, y: 40.3, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

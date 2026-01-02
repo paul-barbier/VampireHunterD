@@ -490,6 +490,15 @@ public partial class @PlayerInputs: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
+                    ""name"": ""SkipCinematique"",
+                    ""type"": ""Button"",
+                    ""id"": ""200bfa02-1509-4965-9246-2f28a0cde4c8"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
                     ""name"": ""Back"",
                     ""type"": ""Button"",
                     ""id"": ""a69e8cfc-b26b-498e-98d3-1bbb96f2d9d0"",
@@ -537,6 +546,28 @@ public partial class @PlayerInputs: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""PauseMenu"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""0067e39d-9ca7-4793-bd0d-6396d7251ede"",
+                    ""path"": ""<Keyboard>/space"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""SkipCinematique"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""e729ff1d-ca0d-4e4f-890c-7add97b820ba"",
+                    ""path"": ""<Gamepad>/buttonSouth"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""SkipCinematique"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -624,6 +655,7 @@ public partial class @PlayerInputs: IInputActionCollection2, IDisposable
         // Menu
         m_Menu = asset.FindActionMap("Menu", throwIfNotFound: true);
         m_Menu_PauseMenu = m_Menu.FindAction("PauseMenu", throwIfNotFound: true);
+        m_Menu_SkipCinematique = m_Menu.FindAction("SkipCinematique", throwIfNotFound: true);
         m_Menu_Back = m_Menu.FindAction("Back", throwIfNotFound: true);
         m_Menu_BackMenu = m_Menu.FindAction("BackMenu", throwIfNotFound: true);
         m_Menu_skipAction = m_Menu.FindAction("skipAction", throwIfNotFound: true);
@@ -882,6 +914,7 @@ public partial class @PlayerInputs: IInputActionCollection2, IDisposable
     private readonly InputActionMap m_Menu;
     private List<IMenuActions> m_MenuActionsCallbackInterfaces = new List<IMenuActions>();
     private readonly InputAction m_Menu_PauseMenu;
+    private readonly InputAction m_Menu_SkipCinematique;
     private readonly InputAction m_Menu_Back;
     private readonly InputAction m_Menu_BackMenu;
     private readonly InputAction m_Menu_skipAction;
@@ -900,6 +933,10 @@ public partial class @PlayerInputs: IInputActionCollection2, IDisposable
         /// Provides access to the underlying input action "Menu/PauseMenu".
         /// </summary>
         public InputAction @PauseMenu => m_Wrapper.m_Menu_PauseMenu;
+        /// <summary>
+        /// Provides access to the underlying input action "Menu/SkipCinematique".
+        /// </summary>
+        public InputAction @SkipCinematique => m_Wrapper.m_Menu_SkipCinematique;
         /// <summary>
         /// Provides access to the underlying input action "Menu/Back".
         /// </summary>
@@ -941,6 +978,9 @@ public partial class @PlayerInputs: IInputActionCollection2, IDisposable
             @PauseMenu.started += instance.OnPauseMenu;
             @PauseMenu.performed += instance.OnPauseMenu;
             @PauseMenu.canceled += instance.OnPauseMenu;
+            @SkipCinematique.started += instance.OnSkipCinematique;
+            @SkipCinematique.performed += instance.OnSkipCinematique;
+            @SkipCinematique.canceled += instance.OnSkipCinematique;
             @Back.started += instance.OnBack;
             @Back.performed += instance.OnBack;
             @Back.canceled += instance.OnBack;
@@ -964,6 +1004,9 @@ public partial class @PlayerInputs: IInputActionCollection2, IDisposable
             @PauseMenu.started -= instance.OnPauseMenu;
             @PauseMenu.performed -= instance.OnPauseMenu;
             @PauseMenu.canceled -= instance.OnPauseMenu;
+            @SkipCinematique.started -= instance.OnSkipCinematique;
+            @SkipCinematique.performed -= instance.OnSkipCinematique;
+            @SkipCinematique.canceled -= instance.OnSkipCinematique;
             @Back.started -= instance.OnBack;
             @Back.performed -= instance.OnBack;
             @Back.canceled -= instance.OnBack;
@@ -1084,6 +1127,13 @@ public partial class @PlayerInputs: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnPauseMenu(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "SkipCinematique" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnSkipCinematique(InputAction.CallbackContext context);
         /// <summary>
         /// Method invoked when associated input action "Back" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
         /// </summary>
