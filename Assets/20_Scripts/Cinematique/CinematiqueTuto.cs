@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.Video;
 using System.Collections;
+using UnityEngine.InputSystem.iOS;
 
 public class CinematiqueTuto : MonoBehaviour
 {
@@ -31,4 +32,9 @@ public class CinematiqueTuto : MonoBehaviour
         SceneManager.LoadSceneAsync(sceneName);
     }
 
+    public void SkipCinematique()
+    {
+        videoPlayer.Stop();
+        OnVideoFinished(videoPlayer);
+    }
 }

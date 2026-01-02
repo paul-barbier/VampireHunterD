@@ -46,15 +46,12 @@ public class PlayerInputsManager : MonoBehaviour
         _playerTP = GetComponent<PlayerTeleport>();
         _dialogue = FindFirstObjectByType<Dialogue>();
         _oneWay = GetComponent<PlatformeOneWay>();
+
         _dialogueMenu = FindFirstObjectByType<UIDialogue>();
-        if (_mainMenu != null)
-        {
-            _mainMenu = GetComponent<MainMenu>();
-        }
-        if (_cinematiqueTuto != null)
-        { 
-            _cinematiqueTuto = GetComponent<CinematiqueTuto>(); 
-        }
+        _mainMenu = GetComponent<MainMenu>();
+
+        _cinematiqueTuto = FindFirstObjectByType<CinematiqueTuto>();
+
 
         _inputs = new PlayerInputs();
 
@@ -75,9 +72,9 @@ public class PlayerInputsManager : MonoBehaviour
     {
         if (_character == null) return;
         _character.GetMovementInput(_inputs.Player.Move.ReadValue<float>());
-        
+
         Vector2 dashDirection = _inputs.Player.DashDirection.ReadValue<Vector2>();
-        if(dashDirection != Vector2.zero)
+        if (dashDirection != Vector2.zero)
         {
             _character.GetDashInput(dashDirection);
         }
@@ -101,42 +98,43 @@ public class PlayerInputsManager : MonoBehaviour
     }
     private void OnInteract(InputAction.CallbackContext ctx)
     {
-        if (_character == null) return;
+        if (_playerTP == null) return;
         _playerTP.UseTP();
     }
 
     private void OnOneWayDown(InputAction.CallbackContext ctx)
     {
-        if (_attack == null) return;
+        if (_oneWay == null) return;
         _oneWay.DownOneWay();
     }
 
     private void OnSkipDialogue(InputAction.CallbackContext ctx)
     {
-        if (_character == null) return;
+        if (_dialogue == null) return;
         _dialogue.SkipDialogue();
     }
     private void OnPause(InputAction.CallbackContext ctx)
     {
-        if (_character == null) return;
+        if (_dialogueMenu == null) return;
         _dialogueMenu.Pause();
     }
 
     private void OnBack(InputAction.CallbackContext ctx)
     {
-        if (_attack == null) return;
+        if (_dialogueMenu == null) return;
         _dialogueMenu.Back();
     }
 
     private void OnBackMenu(InputAction.CallbackContext ctx)
     {
-        if (_character == null) return;
+        if (_mainMenu == null) return;
         _mainMenu.BackMenu();
     }
     private void OnCinematique(InputAction.CallbackContext ctx)
     {
         if (_cinematiqueTuto == null) return;
-        _mainMenu.BackMenu();
+        _cinematiqueTuto.SkipCinematique();
+        Debug.Log("FEUUUUUUUUUR");
     }
 
     private void OnEnable()
