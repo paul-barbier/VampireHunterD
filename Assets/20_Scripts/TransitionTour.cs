@@ -28,7 +28,7 @@ public class TransitionTour : MonoBehaviour
 
     private IEnumerator PlafondCasse()
     {
-        AudioSource.PlayClipAtPoint(SoundManager.instance.soundList[(int)SoundType.PlafondCasse].Sounds[0], transform.position, 5f);
+        AudioSource.PlayClipAtPoint(SoundManager.instance.soundList[(int)SoundType.PlafondCasse].Sounds[0], transform.position, 25f);
 
         yield return new WaitForSeconds(4);
         Destroy(_plafond);

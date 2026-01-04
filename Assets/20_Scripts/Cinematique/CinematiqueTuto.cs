@@ -2,7 +2,6 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.Video;
 using System.Collections;
-using UnityEngine.InputSystem.iOS;
 
 public class CinematiqueTuto : MonoBehaviour
 {
